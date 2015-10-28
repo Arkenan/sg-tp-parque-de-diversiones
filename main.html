@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>TP 1</title>
+        <script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
+        <script type="text/javascript" src="webgl-utils.js"></script>
+        <script type="text/javascript" src="utils.js"></script>
+        <script type="text/javascript" src="inicio.js"></script>
+        <script type="text/javascript" src="dibujos.js"></script>
+        <!-- Fragment Shader -->
+        <script id="shader-fs" type="x-shader/x-fragment">
+            precision mediump float;
+
+            varying vec2 vTextureCoord;
+            varying vec3 vLightWeighting;
+
+            uniform sampler2D uSampler;
+
+            void main(void) {
+                vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+                gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
+            }
+        </script>
+        <!-- Vertex Shader -->
+        <script id="shader-vs" type="x-shader/x-vertex">
+            attribute vec3 aVertexPosition;
+            attribute vec3 aVertexNormal;
+            attribute vec2 aTextureCoord;
+
+            uniform mat4 uViewMatrix;
+            uniform mat4 uModelMatrix;
+            uniform mat4 uPMatrix;
+            uniform mat3 uNMatrix;
+
+            /* Variables de Iluminación */
+
+            // Intensidad ambiente (mínima iluminación / color de sombras).
+            uniform vec3 uAmbientColor;
+            // Ubicación de la luz puntual, omnidireccional. Se usa para el modelo difuso de Lambert con la normal.
+            uniform vec3 uLightPosition;
+            // Color de la luz puntual.
+            uniform vec3 uDirectionalColor;
+            //Variable booleana que activa / descativa el cálculo de la iluminación
+            uniform bool uUseLighting;
+
+            varying vec2 vTextureCoord;
+            varying vec3 vLightWeighting;
+
+            void main(void) {
+
+                // Transformamos al vértice al espacio de la cámara
+                vec4 pos_camera_view = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
+
+                // Transformamos al vértice al espacio de la proyección
+                gl_Position = uPMatrix * pos_camera_view;
+
+                // Coordenada de textura sin modifiaciones
+                vTextureCoord = aTextureCoord;
+
+                // Calculos de la iluminación
+                vec3 light_dir_normalized =  normalize(uLightPosition - vec3( pos_camera_view ) );
+                if (!uUseLighting){
+                    vLightWeighting = vec3(1.0, 1.0, 1.0);
+                } else {
+                    vec3 transformedNormal = normalize(uNMatrix * aVertexNormal);
+                    float directionalLightWeighting = max(dot(transformedNormal, light_dir_normalized), 0.0);
+                    vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
+                }
+
+            }
+    </script>
+    </head>
+    <body onload="iniciarWebGL();">
+        <h1>METAL</h1>
+        <canvas id="glCanvas" width="640" height="380"> El browser no acepta canvas.</canvas>
+    </body>
+</html>
