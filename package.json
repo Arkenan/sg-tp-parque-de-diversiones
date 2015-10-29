@@ -1,0 +1,28 @@
+{
+  "name": "sg-tp-parque-de-diversiones",
+  "version": "1.0.0",
+  "description": "Animacion de un parque de diversiones",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server ./js/index.js",
+    "build": "webpack ./js/index.js bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Arkenan/sg-tp-parque-de-diversiones.git"
+  },
+  "keywords": [
+    "sg-6671"
+  ],
+  "author": "Christian Angelone & Tomas Arjovsky",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Arkenan/sg-tp-parque-de-diversiones/issues"
+  },
+  "homepage": "https://github.com/Arkenan/sg-tp-parque-de-diversiones",
+  "devDependencies": {
+    "gl-matrix": "^2.3.1",
+    "webpack-dev-server": "^1.12.1"
+  }
+}
