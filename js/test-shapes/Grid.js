@@ -1,8 +1,8 @@
-module.exports = function (_rows, _cols) {
+module.exports = function (_vertices,_rows, _cols) {
   this.cols = _cols;
   this.rows = _rows;
   this.index_buffer = null;
-  this.position_buffer = null;
+  this.position_buffer = _vertices;
   this.color_buffer = null;
 
   this.webgl_position_buffer = null;
@@ -11,22 +11,19 @@ module.exports = function (_rows, _cols) {
 
   // Crea los puntos en orden.
   this.createGrid = function(){
-    this.position_buffer = [];
+    //this.position_buffer = [];
     this.color_buffer = [];
 
     for (var y = 0.0; y < this.rows; y++){
       for (var x = 0.0; x < this.cols; x++){
+        /*
         this.position_buffer.push(x);
         this.position_buffer.push(y);
         this.position_buffer.push(0);
-
-        this.color_buffer.push((x%2 + y%2)%2);
-        this.color_buffer.push((x%2 + y%2)%2);
-        this.color_buffer.push((x%2 + y%2)%2);
-/*
-        this.color_buffer.push(1.0/this.rows * y);
-        this.color_buffer.push(0.2);
-        this.color_buffer.push(1.0/this.cols * x); */
+        */
+        this.color_buffer.push((x%2 + y%2));
+        this.color_buffer.push((x%2 + y%2));
+        this.color_buffer.push((x%2 + y%2));
       }
     }
     console.log('[Grid] PositionBuffer --> ' + this.position_buffer);

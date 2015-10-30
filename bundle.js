@@ -50,6 +50,7 @@
 	var Program = __webpack_require__(3);
 	//------------------------------------------------------------------------------------------------------------------------------
 	var Grid = __webpack_require__(4);
+	var Plano = __webpack_require__(5);
 	//------------------------------------------------------------------------------------------------------------------------------
 	window.onload = function(){
 	  var scene = document.createElement('canvas');
@@ -71,7 +72,7 @@
 	    var fragment = new FragmentShader().init(gl);
 	    var program  = new Program().init(gl,vertex,fragment);
 
-	    var grid = new Grid(3,3).init(gl)
+	    var plano = new Plano(3,3).init(gl);
 
 	    var mvMatrix = mat4.create();
 	    var pMatrix = mat4.create();
@@ -93,7 +94,7 @@
 	      //console.log(t);
 	      gl.uniformMatrix4fv(u_model_view_matrix, false, mvMatrix);
 
-	      grid.draw(gl,program);
+	      plano.draw(gl,program);
 	    }
 	    setInterval(drawScene, 10);
 
@@ -188,11 +189,11 @@
 /* 4 */
 /***/ function(module, exports) {
 
-	module.exports = function (_rows, _cols) {
+	module.exports = function (_vertices,_rows, _cols) {
 	  this.cols = _cols;
 	  this.rows = _rows;
 	  this.index_buffer = null;
-	  this.position_buffer = null;
+	  this.position_buffer = _vertices;
 	  this.color_buffer = null;
 
 	  this.webgl_position_buffer = null;
@@ -201,22 +202,19 @@
 
 	  // Crea los puntos en orden.
 	  this.createGrid = function(){
-	    this.position_buffer = [];
+	    //this.position_buffer = [];
 	    this.color_buffer = [];
 
 	    for (var y = 0.0; y < this.rows; y++){
 	      for (var x = 0.0; x < this.cols; x++){
+	        /*
 	        this.position_buffer.push(x);
 	        this.position_buffer.push(y);
 	        this.position_buffer.push(0);
-
-	        this.color_buffer.push((x%2 + y%2)%2);
-	        this.color_buffer.push((x%2 + y%2)%2);
-	        this.color_buffer.push((x%2 + y%2)%2);
-	/*
-	        this.color_buffer.push(1.0/this.rows * y);
-	        this.color_buffer.push(0.2);
-	        this.color_buffer.push(1.0/this.cols * x); */
+	        */
+	        this.color_buffer.push((x%2 + y%2));
+	        this.color_buffer.push((x%2 + y%2));
+	        this.color_buffer.push((x%2 + y%2));
 	      }
 	    }
 	    console.log('[Grid] PositionBuffer --> ' + this.position_buffer);
@@ -292,6 +290,43 @@
 	    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
 	    // Dibujamos.
 	    gl.drawElements(gl.TRIANGLE_STRIP, this.index_buffer.length ,gl.UNSIGNED_SHORT, 0);
+	  }
+	}
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Grid = __webpack_require__(4);
+
+	module.exports = function(_rows,_cols){
+	  this.position_buffer = null;
+	  this.grid = null;
+	  this.rows = _rows;
+	  this.cols = _cols;
+
+	  this.init = function(_gl){
+	    this.position_buffer = [];
+
+	    for (var y = 0.0; y < this.rows; y++){
+	      for (var x = 0.0; x < this.cols; x++){
+	        this.position_buffer.push(x);
+	        this.position_buffer.push(y);
+	        this.position_buffer.push(0);
+
+	        //this.color_buffer.push((x%2 + y%2));
+	        //this.color_buffer.push((x%2 + y%2));
+	        //this.color_buffer.push((x%2 + y%2));
+	      }
+	    }
+
+	    this.grid = new Grid(this.position_buffer,this.rows,this.cols).init(_gl);
+	    return this;
+	  }
+
+	  this.draw = function(gl, program){
+	    this.grid.draw(gl, program);
 	  }
 	}
 
