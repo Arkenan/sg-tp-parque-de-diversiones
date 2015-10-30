@@ -3,8 +3,9 @@ var VertexShader = require('./shaders/VertexShader.js');
 var FragmentShader = require('./shaders/FragmentShader.js');
 var Program = require('./program/Program.js');
 //------------------------------------------------------------------------------------------------------------------------------
-var Grid = require('./test-shapes/Grid.js');
-var Plano = require('./test-shapes/Plano.js');
+//var Grid = require('./shapes/Grid.js');
+//var Plano = require('./shapes/Plano.js');
+var Cilindro = require('./shapes/Cilindro.js')
 //------------------------------------------------------------------------------------------------------------------------------
 window.onload = function(){
   var scene = document.createElement('canvas');
@@ -26,7 +27,7 @@ window.onload = function(){
     var fragment = new FragmentShader().init(gl);
     var program  = new Program().init(gl,vertex,fragment);
 
-    var plano = new Plano(3,3).init(gl);
+    var cil = new Cilindro(10,10).init(gl);
 
     var mvMatrix = mat4.create();
     var pMatrix = mat4.create();
@@ -48,7 +49,7 @@ window.onload = function(){
       //console.log(t);
       gl.uniformMatrix4fv(u_model_view_matrix, false, mvMatrix);
 
-      plano.draw(gl,program);
+      cil.draw(gl,program);
     }
     setInterval(drawScene, 10);
 

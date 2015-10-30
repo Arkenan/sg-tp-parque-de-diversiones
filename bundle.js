@@ -49,8 +49,9 @@
 	var FragmentShader = __webpack_require__(2);
 	var Program = __webpack_require__(3);
 	//------------------------------------------------------------------------------------------------------------------------------
-	var Grid = __webpack_require__(4);
-	var Plano = __webpack_require__(5);
+	//var Grid = require('./shapes/Grid.js');
+	//var Plano = require('./shapes/Plano.js');
+	var Cilindro = __webpack_require__(4)
 	//------------------------------------------------------------------------------------------------------------------------------
 	window.onload = function(){
 	  var scene = document.createElement('canvas');
@@ -72,7 +73,7 @@
 	    var fragment = new FragmentShader().init(gl);
 	    var program  = new Program().init(gl,vertex,fragment);
 
-	    var plano = new Plano(3,3).init(gl);
+	    var cil = new Cilindro(10,10).init(gl);
 
 	    var mvMatrix = mat4.create();
 	    var pMatrix = mat4.create();
@@ -94,7 +95,7 @@
 	      //console.log(t);
 	      gl.uniformMatrix4fv(u_model_view_matrix, false, mvMatrix);
 
-	      plano.draw(gl,program);
+	      cil.draw(gl,program);
 	    }
 	    setInterval(drawScene, 10);
 
@@ -187,6 +188,98 @@
 
 /***/ },
 /* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Barrido  = __webpack_require__(5);
+
+	//Por ahora es para altura y radio 1, después generalizamos mejor.
+	module.exports = function(cForma, cBarrido){
+	  this.supB = null;
+	  this.cForma = cForma;
+	  this.cBarrido = cBarrido;
+	  // Recordar que toma números entre 0 y 1.
+	  this.fForma = function(t){
+	    var ang = t*2*Math.PI;
+	    var x = Math.cos(ang);
+	    var y = Math.sin(ang);
+	    return [x, y, 0];
+	  }
+
+	  this.fBarrido = function(t){
+	    return [0, 0, t];
+	  }
+
+	  this.init = function(gl){
+	    this.supB = new Barrido(this.fForma, this.fBarrido, this.cForma, this.cBarrido).init(gl);
+	    return this;
+	  }
+
+	  this.draw = function(gl, program){
+	    return this.supB.draw(gl, program);
+	  }
+
+	}
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Grid = __webpack_require__(6);
+
+	/* Recibe dos funciones, una de forma y otra de barrido, ambas
+	** toman elementos entre 0 y 1 y devuelven un punto en el espacio.
+	** además de la cantidad de divisiones de forma y de barrido. */
+
+	module.exports = function(fForma, fBarrido, cForma,  cBarrido){
+	  //Puntos de evaluación para la forma:
+	  this.pForma = [];
+	  this.pBarrido = [];
+	  this.vertices = [];
+	  this.grid = null;
+	  this.cForma = cForma;
+	  this.cBarrido = cBarrido;
+	  this.fijarPuntosEval = function(){
+	    for (var i = 0; i < cForma; i ++){
+	      this.pForma.push(i*this.recForma);
+	    }
+
+	    for (var i = 0; i < cBarrido; i++){
+	      this.pBarrido.push(i*this.recBarrido);
+	    }
+	  }
+
+	  this.obtenerVertices = function(){
+	    for (var i = 0; i < this.cBarrido; i++){
+	      for (var j = 0; j < this.cForma; j++){
+	        var v1 = fBarrido(this.pBarrido[i]);
+	        var v2 = fForma(this.pForma[j]);
+	        var v3 = [v1[0] + v2[0], v1[1] + v2[1], v1[2] + v2[2]]
+	        this.vertices = this.vertices.concat( v3 );
+	      }
+	    }
+	    console.log("[Barrido] Vertices -->:" + this.vertices);
+	  }
+
+	  this.init = function(gl){
+	    // Ojo, cForma, cBarrido > 1.
+	    this.recForma = 1/(this.cForma - 1);
+	    this.recBarrido = 1/(this.cBarrido - 1);
+	    this.fijarPuntosEval();
+	    this.obtenerVertices();
+	    this.grid = new Grid(this.vertices,this.cForma,this.cBarrido).init(gl);
+	    return this;
+	  }
+
+	  this.draw = function(gl, program){
+	    this.grid.draw(gl, program);
+	  }
+
+	}
+
+
+/***/ },
+/* 6 */
 /***/ function(module, exports) {
 
 	module.exports = function (_vertices,_rows, _cols) {
@@ -212,9 +305,9 @@
 	        this.position_buffer.push(y);
 	        this.position_buffer.push(0);
 	        */
-	        this.color_buffer.push((x%2 + y%2));
-	        this.color_buffer.push((x%2 + y%2));
-	        this.color_buffer.push((x%2 + y%2));
+	        this.color_buffer.push(1-y/this.cols);
+	        this.color_buffer.push(0);
+	        this.color_buffer.push(y/this.cols);
 	      }
 	    }
 	    console.log('[Grid] PositionBuffer --> ' + this.position_buffer);
@@ -290,43 +383,6 @@
 	    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
 	    // Dibujamos.
 	    gl.drawElements(gl.TRIANGLE_STRIP, this.index_buffer.length ,gl.UNSIGNED_SHORT, 0);
-	  }
-	}
-
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Grid = __webpack_require__(4);
-
-	module.exports = function(_rows,_cols){
-	  this.position_buffer = null;
-	  this.grid = null;
-	  this.rows = _rows;
-	  this.cols = _cols;
-
-	  this.init = function(_gl){
-	    this.position_buffer = [];
-
-	    for (var y = 0.0; y < this.rows; y++){
-	      for (var x = 0.0; x < this.cols; x++){
-	        this.position_buffer.push(x);
-	        this.position_buffer.push(y);
-	        this.position_buffer.push(0);
-
-	        //this.color_buffer.push((x%2 + y%2));
-	        //this.color_buffer.push((x%2 + y%2));
-	        //this.color_buffer.push((x%2 + y%2));
-	      }
-	    }
-
-	    this.grid = new Grid(this.position_buffer,this.rows,this.cols).init(_gl);
-	    return this;
-	  }
-
-	  this.draw = function(gl, program){
-	    this.grid.draw(gl, program);
 	  }
 	}
 
