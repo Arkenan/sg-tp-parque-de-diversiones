@@ -25,7 +25,7 @@ window.onload = function(){
     var fragment = new FragmentShader().init(gl);
     var program  = new Program().init(gl,vertex,fragment);
 
-    var grid = new Grid(2,2).init(gl)
+    var grid = new Grid(3,3).init(gl)
 
     var mvMatrix = mat4.create();
     var pMatrix = mat4.create();

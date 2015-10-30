@@ -9,36 +9,49 @@ module.exports = function (_rows, _cols) {
   this.webgl_color_buffer = null;
   this.webgl_index_buffer = null;
 
-  this.createIndexBuffer = function(){
-    this.index_buffer = [0, 1, 2, 3];
-  }
-
-  // Esta funci�n inicializa el position_buffer y el color buffer de forma de
-  // crear un plano de color gris que se extiende sobre el plano XY, con Z=0
-  // El plano se genera centrado en el origen.
-  // El prop�sito de esta funci�n es a modo de ejemplo de como inicializar y cargar
-  // los buffers de las posiciones y el color para cada v�rtice.
+  // Crea los puntos en orden.
   this.createGrid = function(){
     this.position_buffer = [];
     this.color_buffer = [];
 
-    for (var i = 0.0; i < this.rows; i++) {
-      for (var j = 0.0; j < this.cols; j++) {
-        // Para cada v�rtice definimos su posici�n
-        // como coordenada (x, y, z=0)
-        this.position_buffer.push(i-(this.rows-1.0)/2.0);
-        this.position_buffer.push(j-(this.rows-1)/2.0);
+    for (var y = 0.0; y < this.rows; y++){
+      for (var x = 0.0; x < this.cols; x++){
+        this.position_buffer.push(x);
+        this.position_buffer.push(y);
         this.position_buffer.push(0);
 
-        // Para cada v�rtice definimos su color
-        this.color_buffer.push(1.0/this.rows * i);
+        this.color_buffer.push((x%2 + y%2)%2);
+        this.color_buffer.push((x%2 + y%2)%2);
+        this.color_buffer.push((x%2 + y%2)%2);
+/*
+        this.color_buffer.push(1.0/this.rows * y);
         this.color_buffer.push(0.2);
-        this.color_buffer.push(1.0/this.cols * j);
+        this.color_buffer.push(1.0/this.cols * x); */
       }
     }
     console.log('[Grid] PositionBuffer --> ' + this.position_buffer);
-    console.log('[Grid] ColorBuffer --> ' + this.color_buffer)
+    console.log('[Grid] ColorBuffer --> ' + this.color_buffer);
   }
+
+  //Recorre las filas de izquierda a derecha y de derecha a izquierda según paridad.
+  this.createIndexBuffer = function() {
+    this.index_buffer = [];
+    for (var row = 0; row < this.rows - 1; row++){
+      //recorrido según paridad de la fila.
+      var sg = (row % 2);
+
+      var inc = 1 - 2*sg;
+      var inicio = (this.cols - 1)*(sg);
+      var fin = this.cols*(1-sg) - sg;
+
+      for (var col = inicio; col != fin; col += inc){
+        this.index_buffer.push(this.cols*row + col);
+        this.index_buffer.push(this.cols*(row+1) + col);
+      }
+    }
+    console.log('[Grid] IndexBuffer --> ' + this.index_buffer);
+  }
+
 
   // Esta funci�n crea e incializa los buffers dentro del pipeline para luego
   // utlizarlos a la hora de renderizar.
@@ -88,6 +101,6 @@ module.exports = function (_rows, _cols) {
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
     // Dibujamos.
-    gl.drawElements(gl.TRIANGLE_STRIP, 4,gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLE_STRIP, this.index_buffer.length ,gl.UNSIGNED_SHORT, 0);
   }
 }
