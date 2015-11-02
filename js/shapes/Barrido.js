@@ -40,7 +40,7 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
     this.recBarrido = 1/(this.cBarrido - 1);
     this.fijarPuntosEval();
     this.obtenerVertices();
-    this.grid = new Grid(this.vertices,this.cForma,this.cBarrido).init(gl);
+    this.grid = new Grid(this.vertices,this.cBarrido,this.cForma).init(gl);
     return this;
   }
 
