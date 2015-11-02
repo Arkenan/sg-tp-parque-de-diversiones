@@ -25,7 +25,7 @@ module.exports = function(_rows,_cols){
     return this;
   }
 
-  this.draw = function(gl, program){
-    this.grid.draw(gl, program);
+  this.draw = function(gl, program, mv){
+    this.grid.draw(gl, program, mv);
   }
 }

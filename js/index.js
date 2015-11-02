@@ -29,28 +29,39 @@ window.onload = function(){
 
     var cil = new Cilindro(30,4).init(gl);
     var plano = new Plano(2,3).init(gl);
-    var mvMatrix = mat4.create();
+
+    // Matrices de modelado de las figuras.
+    var mvPlano = mat4.create();
+    mat4.identity(mvPlano);
+    mat4.translate(mvPlano, mvPlano, [0.0, 0.0, -5.0]);
+
+    var mvCilindro = mat4.create();
+    mat4.identity(mvCilindro);
+    mat4.translate(mvCilindro, mvCilindro, [0.0, 0.0, -5.0]);
+
+    //Matriz de proyección perspectiva.
     var pMatrix = mat4.create();
     var t = 0.0;
 
     var drawScene = function () {
+      // Tiempo.
+      t = t + 0.01;
+
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-      var u_proj_matrix = gl.getUniformLocation(program, "uPMatrix");
-      // Preparamos una matriz de perspectiva.
+
+      // Creamos y aplicamos Matriz de perspectiva.
       mat4.perspective(pMatrix, 45, scene.width/scene.height, 0.1, 100.0);
+      var u_proj_matrix = gl.getUniformLocation(program, "uPMatrix");
       gl.uniformMatrix4fv(u_proj_matrix, false, pMatrix);
 
-      var u_model_view_matrix = gl.getUniformLocation(program, "uMVMatrix");
-      // Preparamos una matriz de modelo+vista.
-      mat4.identity(mvMatrix);
-      mat4.translate(mvMatrix, mvMatrix, [0.0, 0.0, -5.0]);
-      mat4.rotate(mvMatrix, mvMatrix, t, [0.0, 1.0, 0.0]);
-      t = t + 0.01;
-      //console.log(t);
-      gl.uniformMatrix4fv(u_model_view_matrix, false, mvMatrix);
+      // Rotación del plano.
+      mat4.rotate(mvPlano, mvPlano, 0.01, [0.0, 1.0, 0.0]);
 
-      cil.draw(gl,program);
-      plano.draw(gl,program);
+      // Rotación del Cilindro.
+      mat4.rotate(mvCilindro, mvCilindro, -0.01, [0.0, 1.0, 0.0]);
+
+      cil.draw(gl,program,mvCilindro);
+      plano.draw(gl,program, mvPlano);
     }
     setInterval(drawScene, 10);
 

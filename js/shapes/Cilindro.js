@@ -22,8 +22,8 @@ module.exports = function(cForma, cBarrido){
     return this;
   }
 
-  this.draw = function(gl, program){
-    return this.supB.draw(gl, program);
+  this.draw = function(gl, program, mv){
+    this.supB.draw(gl, program, mv);
   }
 
 }

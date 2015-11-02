@@ -85,7 +85,7 @@ module.exports = function (_vertices,_rows, _cols) {
   // para dibujar el VertexGrid.
   // En el caso del ejemplo puede observarse que la �ltima l�nea del m�todo
   // indica dibujar tri�ngulos utilizando los 6 �ndices cargados en el Index_Buffer.
-  this.draw = function(gl,program){
+  this.draw = function(gl,program,mv){
     var vertexPositionAttribute = gl.getAttribLocation(program, "aVertexPosition");
     gl.enableVertexAttribArray(vertexPositionAttribute);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_position_buffer);
@@ -95,6 +95,10 @@ module.exports = function (_vertices,_rows, _cols) {
     gl.enableVertexAttribArray(vertexColorAttribute);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_color_buffer);
     gl.vertexAttribPointer(vertexColorAttribute, 3, gl.FLOAT, false, 0, 0);
+
+    // Se usa la matriz de modelado mv.
+    var u_model_view_matrix = gl.getUniformLocation(program, "uMVMatrix");
+    gl.uniformMatrix4fv(u_model_view_matrix, false, mv);
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
     // Dibujamos.

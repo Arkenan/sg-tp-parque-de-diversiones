@@ -75,28 +75,39 @@
 
 	    var cil = new Cilindro(30,4).init(gl);
 	    var plano = new Plano(2,3).init(gl);
-	    var mvMatrix = mat4.create();
+
+	    // Matrices de modelado de las figuras.
+	    var mvPlano = mat4.create();
+	    mat4.identity(mvPlano);
+	    mat4.translate(mvPlano, mvPlano, [0.0, 0.0, -5.0]);
+
+	    var mvCilindro = mat4.create();
+	    mat4.identity(mvCilindro);
+	    mat4.translate(mvCilindro, mvCilindro, [0.0, 0.0, -5.0]);
+
+	    //Matriz de proyección perspectiva.
 	    var pMatrix = mat4.create();
 	    var t = 0.0;
 
 	    var drawScene = function () {
+	      // Tiempo.
+	      t = t + 0.01;
+
 	      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-	      var u_proj_matrix = gl.getUniformLocation(program, "uPMatrix");
-	      // Preparamos una matriz de perspectiva.
+
+	      // Creamos y aplicamos Matriz de perspectiva.
 	      mat4.perspective(pMatrix, 45, scene.width/scene.height, 0.1, 100.0);
+	      var u_proj_matrix = gl.getUniformLocation(program, "uPMatrix");
 	      gl.uniformMatrix4fv(u_proj_matrix, false, pMatrix);
 
-	      var u_model_view_matrix = gl.getUniformLocation(program, "uMVMatrix");
-	      // Preparamos una matriz de modelo+vista.
-	      mat4.identity(mvMatrix);
-	      mat4.translate(mvMatrix, mvMatrix, [0.0, 0.0, -5.0]);
-	      mat4.rotate(mvMatrix, mvMatrix, t, [0.0, 1.0, 0.0]);
-	      t = t + 0.01;
-	      //console.log(t);
-	      gl.uniformMatrix4fv(u_model_view_matrix, false, mvMatrix);
+	      // Rotación del plano.
+	      mat4.rotate(mvPlano, mvPlano, 0.01, [0.0, 1.0, 0.0]);
 
-	      cil.draw(gl,program);
-	      plano.draw(gl,program);
+	      // Rotación del Cilindro.
+	      mat4.rotate(mvCilindro, mvCilindro, -0.01, [0.0, 1.0, 0.0]);
+
+	      cil.draw(gl,program,mvCilindro);
+	      plano.draw(gl,program, mvPlano);
 	    }
 	    setInterval(drawScene, 10);
 
@@ -218,8 +229,8 @@
 	    return this;
 	  }
 
-	  this.draw = function(gl, program){
-	    this.grid.draw(gl, program);
+	  this.draw = function(gl, program, mv){
+	    this.grid.draw(gl, program, mv);
 	  }
 	}
 
@@ -315,7 +326,7 @@
 	  // para dibujar el VertexGrid.
 	  // En el caso del ejemplo puede observarse que la �ltima l�nea del m�todo
 	  // indica dibujar tri�ngulos utilizando los 6 �ndices cargados en el Index_Buffer.
-	  this.draw = function(gl,program){
+	  this.draw = function(gl,program,mv){
 	    var vertexPositionAttribute = gl.getAttribLocation(program, "aVertexPosition");
 	    gl.enableVertexAttribArray(vertexPositionAttribute);
 	    gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_position_buffer);
@@ -325,6 +336,10 @@
 	    gl.enableVertexAttribArray(vertexColorAttribute);
 	    gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_color_buffer);
 	    gl.vertexAttribPointer(vertexColorAttribute, 3, gl.FLOAT, false, 0, 0);
+
+	    // Se usa la matriz de modelado mv.
+	    var u_model_view_matrix = gl.getUniformLocation(program, "uMVMatrix");
+	    gl.uniformMatrix4fv(u_model_view_matrix, false, mv);
 
 	    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
 	    // Dibujamos.
@@ -361,8 +376,8 @@
 	    return this;
 	  }
 
-	  this.draw = function(gl, program){
-	    return this.supB.draw(gl, program);
+	  this.draw = function(gl, program, mv){
+	    this.supB.draw(gl, program, mv);
 	  }
 
 	}
@@ -418,8 +433,8 @@
 	    return this;
 	  }
 
-	  this.draw = function(gl, program){
-	    this.grid.draw(gl, program);
+	  this.draw = function(gl, program, mv){
+	    this.grid.draw(gl, program, mv);
 	  }
 
 	}

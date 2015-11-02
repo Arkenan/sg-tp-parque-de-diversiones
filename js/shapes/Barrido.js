@@ -44,8 +44,8 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
     return this;
   }
 
-  this.draw = function(gl, program){
-    this.grid.draw(gl, program);
+  this.draw = function(gl, program, mv){
+    this.grid.draw(gl, program, mv);
   }
 
 }
