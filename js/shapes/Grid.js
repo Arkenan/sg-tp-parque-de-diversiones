@@ -21,9 +21,9 @@ module.exports = function (_vertices,_rows, _cols) {
         this.position_buffer.push(y);
         this.position_buffer.push(0);
         */
-        this.color_buffer.push(1-y/this.cols);
+        this.color_buffer.push(1-y/(this.rows-1));
         this.color_buffer.push(0);
-        this.color_buffer.push(y/this.cols);
+        this.color_buffer.push(y/(this.rows-1));
       }
     }
     console.log('[Grid] PositionBuffer --> ' + this.position_buffer);
