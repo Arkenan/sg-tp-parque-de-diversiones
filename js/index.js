@@ -4,7 +4,7 @@ var FragmentShader = require('./shaders/FragmentShader.js');
 var Program = require('./program/Program.js');
 //------------------------------------------------------------------------------------------------------------------------------
 //var Grid = require('./shapes/Grid.js');
-//var Plano = require('./shapes/Plano.js');
+var Plano = require('./shapes/Plano.js');
 var Cilindro = require('./shapes/Cilindro.js')
 //------------------------------------------------------------------------------------------------------------------------------
 window.onload = function(){
@@ -27,8 +27,8 @@ window.onload = function(){
     var fragment = new FragmentShader().init(gl);
     var program  = new Program().init(gl,vertex,fragment);
 
-    var cil = new Cilindro(10,10).init(gl);
-
+    var cil = new Cilindro(30,4).init(gl);
+    var plano = new Plano(2,3).init(gl);
     var mvMatrix = mat4.create();
     var pMatrix = mat4.create();
     var t = 0.0;
@@ -50,6 +50,7 @@ window.onload = function(){
       gl.uniformMatrix4fv(u_model_view_matrix, false, mvMatrix);
 
       cil.draw(gl,program);
+      plano.draw(gl,program);
     }
     setInterval(drawScene, 10);
 
