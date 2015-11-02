@@ -37,7 +37,7 @@ window.onload = function(){
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
       var u_proj_matrix = gl.getUniformLocation(program, "uPMatrix");
       // Preparamos una matriz de perspectiva.
-      mat4.perspective(pMatrix, 45, 640.0/480.0, 0.1, 100.0);
+      mat4.perspective(pMatrix, 45, scene.width/scene.height, 0.1, 100.0);
       gl.uniformMatrix4fv(u_proj_matrix, false, pMatrix);
 
       var u_model_view_matrix = gl.getUniformLocation(program, "uMVMatrix");
