@@ -6,7 +6,7 @@ module.exports = function(_rows,_cols){
   this.rows = _rows;
   this.cols = _cols;
 
-  this.init = function(gl){
+  this.init = function(gl, program){
     this.position_buffer = [];
 
     for (var y = 0.0; y < this.rows; y++){
@@ -21,11 +21,11 @@ module.exports = function(_rows,_cols){
       }
     }
 
-    this.grid = new Grid(this.position_buffer,this.rows,this.cols).init(gl);
+    this.grid = new Grid(this.position_buffer,this.rows,this.cols).init(gl, program);
     return this;
   }
 
-  this.draw = function(gl, program, mv){
-    this.grid.draw(gl, program, mv);
+  this.draw = function(mv){
+    this.grid.draw(mv);
   }
 }

@@ -17,13 +17,13 @@ module.exports = function(cForma, cBarrido){
     return [0, 0, t];
   }
 
-  this.init = function(gl){
-    this.supB = new Barrido(this.fForma, this.fBarrido, this.cForma, this.cBarrido).init(gl);
+  this.init = function(gl, program){
+    this.supB = new Barrido(this.fForma, this.fBarrido, this.cForma, this.cBarrido).init(gl,program);
     return this;
   }
 
-  this.draw = function(gl, program, mv){
-    this.supB.draw(gl, program, mv);
+  this.draw = function(mv){
+    this.supB.draw(mv);
   }
 
 }

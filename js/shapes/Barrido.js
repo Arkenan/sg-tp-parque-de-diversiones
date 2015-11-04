@@ -34,18 +34,18 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
     console.log("[Barrido] Vertices -->:" + this.vertices);
   }
 
-  this.init = function(gl){
+  this.init = function(gl, program){
     // Ojo, cForma, cBarrido > 1.
     this.recForma = 1/(this.cForma - 1);
     this.recBarrido = 1/(this.cBarrido - 1);
     this.fijarPuntosEval();
     this.obtenerVertices();
-    this.grid = new Grid(this.vertices,this.cBarrido,this.cForma).init(gl);
+    this.grid = new Grid(this.vertices,this.cBarrido,this.cForma).init(gl, program);
     return this;
   }
 
-  this.draw = function(gl, program, mv){
-    this.grid.draw(gl, program, mv);
+  this.draw = function(mv){
+    this.grid.draw(mv);
   }
 
 }
