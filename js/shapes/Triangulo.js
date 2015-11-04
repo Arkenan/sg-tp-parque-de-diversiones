@@ -13,6 +13,7 @@ module.exports = function(){
 
     this.draw = function(mv){
         var mizq = mat4.create(), mder = mat4.create(), mab = mat4.create();
+        var mMed = mat4.create();
 
         // Recordar que se escribe (output, input, ...)
         mat4.rotate(mizq, mv, -this.theta/2, [0,0,1]);
@@ -32,6 +33,12 @@ module.exports = function(){
         mat4.rotate(mab, mab, Math.PI/4, [0,0,1]);
         mat4.scale(mab, mab, [0.1, 0.1, this.largo_op]);
         this.cil.draw(mab);
+
+        mat4.translate(mMed, mv,[-this.largo_op/4,-this.d_op/2,0]);
+        mat4.rotate(mMed, mMed, Math.PI/2, [0,1,0]);
+        mat4.rotate(mMed, mMed, Math.PI/4, [0,0,1]);
+        mat4.scale(mMed, mMed, [0.1, 0.1, this.largo_op/2]);
+        this.cil.draw(mMed);
 
     }
 
