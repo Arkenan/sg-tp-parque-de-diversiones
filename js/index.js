@@ -3,10 +3,8 @@ var VertexShader = require('./shaders/VertexShader.js');
 var FragmentShader = require('./shaders/FragmentShader.js');
 var Program = require('./program/Program.js');
 //------------------------------------------------------------------------------------------------------------------------------
-//var Grid = require('./shapes/Grid.js');
-//var Plano = require('./shapes/Plano.js');
-//var Cilindro = require('./shapes/Cilindro.js');
 var Armazon = require('./shapes/Armazon.js');
+var Camara = require('./Camara.js');
 //------------------------------------------------------------------------------------------------------------------------------
 window.onload = function(){
   var scene = document.createElement('canvas');
@@ -29,18 +27,23 @@ window.onload = function(){
     var program  = new Program().init(gl,vertex,fragment);
 
     var armazon = new Armazon().init(gl,program);
-    var mv = mat4.create();
-    mat4.identity(mv);
-    mat4.translate(mv, mv, [0.0, 0.0, -15.0]);
-    mat4.rotate(mv,mv,Math.PI/4,[0,1,0]);
+
+    // Creo cámara.
+    var pos = vec3.fromValues(0,0,15);
+    var dir = vec3.fromValues(0,0,-1);
+    var up = vec3.fromValues(0,1,0);
+    var cam = new Camara(pos,dir,up);
+    // Matriz de vista.
+    var m = mat4.create();
+
     // Matriz de proyección perspectiva.
     var pMatrix = mat4.create();
     var t = 0.0;
 
     var drawScene = function () {
       // Tiempo.
-      t = t + 0.01;
-
+      t += 0.01;
+      //mat4.rotateY(mv,mv,0.01);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
       // Creamos y aplicamos Matriz de perspectiva.
@@ -48,7 +51,8 @@ window.onload = function(){
       var u_proj_matrix = gl.getUniformLocation(program, "uPMatrix");
       gl.uniformMatrix4fv(u_proj_matrix, false, pMatrix);
 
-      armazon.draw(mv);
+      cam.viewM(m);
+      armazon.draw(m);
     }
     setInterval(drawScene, 10);
 
