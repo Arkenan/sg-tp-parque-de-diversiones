@@ -28,8 +28,7 @@ window.onload = function(){
     var fragment = new FragmentShader().init(gl);
     var program  = new Program(vertex,fragment).init(gl);
 
-
-    var armazon = new Armazon().init(gl);
+    var armazon = new Armazon().init(gl,program);
     var mv = mat4.create();
     mat4.identity(mv);
     mat4.translate(mv, mv, [0.0, 0.0, -15.0]);
@@ -49,7 +48,7 @@ window.onload = function(){
       var u_proj_matrix = gl.getUniformLocation(program, "uPMatrix");
       gl.uniformMatrix4fv(u_proj_matrix, false, pMatrix);
 
-      armazon.draw(gl,program,mv);
+      armazon.draw(mv);
     }
     setInterval(drawScene, 10);
 
