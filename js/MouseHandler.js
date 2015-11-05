@@ -12,6 +12,8 @@ module.exports = function(){
 
     var handleMouseDown = function(handler){
         return function(){
+            handler.xAnt = handler.x;
+            handler.yAnt = handler.y;
             handler.mouseDown = true;
         }
     }

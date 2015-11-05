@@ -5,9 +5,10 @@ module.exports = function(posInicial, dirInicial, upInicial){
     this.dir = dirInicial;
     this.up = upInicial;
 
-    this.p = 20;
-    this.alfa = 0;
-    this.beta = 0;
+    // Coordenadas polares de la posición.
+    this.p = vec3.length(posInicial);
+    this.alfa = Math.asin(posInicial[1]/this.p);
+    this.beta = Math.acos(posInicial[2]/this.p);
 
     this.mHandler = new MouseHandler(this);
     this.velocidad = 0.1;
