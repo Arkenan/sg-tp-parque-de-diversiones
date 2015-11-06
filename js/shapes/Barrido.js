@@ -31,7 +31,33 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
         this.vertices = this.vertices.concat( v3 );
       }
     }
-    //console.log("[Barrido] Vertices -->:" + this.vertices);
+  }
+
+  this.agregarTapas = function(){
+    // Hago promedio entre los últimos y los primeros de las caras.
+    var cantVertices = this.vertices.length / 3;
+    var puntoInicial = this.promedio(this.vertices.slice(0,(cForma-1)*3));
+    var puntoFinal = this.promedio(this.vertices.slice(cantVertices*3 - (cForma-1)*3 ,cantVertices*3));
+
+    // Agrego cForma veces al inicial y al final (dos filas más de grilla).
+    for (i = 0; i < cForma; i++){
+        this.vertices = puntoInicial.concat(this.vertices);
+        this.vertices = this.vertices.concat(puntoFinal);
+    }
+  }
+
+  this.promedio = function(vertices){
+      var acu = [0,0,0];
+      var cantVertices = vertices.length / 3;
+      for (i = 0; i < cantVertices; i ++){
+          acu[0] += vertices[3*i];
+          acu[1] += vertices[3*i+1];
+          acu[2] += vertices[3*i+2];
+      }
+      acu[0] /= cantVertices;
+      acu[1] /= cantVertices;
+      acu[2] /= cantVertices;
+      return acu;
   }
 
   this.init = function(gl, program){
@@ -40,7 +66,10 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
     this.recBarrido = 1/(this.cBarrido - 1);
     this.fijarPuntosEval();
     this.obtenerVertices();
-    this.grid = new Grid(this.vertices,this.cBarrido,this.cForma).init(gl, program);
+    this.agregarTapas();
+    //console.log("[Barrido] Vertices -->:" + this.vertices);
+    // Sumo 2 filas a la grilla, una por cada tapa.
+    this.grid = new Grid(this.vertices,this.cBarrido + 2,this.cForma).init(gl, program);
     return this;
   }
 
