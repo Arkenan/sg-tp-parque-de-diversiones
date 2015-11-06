@@ -4,7 +4,7 @@ var FragmentShader = require('./shaders/FragmentShader.js');
 var Program = require('./program/Program.js');
 //------------------------------------------------------------------------------------------------------------------------------
 var Camara = require("./Camara.js");
-var Armazon = require('./shapes/Armazon.js');
+var Vuelta = require("./shapes/Vuelta.js");
 //------------------------------------------------------------------------------------------------------------------------------
 window.onload = function(){
   var scene = document.createElement('canvas');
@@ -20,13 +20,13 @@ window.onload = function(){
     gl.depthFunc(gl.LEQUAL);
     gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
     gl.viewport(0, 0, scene.width, scene.height);
-    console.log(gl);
+    //console.log(gl);
 
     var vertex = new VertexShader().init(gl);
     var fragment = new FragmentShader().init(gl);
     var program  = new Program(vertex,fragment).init(gl);
 
-    var armazon = new Armazon().init(gl,program);
+    var vuelta = new Vuelta().init(gl,program);
 
     // Creo cámara.
     var pos = vec3.fromValues(0,0,20);
@@ -52,7 +52,7 @@ window.onload = function(){
       gl.uniformMatrix4fv(u_proj_matrix, false, pMatrix);
 
       cam.viewM(mv);
-      armazon.draw(mv);
+      vuelta.draw(mv);
     }
     setInterval(drawScene, 10);
 
