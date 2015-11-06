@@ -105,7 +105,7 @@ module.exports = function(posInicial, dirInicial, upInicial){
         this.modo = (this.modo + 1) % 3;
         switch (this.modo){
             case 0:
-                vec3.set(this.pos, 0,0,20);
+                vec3.set(this.pos, 0,0,40);
                 vec3.set(this.dir, 0,0,-1);
                 vec3.set(this.up, 0,1,0);
                 this.setearPolares(this.pos);
