@@ -7,19 +7,23 @@ module.exports = function(posInicial, dirInicial, upInicial){
     this.up = upInicial;
 
     // Coordenadas polares de la posición.
-    this.p = vec3.length(posInicial);
-    this.beta = Math.acos(posInicial[1]/this.p);
-    this.alfa = Math.asin(posInicial[0]/(this.p*Math.sin(this.beta)));
+    this.setearPolares = function(vec){
+        this.p = vec3.length(vec);
+        this.beta = Math.acos(vec[1]/this.p);
+        this.alfa = Math.atan2(vec[0],vec[2]);
+    }
 
     this.mHandler = new MouseHandler(this);
     this.kHandler = new KeyboardHandler().init(this);
-    this.velocidad = 0.05;
+    this.velocidadRot = 0.01;
+    this.velocidadTras = 0.1;
 
     // Arreglo con 3 funciones. Una para cada modo de cámara.
     this.actualizar = [];
     this.modo = 0;
 
     this.init = function(){
+        this.setearPolares(this.pos);
         return this;
     }
 
@@ -39,25 +43,57 @@ module.exports = function(posInicial, dirInicial, upInicial){
     var actualizarDomo = function(cam){
         return function(){
             if (cam.mHandler.mouseDown){
-                cam.alfa += cam.mHandler.deltaX() * cam.velocidad;
-                cam.beta += cam.mHandler.deltaY() * cam.velocidad;
+                cam.alfa += cam.mHandler.deltaX() * cam.velocidadRot;
+                cam.beta += cam.mHandler.deltaY() * cam.velocidadRot;
                 // Trampa para no actualizar el up.
-                if (cam.beta<=0) cam.beta=0.0001;
-        		if (cam.beta>Math.PI) cam.beta=Math.PI;
+                if (cam.beta <= 0) cam.beta = 0.0001;
+        		if (cam.beta > Math.PI) cam.beta = Math.PI;
                 vec3.set(cam.pos, cam.p * Math.sin(cam.alfa) * Math.sin(cam.beta), cam.p * Math.cos(cam.beta) ,cam.p * Math.cos(cam.alfa) * Math.sin(cam.beta));
                 // se mira siempre al origen de coordenadas.
                 vec3.negate(cam.dir,cam.pos);
             }
         }
     }
-    //TODO
+
     var actualizarFPS = function(cam){
         return function(){
-
+            // TECLADO
+            if (cam.kHandler.isPressed(cam.kHandler.W)){
+                var mov = vec3.fromValues(cam.dir[0],0,cam.dir[2]);
+                vec3.normalize(mov,mov);
+                vec3.scaleAndAdd(cam.pos,cam.pos,mov,cam.velocidadTras);
+            }
+            if (cam.kHandler.isPressed(cam.kHandler.S)){
+                var mov = vec3.fromValues(-cam.dir[0],0,-cam.dir[2]);
+                vec3.normalize(mov,mov);
+                vec3.scaleAndAdd(cam.pos,cam.pos,mov,cam.velocidadTras);
+            }
+            if (cam.kHandler.isPressed(cam.kHandler.A)){
+                var mov = vec3.create();
+                vec3.cross(mov,cam.up,cam.dir);
+                vec3.normalize(mov,mov);
+                vec3.scaleAndAdd(cam.pos,cam.pos,mov,cam.velocidadTras);
+            }
+            if (cam.kHandler.isPressed(cam.kHandler.D)){
+                var mov = vec3.create();
+                vec3.cross(mov,cam.dir,cam.up);
+                vec3.normalize(mov,mov);
+                vec3.scaleAndAdd(cam.pos,cam.pos,mov,cam.velocidadTras);
+            }
+            // MOUSE
+            if (cam.mHandler.mouseDown){
+                cam.alfa -= cam.mHandler.deltaX() * cam.velocidadRot;
+                cam.beta -= cam.mHandler.deltaY() * cam.velocidadRot;
+                // Trampa para no actualizar el up.
+                if (cam.beta <= 0) cam.beta = 0.0001;
+        		if (cam.beta > Math.PI) cam.beta = Math.PI;
+                vec3.set(cam.dir, Math.sin(cam.alfa) * Math.sin(cam.beta), -Math.cos(cam.beta), Math.cos(cam.alfa) * Math.sin(cam.beta));
+            }
         }
     }
+
     //TODO
-    var actualizarMR = function(){
+    var actualizarMR = function(cam){
         return function(){
 
         }
@@ -67,5 +103,25 @@ module.exports = function(posInicial, dirInicial, upInicial){
 
     this.cambiarModo = function(){
         this.modo = (this.modo + 1) % 3;
+        // Por ahí se puede aprovechar que cambia el modo para hacer algún tipo de reset.
+        // Por ahora el reset es el mismo en todos los casos.
+
+        switch (this.modo){
+            case 0:
+                vec3.set(this.pos, 0,0,20);
+                vec3.set(this.dir, 0,0,-1);
+                vec3.set(this.up, 0,1,0);
+                this.setearPolares(this.pos);
+                break;
+            case 1:
+                vec3.set(this.pos, 0,0,20);
+                vec3.set(this.dir, 0,0,-1);
+                vec3.set(this.up, 0,1,0);
+                this.setearPolares(this.dir);
+                break;
+            case 2:
+
+                break;
+        }
     }
 }

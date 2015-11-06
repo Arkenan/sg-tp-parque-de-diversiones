@@ -6,7 +6,7 @@ module.exports = function(){
     this.W = 87;
     this.A = 65;
     this.S = 83;
-    this.D = 62;
+    this.D = 68;
     this.C = 67;
 
     this.isPressed = function(keyCode){
@@ -24,7 +24,7 @@ module.exports = function(){
     var handleKeyDown = function(handler){
         return function(e){
             handler.press(e.keyCode);
-            console.log(handler.pressed);
+            //console.log(handler.pressed);
             if (e.keyCode === handler.C){
                 handler.cam.cambiarModo();
             }
@@ -42,6 +42,7 @@ module.exports = function(){
 
     this.init = function(cam){
         this.cam = cam;
+        return this;
     }
 
 }
