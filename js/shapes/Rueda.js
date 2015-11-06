@@ -1,9 +1,11 @@
 var Triangulo = require("./Triangulo.js");
 var Cilindro = require("./Cilindro.js");
+var Cabina = require("./Cabina.js");
 
 module.exports = function(){
     this.tri = null;
     this.palo = null;
+    this.cabina = null;
     this.theta = 2*Math.PI/15;
 
     this.init = function(gl, program){
@@ -12,37 +14,51 @@ module.exports = function(){
         this.palo = new Cilindro(5,2).init(gl, program);
         // Eje
         this.eje = new Cilindro(30,2).init(gl, program);
+        // Cabinas.
+        this.cabina = new Cabina().init(gl, program);
         return this;
     }
 
-    this.draw = function(mv){
-
+    // A la rueda se le pasa el tiempo para que rote.
+    this.draw = function(mv,t){
+        var rot = t*0.1;
         var m1 = mat4.create(), m2 = mat4.create(), mpalo = mat4.create();
-        var mEje = mat4.create();
-
-        // Triangulos.
-        mat4.translate(m1,mv,[0,0,1]);
-        mat4.translate(m2,mv,[0,0,-1]);
+        var mEje = mat4.create(), mCab = mat4.create();
 
         for (var i = 0; i < 15; i++){
+            // Triangulos.
+            mat4.translate(m1,mv,[0,0,1]);
+            mat4.translate(m2,mv,[0,0,-1]);
+            mat4.rotate(m1,m1,i*this.theta + rot,[0,0,1]);
+            mat4.rotate(m2,m2,i*this.theta + rot,[0,0,1]);
             this.tri.draw(m1);
             this.tri.draw(m2);
-
-            mat4.rotate(m1,m1,this.theta,[0,0,1]);
-            mat4.rotate(m2,m2,this.theta,[0,0,1]);
         }
 
         // Uniones.
         for (var j = 0; j < 8; j++){
-            mat4.rotate(mpalo,mv,(3/2 + 2*j)*this.theta,[0,0,1]);
+            mat4.rotate(mpalo,mv,(3/2 + 2*j)*this.theta + rot,[0,0,1]);
             mat4.translate(mpalo,mpalo,[0,-5,-1]);
             mat4.scale(mpalo,mpalo,[0.1,0.1,2]);
             this.palo.draw(mpalo);
         }
 
+        // Cabinas
+        for (var j = 0; j < 7; j++){
+            angulo = (3/2 + 2*j)*this.theta + rot;
+            mat4.translate(mCab,mv,[0,-1,0]);
+            mat4.rotate(mCab,mCab,angulo,[0,0,1]);
+            mat4.translate(mCab,mCab,[0,-5,0]);
+            //compenso.
+            mat4.rotate(mCab,mCab,-angulo,[0,0,1]);
+            mat4.scale(mCab,mCab,[1.5,2,1.5]);
+            this.cabina.draw(mCab);
+        }
+
+
         // Eje Central.
-        mat4.translate(mEje,mv,[0,0,-1.5]);
-        mat4.scale(mEje,mEje,[0.2,0.2,3]);
+        mat4.translate(mEje,mv,[0,0,-2]);
+        mat4.scale(mEje,mEje,[0.2,0.2,4]);
         this.eje.draw(mEje);
     }
 }

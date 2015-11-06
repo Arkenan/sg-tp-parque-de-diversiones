@@ -2,12 +2,8 @@ var Barrido = require("./Barrido");
 
 module.exports = function(){
   this.supB = null;
-
-  // Uso datos del triángulo...
-  this.theta = 2*Math.PI/15;
-  this.largo_op = 3/2*10*Math.sin(this.theta/2);
-  this.d_op = 3/2*5*Math.cos(this.theta/2),0;
-  this.vertices = [-this.largo_op/2,0,0,this.largo_op/2,0,0,0.2,this.d_op,0,-0.2,this.d_op,0,-this.largo_op/2,0,0];
+  // Base. Esto podría extenderse a un objeto "barrido discreto".
+  this.vertices = [-0.5,-0.5,0,0.5,-0.5,0,0.5,0.5,0,-0.5,0.5,0,-0.5,-0.5,0];
 
   var fForma = function(vertices){
       return function(t){

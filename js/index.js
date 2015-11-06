@@ -52,7 +52,7 @@ window.onload = function(){
       gl.uniformMatrix4fv(u_proj_matrix, false, pMatrix);
 
       cam.viewM(mv);
-      vuelta.draw(mv);
+      vuelta.draw(mv,t);
     }
     setInterval(drawScene, 10);
 

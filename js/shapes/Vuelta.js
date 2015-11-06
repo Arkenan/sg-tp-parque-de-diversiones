@@ -11,11 +11,11 @@ module.exports = function(){
         return this;
     }
 
-    this.draw = function(mv){
+    this.draw = function(mv,t){
         var mrueda = mat4.create(), mb1 = mat4.create(), mb2 = mat4.create();
 
         mat4.translate(mrueda,mv,[0,this.base.d_op-0.2,0]);
-        this.rueda.draw(mrueda);
+        this.rueda.draw(mrueda,t);
 
         mat4.translate(mb1,mv,[0,0,1.5])
         mat4.scale(mb1,mb1,[1,1,0.4]);
@@ -26,6 +26,4 @@ module.exports = function(){
         this.base.draw(mb2);
 
     }
-
-
 }
