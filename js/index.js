@@ -5,6 +5,8 @@ var Program = require('./program/Program.js');
 //------------------------------------------------------------------------------------------------------------------------------
 var Camara = require("./Camara.js");
 var Vuelta = require("./shapes/Vuelta.js");
+var Sillas = require("./shapes/Sillas.js");
+var Plano = require("./shapes/Plano.js");
 //------------------------------------------------------------------------------------------------------------------------------
 window.onload = function(){
   var scene = document.createElement('canvas');
@@ -26,16 +28,17 @@ window.onload = function(){
     var fragment = new FragmentShader().init(gl);
     var program  = new Program(vertex,fragment).init(gl);
 
+    // Objetos a dibujar.
     var vuelta = new Vuelta().init(gl,program);
-
+    var sillas = new Sillas().init(gl,program);
+    var plano = new Plano(2,2).init(gl,program);
     // Creo cámara.
     var pos = vec3.fromValues(0,0,20);
     var dir = vec3.fromValues(0,0,-1);
     var up = vec3.fromValues(0,1,0);
     var cam = new Camara(pos,dir,up).init();
     // Matriz de vista y modelado.
-    var mv = mat4.create();
-
+    var mv = mat4.create(), mvVuelta = mat4.create(), mp = mat4.create();
     // Matriz de proyección perspectiva.
     var pMatrix = mat4.create();
     var t = 0.0;
@@ -52,10 +55,17 @@ window.onload = function(){
       gl.uniformMatrix4fv(u_proj_matrix, false, pMatrix);
 
       cam.viewM(mv);
-      vuelta.draw(mv,t);
+      mat4.translate(mvVuelta,mv,[-15,0,0]);
+      vuelta.draw(mvVuelta,t);
+      sillas.draw(mv,t);
+
+      // Piso.
+      mat4.translate(mp,mv,[-100,0,-100]);
+      mat4.scale(mp,mp,[200,1,200]);
+      mat4.rotate(mp,mp,Math.PI/2,[1,0,0]);
+      plano.draw(mp)
     }
     setInterval(drawScene, 10);
-
   }catch(e){
     console.log(e);
   }

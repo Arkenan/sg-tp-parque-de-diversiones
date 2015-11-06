@@ -111,7 +111,7 @@ module.exports = function(posInicial, dirInicial, upInicial){
                 this.setearPolares(this.pos);
                 break;
             case 1:
-                vec3.set(this.pos, 0,0,20);
+                vec3.set(this.pos, 0,0.5,20);
                 vec3.set(this.dir, 0,0,-1);
                 vec3.set(this.up, 0,1,0);
                 this.setearPolares(this.dir);
