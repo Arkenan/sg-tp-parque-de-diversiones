@@ -1,4 +1,5 @@
 var MouseHandler = require("./MouseHandler.js");
+var KeyboardHandler = require("./KeyboardHandler.js");
 
 module.exports = function(posInicial, dirInicial, upInicial){
     this.pos = posInicial;
@@ -11,6 +12,7 @@ module.exports = function(posInicial, dirInicial, upInicial){
     this.alfa = Math.asin(posInicial[0]/(this.p*Math.sin(this.beta)));
 
     this.mHandler = new MouseHandler(this);
+    this.kHandler = new KeyboardHandler().init(this);
     this.velocidad = 0.05;
 
     // Arreglo con 3 funciones. Una para cada modo de cámara.
@@ -39,13 +41,12 @@ module.exports = function(posInicial, dirInicial, upInicial){
             if (cam.mHandler.mouseDown){
                 cam.alfa += cam.mHandler.deltaX() * cam.velocidad;
                 cam.beta += cam.mHandler.deltaY() * cam.velocidad;
-                if (cam.beta<0) cam.beta=0;
+                // Trampa para no actualizar el up.
+                if (cam.beta<=0) cam.beta=0.0001;
         		if (cam.beta>Math.PI) cam.beta=Math.PI;
                 vec3.set(cam.pos, cam.p * Math.sin(cam.alfa) * Math.sin(cam.beta), cam.p * Math.cos(cam.beta) ,cam.p * Math.cos(cam.alfa) * Math.sin(cam.beta));
                 // se mira siempre al origen de coordenadas.
                 vec3.negate(cam.dir,cam.pos);
-                // Habría que actualizar up para que no muera cuando está arriba.
-
             }
         }
     }
@@ -63,7 +64,8 @@ module.exports = function(posInicial, dirInicial, upInicial){
     }
 
     this.actualizar = [actualizarDomo(this), actualizarFPS(this), actualizarMR(this)];
-    /*document.onkeydown = handleKD(this);
-    document.onkeyup = handleKU(this); */
 
+    this.cambiarModo = function(){
+        this.modo = (this.modo + 1) % 3;
+    }
 }
