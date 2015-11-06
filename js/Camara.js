@@ -7,11 +7,15 @@ module.exports = function(posInicial, dirInicial, upInicial){
 
     // Coordenadas polares de la posición.
     this.p = vec3.length(posInicial);
-    this.alfa = Math.asin(posInicial[1]/this.p);
-    this.beta = Math.acos(posInicial[2]/this.p);
+    this.beta = Math.acos(posInicial[1]/this.p);
+    this.alfa = Math.asin(posInicial[0]/(this.p*Math.sin(this.beta)));
 
     this.mHandler = new MouseHandler(this);
-    this.velocidad = 0.1;
+    this.velocidad = 0.05;
+
+    // Arreglo con 3 funciones. Una para cada modo de cámara.
+    this.actualizar = [];
+    this.modo = 0;
 
     this.init = function(){
         return this;
@@ -19,7 +23,7 @@ module.exports = function(posInicial, dirInicial, upInicial){
 
     this.viewM = function(mVista){
         // Antes de ver se fija si hubo cambios para hacer y los hace.
-        if (this.mHandler.mouseDown) this.actualizar();
+        this.actualizar[this.modo]();
 
         var center = vec3.create();
         vec3.add(center,this.pos,this.dir);
@@ -30,13 +34,35 @@ module.exports = function(posInicial, dirInicial, upInicial){
         vec3.add(this.pos,this.pos,vector);
     }
 
-    this.actualizar = function(){
-        this.alfa += this.mHandler.deltaX() * this.velocidad;
-        this.beta += this.mHandler.deltaY() * this.velocidad;
-        vec3.set(this.pos, this.p * Math.sin(this.alfa) * Math.sin(this.beta), this.p * Math.cos(this.beta) ,this.p * Math.cos(this.alfa) * Math.sin(this.beta));
-        //se mira siempre al origen de coordenadas.
-        vec3.negate(this.dir,this.pos);
+    var actualizarDomo = function(cam){
+        return function(){
+            if (cam.mHandler.mouseDown){
+                cam.alfa += cam.mHandler.deltaX() * cam.velocidad;
+                cam.beta += cam.mHandler.deltaY() * cam.velocidad;
+                if (cam.beta<0) cam.beta=0;
+        		if (cam.beta>Math.PI) cam.beta=Math.PI;
+                vec3.set(cam.pos, cam.p * Math.sin(cam.alfa) * Math.sin(cam.beta), cam.p * Math.cos(cam.beta) ,cam.p * Math.cos(cam.alfa) * Math.sin(cam.beta));
+                // se mira siempre al origen de coordenadas.
+                vec3.negate(cam.dir,cam.pos);
+                // Habría que actualizar up para que no muera cuando está arriba.
+
+            }
+        }
     }
+    //TODO
+    var actualizarFPS = function(cam){
+        return function(){
+
+        }
+    }
+    //TODO
+    var actualizarMR = function(){
+        return function(){
+
+        }
+    }
+
+    this.actualizar = [actualizarDomo(this), actualizarFPS(this), actualizarMR(this)];
     /*document.onkeydown = handleKD(this);
     document.onkeyup = handleKU(this); */
 

@@ -26,7 +26,6 @@ module.exports = function(){
 
     var handleMouseMove = function(handler){
         return function(e){
-            //if mousdown?
             handler.x = e.clientX || e.pageX;
     		handler.y = e.clientY || e.pageY;
         }
