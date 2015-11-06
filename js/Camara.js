@@ -6,7 +6,7 @@ module.exports = function(posInicial, dirInicial, upInicial){
     this.dir = dirInicial;
     this.up = upInicial;
 
-    // Coordenadas polares de la posición.
+    // Coordenadas polares de la posición o la dirección.
     this.setearPolares = function(vec){
         this.p = vec3.length(vec);
         this.beta = Math.acos(vec[1]/this.p);
@@ -45,11 +45,11 @@ module.exports = function(posInicial, dirInicial, upInicial){
             if (cam.mHandler.mouseDown){
                 cam.alfa += cam.mHandler.deltaX() * cam.velocidadRot;
                 cam.beta += cam.mHandler.deltaY() * cam.velocidadRot;
-                // Trampa para no actualizar el up.
+                // Impido acceder a beta = 0 para no necesitar cambiar el up.
                 if (cam.beta <= 0) cam.beta = 0.0001;
         		if (cam.beta > Math.PI) cam.beta = Math.PI;
                 vec3.set(cam.pos, cam.p * Math.sin(cam.alfa) * Math.sin(cam.beta), cam.p * Math.cos(cam.beta) ,cam.p * Math.cos(cam.alfa) * Math.sin(cam.beta));
-                // se mira siempre al origen de coordenadas.
+                // Se mira siempre al origen de coordenadas.
                 vec3.negate(cam.dir,cam.pos);
             }
         }
@@ -103,9 +103,6 @@ module.exports = function(posInicial, dirInicial, upInicial){
 
     this.cambiarModo = function(){
         this.modo = (this.modo + 1) % 3;
-        // Por ahí se puede aprovechar que cambia el modo para hacer algún tipo de reset.
-        // Por ahora el reset es el mismo en todos los casos.
-
         switch (this.modo){
             case 0:
                 vec3.set(this.pos, 0,0,20);
