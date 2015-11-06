@@ -29,8 +29,8 @@ module.exports = function (_vertices,_rows, _cols) {
         this.color_buffer.push(y/(this.rows-1));
       }
     }
-    console.log('[Grid] PositionBuffer --> ' + this.position_buffer);
-    console.log('[Grid] ColorBuffer --> ' + this.color_buffer);
+    //console.log('[Grid] PositionBuffer --> ' + this.position_buffer);
+    //console.log('[Grid] ColorBuffer --> ' + this.color_buffer);
   }
 
   //Recorre las filas de izquierda a derecha y de derecha a izquierda según paridad.
@@ -49,7 +49,7 @@ module.exports = function (_vertices,_rows, _cols) {
         this.index_buffer.push(this.cols*(row+1) + col);
       }
     }
-    console.log('[Grid] IndexBuffer --> ' + this.index_buffer);
+    //console.log('[Grid] IndexBuffer --> ' + this.index_buffer);
   }
 
 

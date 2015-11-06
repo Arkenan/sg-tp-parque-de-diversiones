@@ -31,7 +31,7 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
         this.vertices = this.vertices.concat( v3 );
       }
     }
-    console.log("[Barrido] Vertices -->:" + this.vertices);
+    //console.log("[Barrido] Vertices -->:" + this.vertices);
   }
 
   this.init = function(gl, program){
