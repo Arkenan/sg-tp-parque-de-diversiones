@@ -4,7 +4,7 @@ module.exports = function(cForma, cBarrido){
   this.supB = null;
   this.cForma = cForma;
   this.cBarrido = cBarrido;
-  
+
   // Recordar que toma números entre 0 y 1.
   this.fForma = function(t){
     var ang = t*2*Math.PI;
