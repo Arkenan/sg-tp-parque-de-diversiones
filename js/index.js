@@ -27,7 +27,7 @@ window.onload = function(){
     var program  = new Program(vertex,fragment).init(gl);
 
     // Creación de cámara.
-    var pos = vec3.fromValues(0,0,40);
+    var pos = vec3.fromValues(0,0.5,40);
     var dir = vec3.fromValues(0,0,-1);
     var up = vec3.fromValues(0,1,0);
     var cam = new Camara(pos,dir,up).init();

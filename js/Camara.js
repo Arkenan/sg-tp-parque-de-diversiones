@@ -47,7 +47,7 @@ module.exports = function(posInicial, dirInicial, upInicial){
                 cam.beta += cam.mHandler.deltaY() * cam.velocidadRot;
                 // Impido acceder a beta = 0 para no necesitar cambiar el up.
                 if (cam.beta <= 0) cam.beta = 0.0001;
-        		if (cam.beta > Math.PI) cam.beta = Math.PI;
+        		if (cam.beta >= Math.PI/2) cam.beta = Math.PI/2 - 0.0001;
                 vec3.set(cam.pos, cam.p * Math.sin(cam.alfa) * Math.sin(cam.beta), cam.p * Math.cos(cam.beta) ,cam.p * Math.cos(cam.alfa) * Math.sin(cam.beta));
                 // Se mira siempre al origen de coordenadas.
                 vec3.negate(cam.dir,cam.pos);
@@ -105,7 +105,7 @@ module.exports = function(posInicial, dirInicial, upInicial){
         this.modo = (this.modo + 1) % 3;
         switch (this.modo){
             case 0:
-                vec3.set(this.pos, 0,0,40);
+                vec3.set(this.pos, 0,0.5,40);
                 vec3.set(this.dir, 0,0,-1);
                 vec3.set(this.up, 0,1,0);
                 this.setearPolares(this.pos);
