@@ -12,13 +12,14 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
   this.grid = null;
   this.cForma = cForma;
   this.cBarrido = cBarrido;
+
   this.fijarPuntosEval = function(){
     for (var i = 0; i < cForma; i ++){
-      this.pForma.push(i*this.recForma);
+      this.pForma.push(i*this.pasoForma);
     }
 
     for (var i = 0; i < cBarrido; i++){
-      this.pBarrido.push(i*this.recBarrido);
+      this.pBarrido.push(i*this.pasoBarrido);
     }
   }
 
@@ -62,8 +63,8 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
 
   this.init = function(gl, program){
     // Ojo, cForma, cBarrido > 1.
-    this.recForma = 1/(this.cForma - 1);
-    this.recBarrido = 1/(this.cBarrido - 1);
+    this.pasoForma = 1/(this.cForma - 1);
+    this.pasoBarrido = 1/(this.cBarrido - 1);
     this.fijarPuntosEval();
     this.obtenerVertices();
     this.agregarTapas();
