@@ -10,11 +10,11 @@ module.exports = function(){
     }
   }
 
-  this.generate = function(t){
-    var curveNumber = Math.floor(Math.abs(t));
-    var tCurve = t - curveNumber;
+  this.generate = function(curveNumber){
     if(curveNumber <= this.curves.length){
-      return this.curves[curveNumber];
+      return function(t) {
+        this.curves[curveNumber].generate(t);
+      };
     }else{
       console.log('[CubicBezierConcatenator]: t parameter out of range');
     }
