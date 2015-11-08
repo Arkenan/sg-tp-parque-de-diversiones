@@ -29,9 +29,8 @@ module.exports = function(){
         mat4.scale(mSillas,mSillas,[1.25,1.25,1.25])
         this.sillas.draw(mSillas,t);
 
-        mat4.translate(mp,mv,[5,0,4]);
-        mat4.scale(mp,mp,[200,1,200]);
-        mat4.rotate(mp,mp,Math.PI/2,[1,0,0]);
+        mat4.translate(mp,mv,[40,0,-10]);
+        mat4.scale(mp,mp,[2,2,2]);
         this.rusa.draw(mp);
 
         // Piso.
