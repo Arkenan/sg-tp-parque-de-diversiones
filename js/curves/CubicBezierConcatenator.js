@@ -14,7 +14,7 @@ module.exports = function(){
     if(curveNumber <= this.curves.length){
       return function(t) {
         this.curves[curveNumber].generate(t);
-      };
+      };g
     }else{
       console.log('[CubicBezierConcatenator]: Curve number is out of range');
     }
@@ -23,6 +23,6 @@ module.exports = function(){
   this.generate = function(t){
     var curveNumber = Math.floor(Math.abs(t));
     var tCurve = Math.abs(t) - curveNumber;
-    return this.generate(curveNumber)(tCurve);
+    return chooseCurve(curveNumber)(tCurve);
   }
 }
