@@ -26,17 +26,19 @@ window.onload = function(){
     var fragment = new FragmentShader().init(gl);
     var program  = new Program(vertex,fragment).init(gl);
 
-    // Creación de cámara.
-    var pos = vec3.fromValues(0,0.5,40);
-    var dir = vec3.fromValues(0,0,-1);
-    var up = vec3.fromValues(0,1,0);
-    var cam = new Camara(pos,dir,up).init();
-
     var parque = new Parque().init(gl, program);
     // Matriz de vista.
     var mv = mat4.create();
     // Matriz de proyección perspectiva.
     var pMatrix = mat4.create();
+    // Creación de cámara. Por ahora le paso un moc de función y su derivada.
+    fMov = function(t){
+        return [10*Math.sin(t), 1, 10*Math.cos(t)];
+    }
+    fMov_d = function(t){
+        return [10*Math.cos(t), 0, -10*Math.sin(t)];
+    }
+    var cam = new Camara(fMov, fMov_d).init();
     // Tiempo.
     var t = 0.0;
 
@@ -50,7 +52,7 @@ window.onload = function(){
       gl.uniformMatrix4fv(u_proj_matrix, false, pMatrix);
 
       // Vista
-      cam.viewM(mv);
+      cam.viewM(mv, t);
       // Dibujo del parque de diversiones.
       parque.draw(mv,t);
 
