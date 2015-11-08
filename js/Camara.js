@@ -1,10 +1,10 @@
 var MouseHandler = require("./MouseHandler.js");
 var KeyboardHandler = require("./KeyboardHandler.js");
 
-module.exports = function(posInicial, dirInicial, upInicial){
-    this.pos = posInicial;
-    this.dir = dirInicial;
-    this.up = upInicial;
+module.exports = function(fMov,fMov_d){
+    // Función de movimiento para la tercera cámara.
+    this.fMov = fMov;
+    this.fMov_d = fMov_d;
 
     // Coordenadas polares de la posición o la dirección.
     this.setearPolares = function(vec){
@@ -23,13 +23,16 @@ module.exports = function(posInicial, dirInicial, upInicial){
     this.modo = 0;
 
     this.init = function(){
+        this.pos = vec3.fromValues(0,0.5,40);
+        this.dir = vec3.fromValues(0,0,-1);
+        this.up = vec3.fromValues(0,1,0);
         this.setearPolares(this.pos);
         return this;
     }
 
-    this.viewM = function(mVista){
+    this.viewM = function(mVista, t){
         // Antes de ver se fija si hubo cambios para hacer y los hace.
-        this.actualizar[this.modo]();
+        this.actualizar[this.modo](t);
 
         var center = vec3.create();
         vec3.add(center,this.pos,this.dir);
@@ -41,7 +44,7 @@ module.exports = function(posInicial, dirInicial, upInicial){
     }
 
     var actualizarDomo = function(cam){
-        return function(){
+        return function(t){
             if (cam.mHandler.mouseDown){
                 cam.alfa += cam.mHandler.deltaX() * cam.velocidadRot;
                 cam.beta += cam.mHandler.deltaY() * cam.velocidadRot;
@@ -56,7 +59,7 @@ module.exports = function(posInicial, dirInicial, upInicial){
     }
 
     var actualizarFPS = function(cam){
-        return function(){
+        return function(t){
             // TECLADO
             if (cam.kHandler.isPressed(cam.kHandler.W)){
                 var mov = vec3.fromValues(cam.dir[0],0,cam.dir[2]);
@@ -94,8 +97,10 @@ module.exports = function(posInicial, dirInicial, upInicial){
 
     //TODO
     var actualizarMR = function(cam){
-        return function(){
+        return function(t){
 
+            vec3.copy(cam.pos, cam.fMov(t*0.1));
+            vec3.copy(cam.dir, cam.fMov_d(t*0.1));
         }
     }
 
