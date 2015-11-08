@@ -10,13 +10,19 @@ module.exports = function(){
     }
   }
 
-  this.generate = function(curveNumber){
+  var chooseCurve = function(curveNumber){
     if(curveNumber <= this.curves.length){
       return function(t) {
         this.curves[curveNumber].generate(t);
       };
     }else{
-      console.log('[CubicBezierConcatenator]: t parameter out of range');
+      console.log('[CubicBezierConcatenator]: Curve number is out of range');
     }
+  }
+
+  this.generate = function(t){
+    var curveNumber = Math.floor(Math.abs(t));
+    var tCurve = Math.abs(t) - curveNumber;
+    return this.generate(curveNumber)(tCurve);
   }
 }
