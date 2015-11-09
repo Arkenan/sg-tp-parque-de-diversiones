@@ -11,8 +11,9 @@ module.exports = function(ubicacion,altura){
 
   this.draw = function(mv){
     var mColumna = mat4.create();
-    mat4.translate(mColumna,mv,this.ubicacion);
-    mat4.scale(mColumna,mColumna,[1.3,this.altura,1.3]);
+    var ubicacionXY = [this.ubicacion[0],0,this.ubicacion[2]];
+    mat4.translate(mColumna,mv,ubicacionXY);
+    mat4.scale(mColumna,mColumna,[1.3,0.164 * this.altura,1.3]);
     this.base.draw(mColumna);
   }
 }
