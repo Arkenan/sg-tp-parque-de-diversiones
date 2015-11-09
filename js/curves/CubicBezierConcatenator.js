@@ -8,21 +8,44 @@ module.exports = function(){
       var curve = new CubicBezier().init(controlPointSet[i]);
       this.curves.push(curve);
     }
-  }
-
-  var chooseCurve = function(curveNumber){
-    if(curveNumber <= this.curves.length){
-      return function(t) {
-        this.curves[curveNumber].generate(t);
-      };g
-    }else{
-      console.log('[CubicBezierConcatenator]: Curve number is out of range');
-    }
+    return this;
   }
 
   this.generate = function(t){
-    var curveNumber = Math.floor(Math.abs(t));
-    var tCurve = Math.abs(t) - curveNumber;
-    return chooseCurve(curveNumber)(tCurve);
+      //multiplica a t, que va de 0 a 1, por el número de curvas.
+      var u = t* this.curves.length, tCurve;
+      var curveNumber = Math.floor(Math.abs(u));
+      // para el último punto.
+      if (curveNumber === this.curves.length) {
+          curveNumber--;
+          tCurve = 1;
+      } else {
+          tCurve = Math.abs(u) - curveNumber;
+      }
+      return this.curves[curveNumber].generate(tCurve);
+    }
+
+  this.generate_d1 = function(t){
+      var u = t* this.curves.length, tCurve;
+      var curveNumber = Math.floor(Math.abs(u));
+      if (curveNumber === this.curves.length) {
+          curveNumber--;
+          tCurve = 1;
+      } else {
+          tCurve = Math.abs(u) - curveNumber;
+      }
+      return this.curves[curveNumber].generate_d1(tCurve);
+  }
+
+  this.generate_d2 = function(t){
+      var u = t* this.curves.length, tCurve;
+      var curveNumber = Math.floor(Math.abs(u));
+      if (curveNumber === this.curves.length) {
+          curveNumber--;
+          tCurve = 1;
+      } else {
+          tCurve = Math.abs(u) - curveNumber;
+      }
+      return this.curves[curveNumber].generate_d2(tCurve);
   }
 }

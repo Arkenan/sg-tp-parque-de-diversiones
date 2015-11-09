@@ -43,35 +43,24 @@ module.exports = function(){
     return this;
   }
 
-  // Generadores como clausuras.
-  var generate = function(curva){
-      return function(t){
-        var x = (curva.control[0][0] * b1(t)) + (3 * curva.control[1][0] * b2(t)) + (3 * curva.control[2][0] * b3(t)) + (curva.control[3][0] * b4(t));
-        var y = (curva.control[0][1] * b1(t)) + (3 * curva.control[1][1] * b2(t)) + (3 * curva.control[2][1] * b3(t)) + (curva.control[3][1] * b4(t));
-        var z = (curva.control[0][2] * b1(t)) + (3 * curva.control[1][2] * b2(t)) + (3 * curva.control[2][2] * b3(t)) + (curva.control[3][2] * b4(t));
-        return [x,y,z];
-    }
+  this.generate = function(t){
+    var x = (this.control[0][0] * b1(t)) + (3 * this.control[1][0] * b2(t)) + (3 * this.control[2][0] * b3(t)) + (this.control[3][0] * b4(t));
+    var y = (this.control[0][1] * b1(t)) + (3 * this.control[1][1] * b2(t)) + (3 * this.control[2][1] * b3(t)) + (this.control[3][1] * b4(t));
+    var z = (this.control[0][2] * b1(t)) + (3 * this.control[1][2] * b2(t)) + (3 * this.control[2][2] * b3(t)) + (this.control[3][2] * b4(t));
+    return [x,y,z];
   }
 
-  var generate_d1 = function(curva){
-      return function(t){
-        var x = (curva.control[0][0] * b1_d1(t)) + (3 * curva.control[1][0] * b2_d1(t)) + (3 * curva.control[2][0] * b3_d1(t)) + (curva.control[3][0] * b4_d1(t));
-        var y = (curva.control[0][1] * b1_d1(t)) + (3 * curva.control[1][1] * b2_d1(t)) + (3 * curva.control[2][1] * b3_d1(t)) + (curva.control[3][1] * b4_d1(t));
-        var z = (curva.control[0][2] * b1_d1(t)) + (3 * curva.control[1][2] * b2_d1(t)) + (3 * curva.control[2][2] * b3_d1(t)) + (curva.control[3][2] * b4_d1(t));
-        return [x,y,z];
-    }
+  this.generate_d1 = function(t){
+    var x = (this.control[0][0] * b1_d1(t)) + (3 * this.control[1][0] * b2_d1(t)) + (3 * this.control[2][0] * b3_d1(t)) + (this.control[3][0] * b4_d1(t));
+    var y = (this.control[0][1] * b1_d1(t)) + (3 * this.control[1][1] * b2_d1(t)) + (3 * this.control[2][1] * b3_d1(t)) + (this.control[3][1] * b4_d1(t));
+    var z = (this.control[0][2] * b1_d1(t)) + (3 * this.control[1][2] * b2_d1(t)) + (3 * this.control[2][2] * b3_d1(t)) + (this.control[3][2] * b4_d1(t));
+    return [x,y,z];
   }
 
-  var generate_d2 = function(curva){
-      return function(t){
-        var x = (curva.control[0][0] * b1_d2(t)) + (3 * curva.control[1][0] * b2_d2(t)) + (3 * curva.control[2][0] * b3_d2(t)) + (curva.control[3][0] * b4_d2(t));
-        var y = (curva.control[0][1] * b1_d2(t)) + (3 * curva.control[1][1] * b2_d2(t)) + (3 * curva.control[2][1] * b3_d2(t)) + (curva.control[3][1] * b4_d2(t));
-        var z = (curva.control[0][2] * b1_d2(t)) + (3 * curva.control[1][2] * b2_d2(t)) + (3 * curva.control[2][2] * b3_d2(t)) + (curva.control[3][2] * b4_d2(t));
-        return [x,y,z];
-    }
+  this.generate_d2 = function(t){
+    var x = (this.control[0][0] * b1_d2(t)) + (3 * this.control[1][0] * b2_d2(t)) + (3 * this.control[2][0] * b3_d2(t)) + (this.control[3][0] * b4_d2(t));
+    var y = (this.control[0][1] * b1_d2(t)) + (3 * this.control[1][1] * b2_d2(t)) + (3 * this.control[2][1] * b3_d2(t)) + (this.control[3][1] * b4_d2(t));
+    var z = (this.control[0][2] * b1_d2(t)) + (3 * this.control[1][2] * b2_d2(t)) + (3 * this.control[2][2] * b3_d2(t)) + (this.control[3][2] * b4_d2(t));
+    return [x,y,z];
   }
-
-  this.generate = generate(this);
-  this.generate_d1 = generate_d1(this);
-  this.generate_d2 = generate_d2(this);
 }

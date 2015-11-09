@@ -1,18 +1,21 @@
 var BarridoGeneral  = require("./BarridoGeneral.js");
-var CubicBezier  = require("../curves/CubicBezier.js");
+var CubicBezierConcatenator  = require("../curves/CubicBezierConcatenator.js");
 
 module.exports = function(cForma, cBarrido){
   this.ejeCentral = null;
   this.curve = null;
   this.cForma = cForma;
   this.cBarrido = cBarrido;
-  this.control = [[2,1,3],[1,5,0],[3,6,2],[4,4,4]];
+  this.control = [
+      [[0,1,0],[1,1,0],[1,-1,0],[0,-1,0]],
+      [[0,-1,0],[-1,-1,0],[-1,3,0],[0,1,0]]
+  ];
 
   // Recordar que toma números entre 0 y 1.
   this.fForma = function(t){
     var ang = t*2*Math.PI;
-    var x = Math.cos(ang);
-    var y = Math.sin(ang);
+    var x = Math.cos(ang)/9;
+    var y = Math.sin(ang)/9;
     return [x, y, 0];
   }
 
@@ -36,7 +39,7 @@ module.exports = function(cForma, cBarrido){
   }
 
   this.init = function(gl, program){
-    this.curve = new CubicBezier().init(this.control);
+    this.curve = new CubicBezierConcatenator().init(this.control);
     this.fBarrido = fBarrido(this.curve);
     this.frenet = frenet(this.curve);
     this.ejeCentral = new BarridoGeneral(this.fForma, this.fBarrido,

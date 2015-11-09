@@ -30,12 +30,13 @@ module.exports = function(fForma, fBarrido, fTNB, cForma, cBarrido){
     this.obtenerVertices = function(){
       // Se toma como referencia al sistema formado por el binormal.
       for (var i = 0; i < this.cBarrido; i++){
+        // Para la forma, nuestro x ahora es B; nuestro y es N.
+        var o = this.fBarrido(this.pBarrido[i]);
+        var tnb = this.fTNB(this.pBarrido[i])
+        var B = tnb[2];
+        var N = tnb[1];
+
         for (var j = 0; j < this.cForma; j++){
-          // Para la forma, nuestro x ahora es B; nuestro y es N.
-          var o = this.fBarrido(this.pBarrido[i]);
-          var tnb = this.fTNB(this.pBarrido[i])
-          var B = tnb[2];
-          var N = tnb[1];
           // Punto en coordenadas de la forma.
           var xyz = fForma(this.pForma[j]);
           // Punto en coordenadas intrínsecas a la superficie.
@@ -45,6 +46,7 @@ module.exports = function(fForma, fBarrido, fTNB, cForma, cBarrido){
             o[2] + xyz[0]*B[2] + xyz[1]*N[2] ];
           this.vertices = this.vertices.concat( p );
         }
+
       }
     }
 
@@ -80,7 +82,7 @@ module.exports = function(fForma, fBarrido, fTNB, cForma, cBarrido){
         this.obtenerVertices();
         this.agregarTapas();
 
-        this.grid = new Grid(this.vertices, this.cBarrido, this.cForma).init(gl,program);
+        this.grid = new Grid(this.vertices, this.cBarrido + 2, this.cForma).init(gl,program);
         return this;
     }
 
