@@ -1,10 +1,9 @@
 var MouseHandler = require("./MouseHandler.js");
 var KeyboardHandler = require("./KeyboardHandler.js");
 
-module.exports = function(fMov,fMov_d){
+module.exports = function(fMov){
     // Función de movimiento para la tercera cámara.
     this.fMov = fMov;
-    this.fMov_d = fMov_d;
 
     // Coordenadas polares de la posición o la dirección.
     this.setearPolares = function(vec){
@@ -99,8 +98,18 @@ module.exports = function(fMov,fMov_d){
     var actualizarMR = function(cam){
         return function(t){
 
-            vec3.copy(cam.pos, cam.fMov(t*0.1));
-            vec3.copy(cam.dir, cam.fMov_d(t*0.1));
+            vec3.copy(cam.pos, cam.fMov((t*0.05)%1));
+            vec3.scale(cam.pos,cam.pos,0.4);
+            vec3.add(cam.pos,cam.pos,[-40,2.5,0]);
+            //mat4.scale(mrusa,mrusa,[0.4,0.4,0.4]);
+            if (cam.mHandler.mouseDown){
+                cam.alfa -= cam.mHandler.deltaX() * cam.velocidadRot;
+                cam.beta -= cam.mHandler.deltaY() * cam.velocidadRot;
+                // Trampa para no actualizar el up.
+                if (cam.beta <= 0) cam.beta = 0.0001;
+        		if (cam.beta > Math.PI) cam.beta = Math.PI;
+                vec3.set(cam.dir, Math.sin(cam.alfa) * Math.sin(cam.beta), -Math.cos(cam.beta), Math.cos(cam.alfa) * Math.sin(cam.beta));
+            }
         }
     }
 

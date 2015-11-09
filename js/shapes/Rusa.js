@@ -1,21 +1,18 @@
 var BarridoGeneral  = require("./BarridoGeneral.js");
 var CubicBezierConcatenator  = require("../curves/CubicBezierConcatenator.js");
 
-module.exports = function(cForma, cBarrido){
+module.exports = function(puntosMRusa, cForma, cBarrido){
   this.ejeCentral = null;
   this.curve = null;
   this.cForma = cForma;
   this.cBarrido = cBarrido;
-  this.control = [
-      [[0,1,0],[1,1,0],[1,-1,0],[0,-1,0]],
-      [[0,-1,0],[-1,-1,0],[-1,3,0],[0,1,0]]
-  ];
+  this.control = puntosMRusa;
 
   // Recordar que toma números entre 0 y 1.
   this.fForma = function(t){
     var ang = t*2*Math.PI;
-    var x = Math.cos(ang)/9;
-    var y = Math.sin(ang)/9;
+    var x = Math.cos(ang)/2;
+    var y = Math.sin(ang)/2;
     return [x, y, 0];
   }
 

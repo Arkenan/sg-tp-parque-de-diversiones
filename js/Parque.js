@@ -3,18 +3,18 @@ var Sillas = require("./shapes/Sillas.js");
 var Plano = require("./shapes/Plano.js");
 var Rusa = require("./shapes/Rusa.js");
 
-module.exports = function(){
+module.exports = function(puntosMRusa){
     // Objetos a dibujar.
     this.vuelta = null;
     this.sillas = null;
     this.plano = null;
     this.rusa = null;
 
-    this.init = function(gl,program){
+    this.init = function(puntosMRusa,gl,program){
         this.vuelta = new Vuelta().init(gl,program);
         this.sillas = new Sillas().init(gl,program);
         this.plano = new Plano(2,2).init(gl,program);
-        this.rusa = new Rusa(5,5).init(gl,program);
+        this.rusa = new Rusa(puntosMRusa,20,800).init(gl,program);
         return this;
     }
 
@@ -30,8 +30,8 @@ module.exports = function(){
         mat4.scale(mSillas,mSillas,[1.25,1.25,1.25])
         this.sillas.draw(mSillas,t);
 
-        mat4.translate(mrusa,mv,[0,2,0]);
-        mat4.scale(mrusa,mrusa,[5,5,5]);
+        mat4.translate(mrusa,mv,[-40,2,0]);
+        mat4.scale(mrusa,mrusa,[0.4,0.4,0.4]);
         this.rusa.draw(mrusa);
 
         // Piso.
