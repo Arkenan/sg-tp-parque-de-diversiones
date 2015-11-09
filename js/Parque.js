@@ -30,7 +30,7 @@ module.exports = function(puntosMRusa){
         mat4.scale(mSillas,mSillas,[1.25,1.25,1.25])
         this.sillas.draw(mSillas,t);
 
-        mat4.translate(mrusa,mv,[-40,2,0]);
+        mat4.translate(mrusa,mv,[-40,0,0]);
         mat4.scale(mrusa,mrusa,[0.4,0.4,0.4]);
         this.rusa.draw(mrusa);
 
