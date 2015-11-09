@@ -11,6 +11,17 @@ module.exports = function(){
     return this;
   }
 
+  this.getInterpolated = function(){
+    var interpolated = [];
+    var i = 0;
+    for (var i = 0; i < this.curves.length; i++) {
+      var curve = this.curves[i];
+      interpolated.push(curve.getInterpolated()[0]);
+    }
+    interpolated.push(this.curves[this.curves.length - 1].getInterpolated()[1]);
+    return interpolated;
+  }
+
   this.generate = function(t){
       //multiplica a t, que va de 0 a 1, por el número de curvas.
       var u = t* this.curves.length, tCurve;

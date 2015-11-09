@@ -1,4 +1,5 @@
 var BarridoGeneral  = require("./BarridoGeneral.js");
+var ColumnaRusa  = require("./ColumnaRusa.js");
 var CubicBezierConcatenator  = require("../curves/CubicBezierConcatenator.js");
 
 module.exports = function(puntosMRusa, cForma, cBarrido){
@@ -59,6 +60,13 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
         this.cForma, this.cBarrido).init(gl,program);
     this.rielI = new BarridoGeneral(this.fFormaRielI, this.fBarrido, this.frenet,
         this.cForma, this.cBarrido).init(gl,program);
+
+    this.columnas = [];
+    var interpolated = this.curve.getInterpolated();
+    for (var i = 0; i < interpolated.length; i++) {
+      this.columnas.push(new ColumnaRusa(interpolated[i],interpolated[i][1]).init(gl,program));
+    }
+
     return this;
   }
 
@@ -66,5 +74,10 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
     this.ejeCentral.draw(mv);
     this.rielD.draw(mv);
     this.rielI.draw(mv);
+
+    for (var i = 0; i < this.columnas.length; i++) {
+      this.columnas[i].draw(mv);
+    }
+
   }
 }

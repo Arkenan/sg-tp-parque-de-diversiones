@@ -43,6 +43,11 @@ module.exports = function(){
     return this;
   }
 
+  this.getInterpolated = function() {
+    var pointsInterpolated = [this.control[0],this.control[this.control.length - 1]];
+    return pointsInterpolated;
+  }
+
   this.generate = function(t){
     var x = (this.control[0][0] * b1(t)) + (3 * this.control[1][0] * b2(t)) + (3 * this.control[2][0] * b3(t)) + (this.control[3][0] * b4(t));
     var y = (this.control[0][1] * b1(t)) + (3 * this.control[1][1] * b2(t)) + (3 * this.control[2][1] * b3(t)) + (this.control[3][1] * b4(t));
