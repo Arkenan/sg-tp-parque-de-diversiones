@@ -14,7 +14,7 @@ module.exports = function(puntosMRusa){
         this.vuelta = new Vuelta().init(gl,program);
         this.sillas = new Sillas().init(gl,program);
         this.plano = new Plano(2,2).init(gl,program);
-        this.rusa = new Rusa(puntosMRusa,20,800).init(gl,program);
+        this.rusa = new Rusa(puntosMRusa,20,300).init(gl,program);
         return this;
     }
 
