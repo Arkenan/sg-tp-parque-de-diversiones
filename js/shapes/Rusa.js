@@ -1,5 +1,6 @@
 var BarridoGeneral  = require("./BarridoGeneral.js");
 var ColumnaRusa  = require("./ColumnaRusa.js");
+var Carrito = require("./Carrito.js");
 var CubicBezierConcatenator  = require("../curves/CubicBezierConcatenator.js");
 
 module.exports = function(puntosMRusa, cForma, cBarrido){
@@ -67,10 +68,12 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
       this.columnas.push(new ColumnaRusa(interpolated[i],interpolated[i][1]).init(gl,program));
     }
 
+    this.carrito = new Carrito(this.curve).init(gl,program);
+
     return this;
   }
 
-  this.draw = function(mv){
+  this.draw = function(mv,t){
     this.ejeCentral.draw(mv);
     this.rielD.draw(mv);
     this.rielI.draw(mv);
@@ -78,6 +81,6 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
     for (var i = 0; i < this.columnas.length; i++) {
       this.columnas[i].draw(mv);
     }
-
+    this.carrito.draw(mv,t);
   }
 }

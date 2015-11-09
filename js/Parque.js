@@ -32,7 +32,7 @@ module.exports = function(puntosMRusa){
 
         mat4.translate(mrusa,mv,[-40,0,0]);
         mat4.scale(mrusa,mrusa,[0.4,0.4,0.4]);
-        this.rusa.draw(mrusa);
+        this.rusa.draw(mrusa,t);
 
         // Piso.
         mat4.translate(mp,mv,[-100,0,-100]);
