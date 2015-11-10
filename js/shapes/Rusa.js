@@ -2,10 +2,9 @@ var BarridoGeneral  = require("./BarridoGeneral.js");
 var ColumnaRusa  = require("./ColumnaRusa.js");
 var Carrito = require("./Carrito.js");
 var CubicBezierConcatenator  = require("../curves/CubicBezierConcatenator.js");
+var Durmiente = require("./Durmiente.js");
 
 module.exports = function(puntosMRusa, cForma, cBarrido){
-  this.ejeCentral = null;
-  this.curve = null;
   this.cForma = cForma;
   this.cBarrido = cBarrido;
   this.control = puntosMRusa;
@@ -13,22 +12,22 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
   // Recordar que toma números entre 0 y 1.
   this.fForma = function(t){
     var ang = t*2*Math.PI;
-    var x = Math.cos(ang)/4;
-    var y = Math.sin(ang)/4;
+    var x = Math.cos(ang)/8;
+    var y = Math.sin(ang)/8;
     return [x, y, 0];
   }
 
   this.fFormaRielD = function(t){
       var ang = t*2*Math.PI;
-      var x = 1 + Math.cos(ang)/8;
-      var y = 0.5 + Math.sin(ang)/8;
+      var x = 1 + Math.cos(ang)/4;
+      var y = 0.5 + Math.sin(ang)/4;
       return [x, y, 0];
   }
 
   this.fFormaRielI = function(t){
       var ang = t*2*Math.PI;
-      var x = - 1 + Math.cos(ang)/8;
-      var y = 0.5 + Math.sin(ang)/8;
+      var x = - 1 + Math.cos(ang)/4;
+      var y = 0.5 + Math.sin(ang)/4;
       return [x, y, 0];
   }
 
@@ -68,10 +67,11 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
       this.columnas.push(new ColumnaRusa(interpolated[i],interpolated[i][1]).init(gl,program));
     }
 
-    this.carrito = new Carrito(this.curve).init(gl,program);
-
+    this.carrito = new Carrito().init(gl,program);
+    this.durmiente = new Durmiente().init(gl,program);
     return this;
   }
+
 
   this.draw = function(mv,t){
     this.ejeCentral.draw(mv);
@@ -81,6 +81,41 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
     for (var i = 0; i < this.columnas.length; i++) {
       this.columnas[i].draw(mv);
     }
-    this.carrito.draw(mv,t);
+
+    // z coincidirá con la tangente. -x con la binormal, y con la normal.
+    var mCarrito = mat4.create();
+    var pos = this.curve.generate((t*0.05)%1);
+    var tnb = this.frenet((t*0.05)%1);
+
+    // Matriz de cambio de base (en column major notation):
+    M = [
+        -tnb[2][0], -tnb[2][1], -tnb[2][2], 0,
+        tnb[1][0], tnb[1][1], tnb[1][2], 0,
+        tnb[0][0], tnb[0][1], tnb[0][2], 0,
+        0, 0, 0, 1
+    ]
+
+    mat4.translate(mCarrito, mv, pos);
+    mat4.multiply(mCarrito, mCarrito, M);
+    this.carrito.draw(mCarrito);
+
+    for (var i = 0; i < 100; i++){
+        var pos = this.curve.generate(i/100%1);
+        var mDurmiente = mat4.create();
+        var tnb = this.frenet(i/100%1);
+
+        // Matriz de cambio de base (en column major notation):
+        M = [
+            -tnb[2][0], -tnb[2][1], -tnb[2][2], 0,
+            tnb[1][0], tnb[1][1], tnb[1][2], 0,
+            tnb[0][0], tnb[0][1], tnb[0][2], 0,
+            0, 0, 0, 1
+        ]
+        mat4.translate(mDurmiente, mv, pos);
+        mat4.multiply(mDurmiente, mDurmiente, M);
+        //mat4.scale(mDurmiente, mDurmiente, [,20,20]);
+        this.durmiente.draw(mDurmiente);
+
+    }
   }
 }
