@@ -88,7 +88,7 @@ module.exports = function(fMov){
                 cam.beta -= cam.mHandler.deltaY() * cam.velocidadRot;
                 // Trampa para no actualizar el up.
                 if (cam.beta <= 0) cam.beta = 0.0001;
-        		if (cam.beta > Math.PI) cam.beta = Math.PI;
+        		if (cam.beta >= Math.PI) cam.beta = Math.PI -0.0001;
                 vec3.set(cam.dir, Math.sin(cam.alfa) * Math.sin(cam.beta), -Math.cos(cam.beta), Math.cos(cam.alfa) * Math.sin(cam.beta));
             }
         }
@@ -100,7 +100,7 @@ module.exports = function(fMov){
 
             vec3.copy(cam.pos, cam.fMov((t*0.05)%1));
             vec3.scale(cam.pos,cam.pos,0.4);
-            vec3.add(cam.pos,cam.pos,[-40,2.5,0]);
+            vec3.add(cam.pos,cam.pos,[-40,1,0]);
             //mat4.scale(mrusa,mrusa,[0.4,0.4,0.4]);
             if (cam.mHandler.mouseDown){
                 cam.alfa -= cam.mHandler.deltaX() * cam.velocidadRot;
