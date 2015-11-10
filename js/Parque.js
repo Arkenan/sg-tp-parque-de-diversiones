@@ -36,9 +36,9 @@ module.exports = function(puntosMRusa){
         mat4.scale(mrusa,mrusa,[0.4,0.4,0.4]);
         this.rusa.draw(mrusa,t);
 
-        mat4.translate(mPileta,mv,[-30,0,0]);
+        mat4.translate(mPileta,mv,[-28,0,0]);
         mat4.rotate(mPileta,mPileta,Math.PI/2,[0,1,0]);
-        mat4.scale(mPileta,mPileta,[5,0.3,3]);
+        mat4.scale(mPileta,mPileta,[5,0.03,3]);
         this.pileta.draw(mPileta);
 
         // Piso.

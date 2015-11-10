@@ -1,27 +1,28 @@
 var Barrido = require("./Barrido");
+var CubicBezierConcatenator  = require("../curves/CubicBezierConcatenator.js");
+var PointsPileta  = require("../points/PointsPileta.js");
 
 module.exports = function(){
   this.supB = null;
 
-  this.theta = 2*Math.PI/20;
-  this.largo_op = 3/2*10*Math.sin(this.theta/2);
-  this.d_op = 2*5*Math.cos(this.theta/2),0;
-  this.vertices = [-this.largo_op/1.5,0,0,this.largo_op/1.5,1,1,0.2,this.d_op,0,-0.8,this.d_op,0,-this.largo_op/1.5,0,3];
+  var fForma = function(){
 
-  var fForma = function(vertices){
+    var control = PointsPileta();
+
       return function(t){
-          return [vertices[12*t],0,vertices[12*t+1]];
+          var forma = new CubicBezierConcatenator().init(control);
+          return forma.generate(t);
+          //return [vertices[12*t],0,vertices[12*t+1]];
       }
   }
-
-  this.fForma = fForma(this.vertices);
+  this.fForma = fForma();
 
   this.fBarrido = function(t){
     return [0, t, 0];
   }
 
   this.init = function(gl, program){
-    this.supB = new Barrido(this.fForma, this.fBarrido, 5, 2).init(gl,program);
+    this.supB = new Barrido(this.fForma, this.fBarrido, 5, 5).init(gl,program);
     return this;
   }
 
