@@ -1,4 +1,6 @@
- var BaseSillas = require("./BaseSillas.js");
+// Columnas de la montaña rusa. Reutilización de la base de las sillas voladoras.
+
+var BaseSillas = require("./BaseSillas.js");
 
 module.exports = function(ubicacion,altura){
   this.ubicacion = ubicacion;

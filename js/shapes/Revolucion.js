@@ -1,9 +1,10 @@
+// Generador de superficies de revolución.
+
 var Grid = require("./Grid.js");
 
 module.exports = function(fPerfil,cPerfil, cRevol){
     this.vertices = [];
     this.pPerfil = [];
-    this.grid = null;
     this.cPerfil = cPerfil;
     this.cRevol = cRevol;
     this.alfa = Math.PI * 2/(cRevol-1);

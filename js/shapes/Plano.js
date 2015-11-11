@@ -1,8 +1,8 @@
+// Plano en base a grilla. Estructura más sencilla.
+
 var Grid = require('./Grid.js');
 
 module.exports = function(_rows,_cols){
-  this.position_buffer = null;
-  this.grid = null;
   this.rows = _rows;
   this.cols = _cols;
 
@@ -14,10 +14,6 @@ module.exports = function(_rows,_cols){
         this.position_buffer.push(x);
         this.position_buffer.push(y);
         this.position_buffer.push(0);
-
-        //this.color_buffer.push((x%2 + y%2));
-        //this.color_buffer.push((x%2 + y%2));
-        //this.color_buffer.push((x%2 + y%2));
       }
     }
 

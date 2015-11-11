@@ -1,9 +1,11 @@
+// Placas de base de la Vuelta al Mundo.
+
 var Barrido = require("./Barrido");
 
 module.exports = function(){
   this.supB = null;
 
-  // Uso datos del triángulo...
+  // Uso datos de los triángulos de la Rueda.
   this.theta = 2*Math.PI/15;
   this.largo_op = 3/2*10*Math.sin(this.theta/2);
   this.d_op = 3/2*5*Math.cos(this.theta/2),0;

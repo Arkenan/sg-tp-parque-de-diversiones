@@ -1,5 +1,6 @@
+// Manejador del teclado para la cámara. Observador de eventos.
+
 module.exports = function(){
-    this.cam = null;
     this.pressed = {};
 
     //KeyCodes. Ver si se puede usar notación JSON.

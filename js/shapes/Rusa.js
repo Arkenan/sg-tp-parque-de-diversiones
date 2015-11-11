@@ -1,3 +1,5 @@
+// Montaña Rusa.
+
 var BarridoGeneral  = require("./BarridoGeneral.js");
 var ColumnaRusa  = require("./ColumnaRusa.js");
 var Carrito = require("./Carrito.js");
@@ -9,7 +11,6 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
   this.cBarrido = cBarrido;
   this.control = puntosMRusa;
 
-  // Recordar que toma números entre 0 y 1.
   this.fForma = function(t){
     var ang = t*2*Math.PI;
     var x = Math.cos(ang)/8;

@@ -1,9 +1,9 @@
+// Sillas Voladoras. Dibuja a la cabeza giratoria y a la base.
+
 var Base = require("./BaseSillas.js");
 var Cabeza = require("./CabezaSillas.js");
 
 module.exports = function(){
-    this.base = null;
-    this.cabeza = null;
 
     this.init = function(gl, program){
         this.base = new Base().init(gl,program);

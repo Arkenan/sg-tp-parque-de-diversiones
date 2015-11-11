@@ -1,3 +1,5 @@
+// Silla del carrito.
+
 var Plano = require("./Plano.js");
 
 module.exports = function(){

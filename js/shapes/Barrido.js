@@ -1,15 +1,16 @@
 var Grid = require('./Grid.js');
 
 /* Recibe dos funciones, una de forma y otra de barrido, ambas
-** toman elementos entre 0 y 1 y devuelven un punto en el espacio.
-** además de la cantidad de divisiones de forma y de barrido. */
+** toman un parámetro entre 0 y 1 y devuelven un punto en el espacio.
+** También toma la cantidad de divisiones de forma y de barrido. */
 
 module.exports = function(fForma, fBarrido, cForma,  cBarrido){
-  //Puntos de evaluación para la forma:
+  // Puntos de evaluación para la forma.
   this.pForma = [];
+  // Puntos de evaluación para el barrido.
   this.pBarrido = [];
+  // Vertices que se pasarán a la grilla para ser dibujados.
   this.vertices = [];
-  this.grid = null;
   this.cForma = cForma;
   this.cBarrido = cBarrido;
 
@@ -62,13 +63,12 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
   }
 
   this.init = function(gl, program){
-    // Ojo, cForma, cBarrido > 1.
+    // Importante: cForma, cBarrido > 1.
     this.pasoForma = 1/(this.cForma - 1);
     this.pasoBarrido = 1/(this.cBarrido - 1);
     this.fijarPuntosEval();
     this.obtenerVertices();
     this.agregarTapas();
-    //console.log("[Barrido] Vertices -->:" + this.vertices);
     // Sumo 2 filas a la grilla, una por cada tapa.
     this.grid = new Grid(this.vertices,this.cBarrido + 2,this.cForma).init(gl, program);
     return this;

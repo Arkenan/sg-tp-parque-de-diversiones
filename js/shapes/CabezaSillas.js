@@ -1,3 +1,5 @@
+// Cabeza giratoria de las sillas voladoras.
+
 var Revolucion = require("./Revolucion.js");
 var Silla = require("./SillaSuspendida.js");
 

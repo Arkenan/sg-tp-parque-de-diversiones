@@ -1,3 +1,5 @@
+// Index.js. Archivo principal a ser ejecutado.
+
 //------------------------------------------------------------------------------------------------------------------------------
 var VertexShader = require('./shaders/VertexShader.js');
 var FragmentShader = require('./shaders/FragmentShader.js');

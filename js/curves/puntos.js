@@ -1,3 +1,5 @@
+// Puntos para la Montala rusa.
+
 module.exports = function(){
     // Puntos tomados a mano, en pixels.
     var puntos =

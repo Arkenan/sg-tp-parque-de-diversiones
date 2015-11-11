@@ -1,3 +1,5 @@
+// Cada una de las sillas voladoras, con sus sogas. Formada en base a planos.
+
 var Plano = require("./Plano.js");
 
 module.exports = function(){

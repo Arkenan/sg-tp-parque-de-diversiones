@@ -1,3 +1,5 @@
+// Vuelta al mundo. Dibuja a la rueda y a la base.
+
 var Base = require("./BaseVuelta.js");
 var Rueda = require("./Rueda.js");
 

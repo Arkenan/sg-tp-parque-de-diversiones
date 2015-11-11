@@ -1,11 +1,10 @@
+// Rueda de la Vuelta al mundo. Dibuja los triángulos y las cabinas.
+
 var Triangulo = require("./Triangulo.js");
 var Cilindro = require("./Cilindro.js");
 var Cabina = require("./Cabina.js");
 
 module.exports = function(){
-    this.tri = null;
-    this.palo = null;
-    this.cabina = null;
     this.theta = 2*Math.PI/15;
 
     this.init = function(gl, program){
@@ -54,7 +53,6 @@ module.exports = function(){
             mat4.scale(mCab,mCab,[1.5,2,1.5]);
             this.cabina.draw(mCab);
         }
-
 
         // Eje Central.
         mat4.translate(mEje,mv,[0,0,-2]);

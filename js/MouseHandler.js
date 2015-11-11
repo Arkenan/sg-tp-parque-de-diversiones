@@ -1,5 +1,6 @@
+// Manejador del Mouse para la cámara. Observador de eventos.
+
 module.exports = function(){
-    this.cam = null;
     this.x = 0;
     this.y = 0;
     this.xAnt = 0;

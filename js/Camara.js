@@ -1,3 +1,5 @@
+// Objeto que maneja las cámaras en sus tres modos.
+
 var MouseHandler = require("./MouseHandler.js");
 var KeyboardHandler = require("./KeyboardHandler.js");
 

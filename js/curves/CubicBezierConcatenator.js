@@ -1,3 +1,5 @@
+// Concatenador de curvas de bezier cúbicas.
+
 var CubicBezier  = require("../curves/CubicBezier.js");
 
 module.exports = function(){

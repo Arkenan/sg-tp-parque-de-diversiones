@@ -5,7 +5,6 @@ module.exports = function(fForma, fBarrido, fTNB, cForma, cBarrido){
     this.fForma = fForma;
     this.fBarrido = fBarrido;
     this.fTNB = fTNB; // devuelve tres vectores, tg, normal y binormal.
-    this.grid = null;
     this.cForma = cForma;
     this.cBarrido = cBarrido;
 
