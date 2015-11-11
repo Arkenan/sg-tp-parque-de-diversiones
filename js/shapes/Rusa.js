@@ -38,7 +38,7 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
   }
 
   // devuelve en orden: [Tangente, normal, binormal].
-  var frenet = function(curve){
+  var TNB = function(curve){
       return function(t){
         var normal = vec3.create(), binormal = vec3.create();
         var tg = curve.generate_d1(t);
@@ -53,12 +53,12 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
   this.init = function(gl, program){
     this.curve = new CubicBezierConcatenator().init(this.control);
     this.fBarrido = fBarrido(this.curve);
-    this.frenet = frenet(this.curve);
+    this.TNB = TNB(this.curve);
     this.ejeCentral = new BarridoGeneral(this.fForma, this.fBarrido,
-        this.frenet, this.cForma, this.cBarrido).init(gl,program);
-    this.rielD = new BarridoGeneral(this.fFormaRielD, this.fBarrido, this.frenet,
+        this.TNB, this.cForma, this.cBarrido).init(gl,program);
+    this.rielD = new BarridoGeneral(this.fFormaRielD, this.fBarrido, this.TNB,
         this.cForma, this.cBarrido).init(gl,program);
-    this.rielI = new BarridoGeneral(this.fFormaRielI, this.fBarrido, this.frenet,
+    this.rielI = new BarridoGeneral(this.fFormaRielI, this.fBarrido, this.TNB,
         this.cForma, this.cBarrido).init(gl,program);
 
     this.columnas = [];
@@ -85,7 +85,7 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
     // z coincidirá con la tangente. -x con la binormal, y con la normal.
     var mCarrito = mat4.create();
     var pos = this.curve.generate((t*0.05)%1);
-    var tnb = this.frenet((t*0.05)%1);
+    var tnb = this.TNB((t*0.05)%1);
 
     // Matriz de cambio de base (en column major notation):
     M = [
@@ -95,14 +95,18 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
         0, 0, 0, 1
     ]
 
+    // Carrito.
     mat4.translate(mCarrito, mv, pos);
     mat4.multiply(mCarrito, mCarrito, M);
+    mat4.translate(mCarrito, mCarrito, [0,1,0]);
+    mat4.scale(mCarrito, mCarrito, [1/2, 1/2, 1/2]);
     this.carrito.draw(mCarrito);
 
+    // Durmientes.
     for (var i = 0; i < 100; i++){
         var pos = this.curve.generate(i/100%1);
         var mDurmiente = mat4.create();
-        var tnb = this.frenet(i/100%1);
+        var tnb = this.TNB(i/100%1);
 
         // Matriz de cambio de base (en column major notation):
         M = [

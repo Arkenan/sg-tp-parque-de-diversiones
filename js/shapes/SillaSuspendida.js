@@ -1,7 +1,6 @@
 var Plano = require("./Plano.js");
 
 module.exports = function(){
-    this.plano = null;
 
     this.init = function(gl,program){
         this.plano = new Plano(2,2).init(gl,program);

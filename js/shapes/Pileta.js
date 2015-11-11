@@ -27,7 +27,7 @@ module.exports = function(){
   }
 
   this.init = function(gl, program){
-    this.supB = new Barrido(this.fForma, this.fBarrido, 40, 40).init(gl,program);
+    this.supB = new Barrido(this.fForma, this.fBarrido, 200, 40).init(gl,program);
     return this;
   }
 

@@ -35,7 +35,7 @@ window.onload = function(){
     // Matriz de proyección perspectiva.
     var pMatrix = mat4.create();
     // Creación de cámara. Por ahora le paso un moc de función y su derivada.
-    var cam = new Camara(parque.rusa.fBarrido).init();
+    var cam = new Camara(parque.rusa.fBarrido, parque.rusa.TNB).init();
     // Tiempo.
     var t = 0.0;
 

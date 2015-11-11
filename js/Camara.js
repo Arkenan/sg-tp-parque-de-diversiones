@@ -1,10 +1,10 @@
 var MouseHandler = require("./MouseHandler.js");
 var KeyboardHandler = require("./KeyboardHandler.js");
 
-module.exports = function(fMov){
+module.exports = function(fMov, fTNB){
     // Función de movimiento para la tercera cámara.
     this.fMov = fMov;
-
+    this.TNB = fTNB
     // Coordenadas polares de la posición o la dirección.
     this.setearPolares = function(vec){
         this.p = vec3.length(vec);
@@ -98,10 +98,15 @@ module.exports = function(fMov){
     var actualizarMR = function(cam){
         return function(t){
 
-            vec3.copy(cam.pos, cam.fMov((t*0.05)%1));
+            // Ubicacion del observador en coordenadas del carrito.
+            var normal = cam.TNB((t*0.05)%1)[1];
+            var pos = cam.fMov((t*0.05)%1);
+            vec3.scaleAndAdd(cam.pos, pos, normal,2.2);
+
+            // Traslacion de la montaña rusa en el parque.
             vec3.scale(cam.pos,cam.pos,0.4);
-            vec3.add(cam.pos,cam.pos,[-40,1,0]);
-            //mat4.scale(mrusa,mrusa,[0.4,0.4,0.4]);
+            vec3.add(cam.pos,cam.pos,[-40,0,0]);
+
             if (cam.mHandler.mouseDown){
                 cam.alfa -= cam.mHandler.deltaX() * cam.velocidadRot;
                 cam.beta -= cam.mHandler.deltaY() * cam.velocidadRot;
@@ -129,9 +134,6 @@ module.exports = function(fMov){
                 vec3.set(this.dir, 0,0,-1);
                 vec3.set(this.up, 0,1,0);
                 this.setearPolares(this.dir);
-                break;
-            case 2:
-
                 break;
         }
     }
