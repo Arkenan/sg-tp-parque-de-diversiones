@@ -45,7 +45,7 @@ module.exports = function(puntosMRusa){
         this.pileta.draw(mPileta);
 
         // Domo
-        mat4.scale(mDomo,mv,[100,100,100]);
+        mat4.scale(mDomo,mv,[80,80,80]);
         this.domo.draw(mDomo);
 
         // Piso.
