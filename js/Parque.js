@@ -5,6 +5,7 @@ var Sillas = require("./shapes/Sillas.js");
 var Plano = require("./shapes/Plano.js");
 var Rusa = require("./shapes/Rusa.js");
 var Pileta = require("./shapes/Pileta.js");
+var Domo = require("./shapes/Domo.js");
 
 module.exports = function(puntosMRusa){
 
@@ -14,12 +15,13 @@ module.exports = function(puntosMRusa){
         this.plano = new Plano(2,2).init(gl,program);
         this.rusa = new Rusa(puntosMRusa,20,300).init(gl,program);
         this.pileta = new Pileta().init(gl,program);
+        this.domo = new Domo().init(gl,program);
         return this;
     }
 
     this.draw = function(mv,t){
         var mVuelta = mat4.create(), mp = mat4.create(), mSillas = mat4.create(),
-        mrusa = mat4.create(), mPileta = mat4.create();
+        mrusa = mat4.create(), mPileta = mat4.create(), mDomo = mat4.create();
 
         // Vuelta al mundo.
         mat4.translate(mVuelta,mv,[-6,0,-18]);
@@ -42,9 +44,13 @@ module.exports = function(puntosMRusa){
         mat4.scale(mPileta,mPileta,[5,0.03,3]);
         this.pileta.draw(mPileta);
 
+        // Domo
+        mat4.scale(mDomo,mv,[100,100,100]);
+        this.domo.draw(mDomo);
+
         // Piso.
         mat4.translate(mp,mv,[-100,0,-100]);
-        mat4.scale(mp,mp,[200,1,200]);
+        mat4.scale(mp,mp,[300,1,300]);
         mat4.rotate(mp,mp,Math.PI/2,[1,0,0]);
         this.plano.draw(mp);
     }
