@@ -13,8 +13,8 @@ module.exports = function (vertex,fragment) {
             gl.getProgramInfoLog(program));
       return null;
     }
-
     gl.useProgram(program);
+
     program.aVertexPosition    = gl.getAttribLocation(program, "aVertexPosition");
     program.aVertexNormal      = gl.getAttribLocation(program, "aVertexNormal");
     program.uPMatrix           = gl.getUniformLocation(program, "uPMatrix");
