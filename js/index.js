@@ -5,7 +5,7 @@ var VertexShader = require('./shaders/VertexShader.js');
 var FragmentShader = require('./shaders/FragmentShader.js');
 var Program = require('./program/Program.js');
 //------------------------------------------------------------------------------------------------------------------------------
-var Camara = require("./Camara.js");
+var Camara = require("./camaras/Camara.js");
 var Parque = require("./Parque.js");
 var obtenerPuntos = require("./curves/puntos.js");
 //------------------------------------------------------------------------------------------------------------------------------
