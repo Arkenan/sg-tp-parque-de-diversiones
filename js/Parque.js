@@ -1,11 +1,11 @@
 // Parque de diversiones. Dibuja a las tres atracciones y al suelo.
 
-var Vuelta = require("./shapes/Vuelta.js");
-var Sillas = require("./shapes/Sillas.js");
-var Plano = require("./shapes/Plano.js");
-var Rusa = require("./shapes/Rusa.js");
-var Pileta = require("./shapes/Pileta.js");
-var Domo = require("./shapes/Domo.js");
+var Vuelta = require("./models/vuelta_al_mundo/Vuelta.js");
+var Sillas = require("./models/sillas_voladoras/Sillas.js");
+var Plano = require("./main_shapes/Plano.js");
+var Rusa = require("./models/montania_rusa/Rusa.js");
+var Pileta = require("./models/pileta/Pileta.js");
+var Domo = require("./models/domo/Domo.js");
 
 module.exports = function(puntosMRusa){
 
