@@ -4,8 +4,8 @@ var Cubo = require("../../../main_shapes/Cubo.js");
 module.exports = function(){
   this.cubo = null;
 
-  this.init = function(gl, program){
-    this.cubo = new Cubo().init(gl,program);
+  this.init = function(program){
+    this.cubo = new Cubo().init(program);
     return this;
   }
 

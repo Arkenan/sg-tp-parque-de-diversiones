@@ -75,13 +75,13 @@ module.exports = function(fForma, fBarrido, fTNB, cForma, cBarrido){
         return acu;
     }
 
-    this.init = function (gl,program){
+    this.init = function (program){
         // TODO filas y columnas.
         this.fijarPuntosEval();
         this.obtenerVertices();
         this.agregarTapas();
 
-        this.grid = new Grid(this.vertices, this.cBarrido + 2, this.cForma).init(gl,program);
+        this.grid = new Grid(this.vertices, this.cBarrido + 2, this.cForma).init(program);
         return this;
     }
 

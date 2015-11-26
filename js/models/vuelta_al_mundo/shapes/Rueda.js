@@ -6,14 +6,14 @@ var Cabina = require("./Cabina.js");
 module.exports = function(){
     this.theta = 2*Math.PI/15;
 
-    this.init = function(gl, program){
-        this.tri = new Triangulo().init(gl, program);
+    this.init = function(program){
+        this.tri = new Triangulo().init(program);
         // Paralelogramos para las uniones.
-        this.palo = new Cilindro(5,2).init(gl, program);
+        this.palo = new Cilindro(5,2).init(program);
         // Eje
-        this.eje = new Cilindro(30,2).init(gl, program);
+        this.eje = new Cilindro(30,2).init(program);
         // Cabinas.
-        this.cabina = new Cabina().init(gl, program);
+        this.cabina = new Cabina().init(program);
         return this;
     }
 

@@ -13,8 +13,8 @@ module.exports = function(ubicacion,altura){
   }
   this.fPerfil = fPerfil(this.vertices);
 
-  this.init = function(gl,program){
-    this.base = new Revolucion(this.fPerfil,9,30).init(gl,program);
+  this.init = function(program){
+    this.base = new Revolucion(this.fPerfil,9,30).init(program);
     return this;
   }
 

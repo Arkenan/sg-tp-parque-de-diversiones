@@ -14,9 +14,9 @@ module.exports = function(){
     }
     this.fPerfil = fPerfil(this.vertices);
 
-    this.init = function(gl, program){
-        this.supR = new Revolucion(this.fPerfil,6,30).init(gl,program);
-        this.silla = new Silla().init(gl, program);
+    this.init = function(program){
+        this.supR = new Revolucion(this.fPerfil,6,30).init(program);
+        this.silla = new Silla().init(program);
 
         return this;
     }

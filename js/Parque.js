@@ -9,13 +9,13 @@ var Domo = require("./models/domo/Domo.js");
 
 module.exports = function(puntosMRusa){
 
-    this.init = function(puntosMRusa,gl,program){
-        this.vuelta = new Vuelta().init(gl,program);
-        this.sillas = new Sillas().init(gl,program);
-        this.plano = new Plano(2,2).init(gl,program);
-        this.rusa = new Rusa(puntosMRusa,20,300).init(gl,program);
-        this.pileta = new Pileta().init(gl,program);
-        this.domo = new Domo().init(gl,program);
+    this.init = function(puntosMRusa,program){
+        this.vuelta = new Vuelta().init(program);
+        this.sillas = new Sillas().init(program);
+        this.plano = new Plano(2,2).init(program);
+        this.rusa = new Rusa(puntosMRusa,20,300).init(program);
+        this.pileta = new Pileta().init(program);
+        this.domo = new Domo().init(program);
         return this;
     }
 

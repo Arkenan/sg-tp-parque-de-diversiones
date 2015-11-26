@@ -62,7 +62,7 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
       return acu;
   }
 
-  this.init = function(gl, program){
+  this.init = function(program){
     // Importante: cForma, cBarrido > 1.
     this.pasoForma = 1/(this.cForma - 1);
     this.pasoBarrido = 1/(this.cBarrido - 1);
@@ -70,7 +70,7 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
     this.obtenerVertices();
     this.agregarTapas();
     // Sumo 2 filas a la grilla, una por cada tapa.
-    this.grid = new Grid(this.vertices,this.cBarrido + 2,this.cForma).init(gl, program);
+    this.grid = new Grid(this.vertices,this.cBarrido + 2,this.cForma).init(program);
     return this;
   }
 

@@ -4,9 +4,9 @@ var Cabeza = require("./shapes/CabezaSillas.js");
 
 module.exports = function(){
 
-    this.init = function(gl, program){
-        this.base = new Base().init(gl,program);
-        this.cabeza = new Cabeza().init(gl, program);
+    this.init = function(program){
+        this.base = new Base().init(program);
+        this.cabeza = new Cabeza().init(program);
         return this;
     }
 

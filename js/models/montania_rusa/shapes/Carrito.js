@@ -4,10 +4,10 @@ var Plano = require("../../../main_shapes/Plano.js");
 
 module.exports = function(){
 
-  this.init = function(gl, program){
-    this.cubo = new Cubo().init(gl,program);
-    this.silla = new SillaCarrito().init(gl, program);
-    this.plano = new Plano(2,2).init(gl, program);
+  this.init = function(program){
+    this.cubo = new Cubo().init(program);
+    this.silla = new SillaCarrito().init(program);
+    this.plano = new Plano(2,2).init(program);
     return this;
   }
 

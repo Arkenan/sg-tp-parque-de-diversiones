@@ -8,8 +8,8 @@ module.exports = function(){
     }
     this.fPerfil = fPerfil;
 
-    this.init = function(gl, program){
-        this.supR = new Revolucion(this.fPerfil,100,100).init(gl,program);
+    this.init = function(program){
+        this.supR = new Revolucion(this.fPerfil,100,100).init(program);
         return this;
     }
 

@@ -51,25 +51,25 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
     }
   }
 
-  this.init = function(gl, program){
+  this.init = function(program){
     this.curve = new CubicBezierConcatenator().init(this.control);
     this.fBarrido = fBarrido(this.curve);
     this.TNB = TNB(this.curve);
     this.ejeCentral = new BarridoGeneral(this.fForma, this.fBarrido,
-        this.TNB, this.cForma, this.cBarrido).init(gl,program);
+        this.TNB, this.cForma, this.cBarrido).init(program);
     this.rielD = new BarridoGeneral(this.fFormaRielD, this.fBarrido, this.TNB,
-        this.cForma, this.cBarrido).init(gl,program);
+        this.cForma, this.cBarrido).init(program);
     this.rielI = new BarridoGeneral(this.fFormaRielI, this.fBarrido, this.TNB,
-        this.cForma, this.cBarrido).init(gl,program);
+        this.cForma, this.cBarrido).init(program);
 
     this.columnas = [];
     var interpolated = this.curve.getInterpolated();
     for (var i = 0; i < interpolated.length; i++) {
-      this.columnas.push(new ColumnaRusa(interpolated[i],interpolated[i][1]).init(gl,program));
+      this.columnas.push(new ColumnaRusa(interpolated[i],interpolated[i][1]).init(program));
     }
 
-    this.carrito = new Carrito().init(gl,program);
-    this.durmiente = new Durmiente().init(gl,program);
+    this.carrito = new Carrito().init(program);
+    this.durmiente = new Durmiente().init(program);
     return this;
   }
 

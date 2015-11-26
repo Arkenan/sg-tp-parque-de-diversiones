@@ -28,11 +28,11 @@ module.exports = function(fPerfil,cPerfil, cRevol){
         }
     }
 
-    this.init = function(gl,program){
+    this.init = function(program){
         this.recPerfil = 1/(cPerfil-1);
         this.fijarPuntosEval();
         this.obtenerVertices();
-        this.grid = new Grid(this.vertices,cRevol,cPerfil).init(gl,program);
+        this.grid = new Grid(this.vertices,cRevol,cPerfil).init(program);
         return this;
     }
 

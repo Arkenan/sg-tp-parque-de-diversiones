@@ -1,4 +1,4 @@
-// Triángulos que forman la Vuelta al mundo. 
+// Triángulos que forman la Vuelta al mundo.
 
 var Cilindro = require("./Cilindro.js");
 
@@ -8,8 +8,8 @@ module.exports = function(){
     this.largo_op = 10*Math.sin(this.theta/2);
     this.d_op = 5*Math.cos(this.theta/2),0;
 
-    this.init = function(gl,program){
-        this.cil = new Cilindro(5,2).init(gl,program);
+    this.init = function(program){
+        this.cil = new Cilindro(5,2).init(program);
         return this;
     }
 

@@ -1,5 +1,5 @@
 module.exports = function() {
-  this.init = function(gl) {
+  this.init = function() {
     var fragment = gl.createShader(gl.FRAGMENT_SHADER);
     gl.shaderSource(fragment,[
       '#ifdef GL_ES',

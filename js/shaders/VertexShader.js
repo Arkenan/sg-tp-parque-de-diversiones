@@ -1,5 +1,5 @@
 module.exports = function () {
-  this.init = function(gl) {
+  this.init = function() {
     var vertex = gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertex,[
       'attribute vec3 aVertexPosition;',

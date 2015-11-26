@@ -17,21 +17,21 @@ window.onload = function(){
 
   try{
     // Setup del contexto gl.
-    var gl = scene.getContext('webgl') || scene.getContext('experimental-webgl');
-    gl.clearColor(0.1, 0.1, 0.2, 1.0);
-    gl.enable(gl.DEPTH_TEST);
-    gl.depthFunc(gl.LEQUAL);
-    gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
-    gl.viewport(0, 0, scene.width, scene.height);
+    global.gl = scene.getContext('webgl') || scene.getContext('experimental-webgl');
+    global.gl.clearColor(0.1, 0.1, 0.2, 1.0);
+    global.gl.enable(global.gl.DEPTH_TEST);
+    global.gl.depthFunc(global.gl.LEQUAL);
+    global.gl.clear(global.gl.COLOR_BUFFER_BIT | global.gl.DEPTH_BUFFER_BIT);
+    global.gl.viewport(0, 0, scene.width, scene.height);
 
     // Creación del programa con los shaders.
-    var vertex = new VertexShader().init(gl);
-    var fragment = new FragmentShader().init(gl);
-    var program  = new Program(vertex,fragment).init(gl);
+    var vertex = new VertexShader().init();
+    var fragment = new FragmentShader().init();
+    var program  = new Program(vertex,fragment).init();
 
     // Obtengo puntos para la montaña rusa.
     var puntosMRusa = obtenerPuntos();
-    var parque = new Parque().init(puntosMRusa, gl, program);
+    var parque = new Parque().init(puntosMRusa, program);
     // Matriz de vista.
     var mv = mat4.create();
     // Matriz de proyección perspectiva.
@@ -43,12 +43,12 @@ window.onload = function(){
 
     var drawScene = function (){
       t += 0.01;
-      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      global.gl.clear(global.gl.COLOR_BUFFER_BIT | global.gl.DEPTH_BUFFER_BIT);
 
       // Creamos y aplicamos Matriz de perspectiva.
       mat4.perspective(pMatrix, 45, scene.width/scene.height, 0.1, 100.0);
-      var u_proj_matrix = gl.getUniformLocation(program, "uPMatrix");
-      gl.uniformMatrix4fv(u_proj_matrix, false, pMatrix);
+      var u_proj_matrix = global.gl.getUniformLocation(program, "uPMatrix");
+      global.gl.uniformMatrix4fv(u_proj_matrix, false, pMatrix);
 
       // Vista
       cam.viewM(mv, t);
