@@ -1,7 +1,6 @@
 // Rueda de la Vuelta al mundo. Dibuja los triángulos y las cabinas.
-
-var Triangulo = require.main.require("./main_shapes/Triangulo.js");
-var Cilindro = require.main.require("./main_shapes/Cilindro.js");
+var Triangulo = require("../../../main_shapes/Triangulo.js");
+var Cilindro = require("../../../main_shapes/Cilindro.js");
 var Cabina = require("./Cabina.js");
 
 module.exports = function(){

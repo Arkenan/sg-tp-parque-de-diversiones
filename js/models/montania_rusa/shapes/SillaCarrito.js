@@ -1,4 +1,4 @@
-var Plano = require.main.require("./main_shapes/Plano.js");
+var Plano = require("../../../main_shapes/Plano.js");
 
 module.exports = function(){
 

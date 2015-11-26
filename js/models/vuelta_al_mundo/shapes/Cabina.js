@@ -1,4 +1,4 @@
-var Cubo = require.main.require("./main_shapes/Cubo.js");
+var Cubo = require("../../../main_shapes/Cubo.js");
 
 // Por ahora solo es un simple cubo. Si hay tiempo, se le darán detalles aquí.
 module.exports = function(){

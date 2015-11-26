@@ -1,9 +1,9 @@
 // Montaña Rusa.
 
-var BarridoGeneral  = require.main.require("./main_shapes/BarridoGeneral.js");
+var BarridoGeneral  = require("../../main_shapes/BarridoGeneral.js");
 var ColumnaRusa  = require("./shapes/ColumnaRusa.js");
 var Carrito = require("./shapes/Carrito.js");
-var CubicBezierConcatenator  = require.main.require("./curves/CubicBezierConcatenator.js");
+var CubicBezierConcatenator  = require("../../curves/CubicBezierConcatenator.js");
 var Durmiente = require("./shapes/Durmiente.js");
 
 module.exports = function(puntosMRusa, cForma, cBarrido){

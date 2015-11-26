@@ -1,4 +1,4 @@
-var BaseSillas = require.main.require("./main_shapes/Revolucion.js");
+var Revolucion = require("../../../main_shapes/Revolucion.js");
 
 module.exports = function(ubicacion,altura){
   this.ubicacion = ubicacion;

@@ -1,5 +1,5 @@
 // Placas de base de la Vuelta al Mundo.
-var Barrido = require.main.require("./main_shapes/Barrido");
+var Barrido = require("../../../main_shapes/Barrido");
 
 module.exports = function(){
   this.supB = null;

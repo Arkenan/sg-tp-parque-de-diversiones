@@ -1,5 +1,5 @@
-var Barrido = require.main.require("./main_shapes/Barrido");
-var CubicBezierConcatenator  = require.main.require("./curves/CubicBezierConcatenator.js");
+var Barrido = require("../../main_shapes/Barrido");
+var CubicBezierConcatenator  = require("../../curves/CubicBezierConcatenator.js");
 
 module.exports = function(){
   this.supB = null;

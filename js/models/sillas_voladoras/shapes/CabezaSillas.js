@@ -1,4 +1,4 @@
-var Revolucion = require.main.require("./main_shapes/Revolucion.js");
+var Revolucion = require("../../../main_shapes/Revolucion.js");
 var Silla = require("./SillaSuspendida.js");
 
 module.exports = function(){

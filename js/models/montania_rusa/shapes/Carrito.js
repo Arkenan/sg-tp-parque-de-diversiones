@@ -1,6 +1,6 @@
-var Cubo = require.main.require("./main_shapes/Cubo.js");
+var Cubo = require("../../../main_shapes/Cubo.js");
 var SillaCarrito = require("../shapes/SillaCarrito.js");
-var Plano = require.main.require("./main_shapes/Plano.js");
+var Plano = require("../../../main_shapes/Plano.js");
 
 module.exports = function(){
 
