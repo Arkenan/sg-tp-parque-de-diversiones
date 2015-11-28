@@ -46,7 +46,7 @@ module.exports = function(puntosMRusa){
 
         // Domo
         mat4.scale(mDomo,mv,[80,80,80]);
-        this.domo.draw(mDomo);
+        //this.domo.draw(mDomo);
 
         // Piso.
         mat4.translate(mp,mv,[-100,0,-100]);

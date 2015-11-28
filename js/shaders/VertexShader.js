@@ -4,6 +4,7 @@ module.exports = function () {
     gl.shaderSource(vertex,[
       'attribute vec3 aVertexPosition;',
       'attribute vec3 aVertexNormal;',
+      'attribute vec3 aVertexColor;',
 
       'uniform mat4 uMVMatrix;',
       'uniform mat4 uPMatrix;',
@@ -11,6 +12,8 @@ module.exports = function () {
 
       'varying vec3 vNormal;',
       'varying vec3 vEyeVec;',
+
+      'varying highp vec4 vColor;',
 
       'void main(void){',
         //Transformed vertex position
@@ -22,6 +25,7 @@ module.exports = function () {
         //Vector Eye
         'vEyeVec = -vec3(vertex.xyz);',
         'gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);',
+        'vColor = vec4(aVertexColor,1.0);',
       '}'
     ].join('\n'));
     gl.compileShader(vertex);
