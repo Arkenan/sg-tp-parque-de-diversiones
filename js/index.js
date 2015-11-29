@@ -34,7 +34,7 @@ window.onload = function(){
     var puntosMRusa = obtenerPuntos();
     //var parque = new Parque().init(puntosMRusa, program);
     // Matriz de vista.
-    var mv = mat4.create();
+    var mv = mat4.create(), vRot = mat3.create();
     // Matriz de proyección perspectiva.
     var pMatrix = mat4.create();
 
@@ -43,7 +43,7 @@ window.onload = function(){
     //var cam = new Camara(parque.rusa.fBarrido, parque.rusa.TNB).init();
     // Tiempo.
     var t = 0.0;
-    var eye = vec3.fromValues(0,0,-5), center = vec3.fromValues(0,0,0),
+    var eye = vec3.fromValues(0,0,5), center = vec3.fromValues(0,0,0),
     up = vec3.fromValues(0,1,0);
 
     var plano = new Plano(2,2).init(program);
@@ -61,7 +61,13 @@ window.onload = function(){
       //cam.viewM(mv, t);
 
       mat4.lookAt(mv,eye,center,up);
-      
+
+      // Esta es la matriz de vista. Sacamos traslación y la pasamos al shader.
+      mat3.fromMat4(vRot, mv);
+      var u_view_matrix = global.gl.getUniformLocation(program, "uVR");
+      global.gl.uniformMatrix3fv(u_view_matrix, false, vRot);
+
+      mat4.rotate(mv,mv,t,[0,1,0]);
       // Dibujo del parque de diversiones.
       //parque.draw(mv,t);
       plano.draw(mv);

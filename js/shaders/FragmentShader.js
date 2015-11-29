@@ -6,6 +6,9 @@ module.exports = function() {
       'precision highp float;',
       '#endif',
 
+      // Rotación de la vista, para cambiar la dirección de la luz.
+      'uniform mat3 uVR;',
+
       'uniform float uShininess;       //shininess',
       'uniform vec3 uLightDirection;   //light direction',
 
@@ -24,7 +27,7 @@ module.exports = function() {
 
       'void main(void) {',
 
-        'vec3 L = normalize(uLightDirection);',
+        'vec3 L = normalize(uVR * uLightDirection).xyz;',
         'vec3 N = normalize(vNormal);',
 
         '//Lamberts cosine law',
