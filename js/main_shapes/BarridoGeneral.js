@@ -45,9 +45,8 @@ module.exports = function(fForma, fBarrido, fTNB, cForma, cBarrido){
             o[1] + xyz[0]*B[1] + xyz[1]*N[1],
             o[2] + xyz[0]*B[2] + xyz[1]*N[2] ];
           this.vertices = this.vertices.concat( p );
-          this.normales = this.normales.concat(xyz);
+          this.normales = this.normales.concat(p);
         }
-
       }
     }
 
@@ -60,7 +59,10 @@ module.exports = function(fForma, fBarrido, fTNB, cForma, cBarrido){
       // Agrego cForma veces al inicial y al final (dos filas más de grilla).
       for (i = 0; i < cForma; i++){
           this.vertices = puntoInicial.concat(this.vertices);
+          this.normales = puntoInicial.concat(this.normales);
+
           this.vertices = this.vertices.concat(puntoFinal);
+          this.normales = this.normales.concat(puntoFinal);
       }
     }
     this.promedio = function(vertices){
