@@ -1,6 +1,6 @@
 // Triángulos que forman la Vuelta al mundo.
 
-var Cilindro = require("./Cilindro.js");
+var Cilindro = require("../../../main_shapes/Cilindro.js");
 
 module.exports = function(){
     this.cil = null;
