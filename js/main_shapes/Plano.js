@@ -1,31 +1,27 @@
-// Plano en base a grilla. Estructura más sencilla.
+/* Este es el plano doble. por ahí convenga simplemente hacer un cubo de poco
+** grosor para evitar problemas numéricos. Por el momento arregla el tema de las
+** normales */
 
-var Grid = require('./Grid.js');
+var PlanoS = require('./PlanoSimple.js');
 
-module.exports = function(_rows,_cols){
-  this.rows = _rows;
-  this.cols = _cols;
+module.exports = function(rows, cols){
+  this.rows = rows;
+  this.cols = cols;
 
   this.init = function(program){
-    this.vertices = [];
-    this.normales = [];
-    for (var y = 0.0; y < this.rows; y++){
-      for (var x = 0.0; x < this.cols; x++){
-        this.vertices.push(x);
-        this.vertices.push(y);
-        this.vertices.push(0);
-
-        this.normales.push(0);
-        this.normales.push(0);
-        this.normales.push(1);
-      }
-    }
-
-    this.grid = new Grid(this.vertices, this.normales, this.rows, this.cols).init(program);
+    // Crea dos planos simples.
+    this.adelante = new PlanoS(rows,cols).init(program);
+    this.atras = new PlanoS(rows,cols).init(program);
     return this;
   }
 
   this.draw = function(mv){
-    this.grid.draw(mv);
+    this.adelante.draw(mv);
+
+    var mAT = mat4.create();
+    mat4.translate(mAT, mv, [1,0,-0.01]);
+    mat4.rotate(mAT, mAT, Math.PI, [0,1,0]);
+    this.atras.draw(mAT);
   }
+
 }
