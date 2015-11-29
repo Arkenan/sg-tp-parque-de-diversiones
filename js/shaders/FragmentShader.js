@@ -27,7 +27,7 @@ module.exports = function() {
 
       'void main(void) {',
 
-        'vec3 L = normalize(uVR * uLightDirection).xyz;',
+        'vec3 L = normalize(uVR * uLightDirection);',
         'vec3 N = normalize(vNormal);',
 
         '//Lamberts cosine law',

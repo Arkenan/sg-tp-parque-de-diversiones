@@ -8,7 +8,7 @@ var Program = require('./program/Program.js');
 var Camara = require("./camaras/Camara.js");
 var Parque = require("./Parque.js");
 var obtenerPuntos = require("./curves/puntos.js");
-var Plano = require("./main_shapes/Plano.js");
+var Cilindro = require("./main_shapes/Cilindro.js");
 //------------------------------------------------------------------------------------------------------------------------------
 window.onload = function(){
   var scene = document.createElement('canvas');
@@ -48,7 +48,7 @@ window.onload = function(){
     var eye = vec3.fromValues(0,0,5), center = vec3.fromValues(0,0,0),
     up = vec3.fromValues(0,1,0);
 
-    var plano = new Plano(2,2).init(program);
+    var cil = new Cilindro(30,2).init(program);
 
     var drawScene = function (){
       t += 0.01;
@@ -69,11 +69,12 @@ window.onload = function(){
       var u_view_matrix = global.gl.getUniformLocation(program, "uVR");
       global.gl.uniformMatrix3fv(u_view_matrix, false, vRot);
 
-      mat4.rotate(mv,mv,t,[0,1,0]);
+      mat4.rotate(mv,mv,t/2.0,[0,1,0]);
+      mat4.translate(mv,mv,[0,0,-0.5]);
       //mat3.rotate(mn,mn,t,[0,1,0]);
       // Dibujo del parque de diversiones.
       //parque.draw(mv,t);
-      plano.draw(mv);
+      cil.draw(mv);
 
     }
     setInterval(drawScene, 10);
