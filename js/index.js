@@ -61,7 +61,7 @@ window.onload = function(){
       //cam.viewM(mv, t);
 
       mat4.lookAt(mv,eye,center,up);
-
+      
       // Dibujo del parque de diversiones.
       //parque.draw(mv,t);
       plano.draw(mv);

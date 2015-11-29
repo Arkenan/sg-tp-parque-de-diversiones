@@ -17,6 +17,8 @@ module.exports = function() {
       'uniform vec4 uMaterialDiffuse;  //object diffuse property',
       'uniform vec4 uMaterialSpecular; //object specular property',
 
+      'varying highp vec4 vColor;',
+
       'varying vec3 vNormal;',
       'varying vec3 vEyeVec;',
 

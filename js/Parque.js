@@ -26,23 +26,23 @@ module.exports = function(puntosMRusa){
         // Vuelta al mundo.
         mat4.translate(mVuelta,mv,[-6,0,-18]);
         mat4.rotate(mVuelta,mVuelta,-20*Math.PI/180,[0,1,0])
-        this.vuelta.draw(mVuelta,t);
+        //this.vuelta.draw(mVuelta,t);
 
         // Sillas Voladoras.
         mat4.translate(mSillas,mv,[15.6,0,8]);
         mat4.scale(mSillas,mSillas,[1.25,1.25,1.25])
-        this.sillas.draw(mSillas,t);
+        //this.sillas.draw(mSillas,t);
 
         // Montaña Rusa.
         mat4.translate(mrusa,mv,[-40,0,0]);
         mat4.scale(mrusa,mrusa,[0.4,0.4,0.4]);
-        this.rusa.draw(mrusa,t);
+        //this.rusa.draw(mrusa,t);
 
         // Pileta.
         mat4.translate(mPileta,mv,[-28,0,0]);
         mat4.rotate(mPileta,mPileta,Math.PI/2,[0,1,0]);
         mat4.scale(mPileta,mPileta,[5,0.03,3]);
-        this.pileta.draw(mPileta);
+        //this.pileta.draw(mPileta);
 
         // Domo
         mat4.scale(mDomo,mv,[80,80,80]);
