@@ -31,9 +31,10 @@ window.onload = function(){
     var fragment = new FragmentShader().init();
     var program  = new Program(vertex,fragment).init();
 
-    // Obtengo puntos para la montaña rusa.
+    // Obtengo puntos para la montaña rusa y creo el parque.
     var puntosMRusa = obtenerPuntos();
     var parque = new Parque().init(puntosMRusa, program);
+
     // Matriz de vista.
     var mv = mat4.create(), vRot = mat3.create();
     // Matriz de transformación de normales.
@@ -41,15 +42,11 @@ window.onload = function(){
     // Matriz de proyección perspectiva.
     var pMatrix = mat4.create();
 
-    // Por el momento saco la camara.
-    // Creación de cámara. Por ahora le paso un moc de función y su derivada.
+    // Creación de la cámara.
     var cam = new Camara(parque.rusa.fBarrido, parque.rusa.TNB).init();
+
     // Tiempo.
     var t = 0.0;
-    var eye = vec3.fromValues(0,0,5), center = vec3.fromValues(0,0,0),
-    up = vec3.fromValues(0,1,0);
-
-    //var cil = new Domo().init(program);
 
     var drawScene = function (){
       t += 0.01;
@@ -70,7 +67,6 @@ window.onload = function(){
 
       // Dibujo del parque de diversiones.
       parque.draw(mv,t);
-      //cil.draw(mv);
 
     }
     setInterval(drawScene, 10);

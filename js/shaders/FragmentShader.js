@@ -45,7 +45,7 @@ module.exports = function() {
         'if(lambertTerm > 0.0){',
           'Id = uLightDiffuse * uMaterialDiffuse * lambertTerm; //add diffuse term',
           'vec3 E = normalize(vEyeVec);',
-          'vec3 R = reflect(L, N);',
+          'vec3 R = reflect(-L, N);',
           'float specular = pow( max(dot(R, E), 0.0), uShininess);',
           'Is = uLightSpecular * uMaterialSpecular * specular; //add specular term',
         '}',
