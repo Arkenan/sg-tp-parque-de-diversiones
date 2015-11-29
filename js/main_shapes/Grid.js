@@ -77,9 +77,12 @@ module.exports = function (vertices, normales, rows, cols) {
     var u_model_view_matrix = global.gl.getUniformLocation(this.program, "uMVMatrix");
     global.gl.uniformMatrix4fv(u_model_view_matrix, false, mv);
 
-    // Por ahora uso como matriz de normales a la identidad...
+    // Matriz de transformación de normales mn.
+    var mn = mat4.create();
+    mat4.invert(mn, mv);
+    mat4.transpose(mn,mn);
     var u_normal_matrix = global.gl.getUniformLocation(this.program, "uNMatrix")
-    global.gl.uniformMatrix4fv(u_normal_matrix, false, mat4.create());
+    global.gl.uniformMatrix4fv(u_normal_matrix, false, mn);
 
     global.gl.bindBuffer(global.gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
     // Dibujamos.

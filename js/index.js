@@ -35,6 +35,8 @@ window.onload = function(){
     //var parque = new Parque().init(puntosMRusa, program);
     // Matriz de vista.
     var mv = mat4.create(), vRot = mat3.create();
+    // Matriz de transformación de normales.
+    var mn = mat4.create();
     // Matriz de proyección perspectiva.
     var pMatrix = mat4.create();
 
@@ -68,6 +70,7 @@ window.onload = function(){
       global.gl.uniformMatrix3fv(u_view_matrix, false, vRot);
 
       mat4.rotate(mv,mv,t,[0,1,0]);
+      //mat3.rotate(mn,mn,t,[0,1,0]);
       // Dibujo del parque de diversiones.
       //parque.draw(mv,t);
       plano.draw(mv);
