@@ -33,7 +33,7 @@ window.onload = function(){
 
     // Obtengo puntos para la montaña rusa.
     var puntosMRusa = obtenerPuntos();
-    //var parque = new Parque().init(puntosMRusa, program);
+    var parque = new Parque().init(puntosMRusa, program);
     // Matriz de vista.
     var mv = mat4.create(), vRot = mat3.create();
     // Matriz de transformación de normales.
@@ -49,7 +49,7 @@ window.onload = function(){
     var eye = vec3.fromValues(0,0,5), center = vec3.fromValues(0,0,0),
     up = vec3.fromValues(0,1,0);
 
-    var cil = new Domo().init(program);
+    //var cil = new Domo().init(program);
 
     var drawScene = function (){
       t += 0.01;
@@ -74,8 +74,8 @@ window.onload = function(){
       mat4.translate(mv,mv,[0,0,-0.5]);
       //mat3.rotate(mn,mn,t,[0,1,0]);
       // Dibujo del parque de diversiones.
-      //parque.draw(mv,t);
-      cil.draw(mv);
+      parque.draw(mv,t);
+      //cil.draw(mv);
 
     }
     setInterval(drawScene, 10);

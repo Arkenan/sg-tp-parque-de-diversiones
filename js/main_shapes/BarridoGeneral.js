@@ -14,6 +14,7 @@ module.exports = function(fForma, fBarrido, fTNB, cForma, cBarrido){
     this.pForma = [];
     this.pBarrido = [];
     this.vertices = [];
+    this.normales = [];
 
     this.fijarPuntosEval = function(){
       for (var i = 0; i < cForma; i ++){
@@ -44,6 +45,7 @@ module.exports = function(fForma, fBarrido, fTNB, cForma, cBarrido){
             o[1] + xyz[0]*B[1] + xyz[1]*N[1],
             o[2] + xyz[0]*B[2] + xyz[1]*N[2] ];
           this.vertices = this.vertices.concat( p );
+          this.normales = this.normales.concat(xyz);
         }
 
       }
@@ -81,7 +83,7 @@ module.exports = function(fForma, fBarrido, fTNB, cForma, cBarrido){
         this.obtenerVertices();
         this.agregarTapas();
 
-        this.grid = new Grid(this.vertices, null, this.cBarrido + 2, this.cForma).init(program);
+        this.grid = new Grid(this.vertices, this.normales, this.cBarrido + 2, this.cForma).init(program);
         return this;
     }
 

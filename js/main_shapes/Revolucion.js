@@ -30,7 +30,7 @@ module.exports = function(fPerfil,cPerfil, cRevol){
                 this.normales = this.normales.concat(normal);
             }
         }
-        console.log(this.normales);
+        //console.log(this.normales);
     }
 
     this.init = function(program){
