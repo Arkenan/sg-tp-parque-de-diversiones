@@ -26,7 +26,7 @@ module.exports = function() {
         'vec3 N = normalize(vNormal);',
 
         '//Lamberts cosine law',
-        'float lambertTerm = dot(N,-L);',
+        'float lambertTerm = dot(N,L);',
 
         '//Ambient Term',
         'vec4 Ia = uLightAmbient * uMaterialAmbient;',

@@ -70,7 +70,7 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
     this.obtenerVertices();
     this.agregarTapas();
     // Sumo 2 filas a la grilla, una por cada tapa.
-    this.grid = new Grid(this.vertices,this.cBarrido + 2,this.cForma).init(program);
+    this.grid = new Grid(this.vertices, null, this.cBarrido + 2, this.cForma).init(program);
     return this;
   }
 

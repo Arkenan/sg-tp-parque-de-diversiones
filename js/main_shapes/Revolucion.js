@@ -32,7 +32,7 @@ module.exports = function(fPerfil,cPerfil, cRevol){
         this.recPerfil = 1/(cPerfil-1);
         this.fijarPuntosEval();
         this.obtenerVertices();
-        this.grid = new Grid(this.vertices,cRevol,cPerfil).init(program);
+        this.grid = new Grid(this.vertices, null, cRevol, cPerfil).init(program);
         return this;
     }
 
