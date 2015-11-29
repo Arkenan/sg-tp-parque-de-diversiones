@@ -9,6 +9,7 @@ var Camara = require("./camaras/Camara.js");
 var Parque = require("./Parque.js");
 var obtenerPuntos = require("./curves/puntos.js");
 var Cilindro = require("./main_shapes/Cilindro.js");
+var Domo = require('./models/domo/Domo.js');
 //------------------------------------------------------------------------------------------------------------------------------
 window.onload = function(){
   var scene = document.createElement('canvas');
@@ -48,7 +49,7 @@ window.onload = function(){
     var eye = vec3.fromValues(0,0,5), center = vec3.fromValues(0,0,0),
     up = vec3.fromValues(0,1,0);
 
-    var cil = new Cilindro(30,2).init(program);
+    var cil = new Domo().init(program);
 
     var drawScene = function (){
       t += 0.01;
