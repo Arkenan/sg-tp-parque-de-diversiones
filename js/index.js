@@ -42,34 +42,37 @@ window.onload = function(){
     // Matriz de proyección perspectiva.
     var pMatrix = mat4.create();
 
+    // Creamos y pasamos al shader Matriz de perspectiva.
+    mat4.perspective(pMatrix, 45, scene.width/scene.height, 0.1, 100.0);
+    var u_proj_matrix = global.gl.getUniformLocation(program, "uPMatrix");
+    global.gl.uniformMatrix4fv(u_proj_matrix, false, pMatrix);
+
     // Creación de la cámara.
     var cam = new Camara(parque.rusa.fBarrido, parque.rusa.TNB).init();
 
     // Tiempo.
     var t = 0.0;
 
-    var drawScene = function (){
+    function drawScene() {
+      requestAnimationFrame(drawScene);
+
       t += 0.01;
       global.gl.clear(global.gl.COLOR_BUFFER_BIT | global.gl.DEPTH_BUFFER_BIT);
-
-      // Creamos y aplicamos Matriz de perspectiva.
-      mat4.perspective(pMatrix, 45, scene.width/scene.height, 0.1, 100.0);
-      var u_proj_matrix = global.gl.getUniformLocation(program, "uPMatrix");
-      global.gl.uniformMatrix4fv(u_proj_matrix, false, pMatrix);
 
       // Vista
       cam.viewM(mv, t);
 
-      // Esta es la matriz de vista. Sacamos traslación y la pasamos al shader.
+      // Pasamos al shader la rotación de la vista para ubicar la luz.
       mat3.fromMat4(vRot, mv);
       var u_view_matrix = global.gl.getUniformLocation(program, "uVR");
       global.gl.uniformMatrix3fv(u_view_matrix, false, vRot);
 
       // Dibujo del parque de diversiones.
       parque.draw(mv,t);
-
     }
-    setInterval(drawScene, 10);
+
+    drawScene();
+
   } catch(e) {
     console.log(e);
   }
