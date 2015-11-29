@@ -29,7 +29,7 @@ module.exports = function (vertex,fragment) {
     program.uLightSpecular     = global.gl.getUniformLocation(program, "uLightSpecular");
     program.uLightDirection    = global.gl.getUniformLocation(program, "uLightDirection");
 
-    global.gl.uniform3f(program.uLightDirection, 0.0, 0.0, 1.0);
+    global.gl.uniform3f(program.uLightDirection, 0.0, 1.0, 2.0);
     global.gl.uniform4fv(program.uLightAmbient, [0.01,0.01,0.01,1.0]);
     global.gl.uniform4fv(program.uLightDiffuse,  [1.0,1.0,1.0,1.0]);
     global.gl.uniform4fv(program.uLightSpecular,  [1.0,1.0,1.0,1.0]);
