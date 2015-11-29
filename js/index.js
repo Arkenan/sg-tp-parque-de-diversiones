@@ -43,7 +43,7 @@ window.onload = function(){
 
     // Por el momento saco la camara.
     // Creación de cámara. Por ahora le paso un moc de función y su derivada.
-    //var cam = new Camara(parque.rusa.fBarrido, parque.rusa.TNB).init();
+    var cam = new Camara(parque.rusa.fBarrido, parque.rusa.TNB).init();
     // Tiempo.
     var t = 0.0;
     var eye = vec3.fromValues(0,0,5), center = vec3.fromValues(0,0,0),
@@ -61,18 +61,13 @@ window.onload = function(){
       global.gl.uniformMatrix4fv(u_proj_matrix, false, pMatrix);
 
       // Vista
-      //cam.viewM(mv, t);
-
-      mat4.lookAt(mv,eye,center,up);
+      cam.viewM(mv, t);
 
       // Esta es la matriz de vista. Sacamos traslación y la pasamos al shader.
       mat3.fromMat4(vRot, mv);
       var u_view_matrix = global.gl.getUniformLocation(program, "uVR");
       global.gl.uniformMatrix3fv(u_view_matrix, false, vRot);
 
-      mat4.rotate(mv,mv,t/2.0,[0,1,0]);
-      mat4.translate(mv,mv,[0,0,-0.5]);
-      //mat3.rotate(mn,mn,t,[0,1,0]);
       // Dibujo del parque de diversiones.
       parque.draw(mv,t);
       //cil.draw(mv);
