@@ -61,4 +61,14 @@ module.exports = function(){
       }
       return this.curves[curveNumber].generate_d2(tCurve);
   }
+
+  this.TNB = function(t){
+    var normal = vec3.create(), binormal = vec3.create();
+    var tg = this.generate_d1(t);
+    vec3.normalize(tg, tg);
+    vec3.cross(binormal, tg, [0,1,0]);
+    vec3.normalize(binormal, binormal);
+    vec3.cross(normal,binormal,tg);
+    return [tg, normal, binormal];
+  }
 }

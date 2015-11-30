@@ -36,16 +36,26 @@ module.exports = function(fForma, fBarrido, fTNB, cForma, cBarrido){
         var B = tnb[2];
         var N = tnb[1];
 
+        var n, p; // normal y punto.
+
         for (var j = 0; j < this.cForma; j++){
           // Punto en coordenadas de la forma.
           var xyz = fForma(this.pForma[j]);
           // Punto en coordenadas intrínsecas a la superficie.
+          var n = [
+            xyz[0]*B[0] + xyz[1]*N[0],
+            xyz[0]*B[1] + xyz[1]*N[1],
+            xyz[0]*B[2] + xyz[1]*N[2]
+          ];
+
           var p = [
-            o[0] + xyz[0]*B[0] + xyz[1]*N[0],
-            o[1] + xyz[0]*B[1] + xyz[1]*N[1],
-            o[2] + xyz[0]*B[2] + xyz[1]*N[2] ];
-          this.vertices = this.vertices.concat( p );
-          this.normales = this.normales.concat(p);
+            o[0] + n[0],
+            o[1] + n[1],
+            o[2] + n[2]
+          ];
+
+          this.vertices = this.vertices.concat(p);
+          this.normales = this.normales.concat(n);
         }
       }
     }

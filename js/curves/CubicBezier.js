@@ -73,4 +73,16 @@ module.exports = function(){
     var z = (this.control[0][2] * b1_d2(t)) + (3 * this.control[1][2] * b2_d2(t)) + (3 * this.control[2][2] * b3_d2(t)) + (this.control[3][2] * b4_d2(t));
     return [x,y,z];
   }
+
+  // Devuelve vectores Tangente, Normal y Binormal.
+  this.TNB = function(t){
+    var normal = vec3.create(), binormal = vec3.create();
+    var tg = this.generate_d1(t);
+    vec3.normalize(tg, tg);
+    vec3.cross(binormal, tg, [0,1,0]);
+    vec3.normalize(binormal, binormal);
+    vec3.cross(normal,binormal,tg);
+    return [tg, normal, binormal];
+  }
+
 }

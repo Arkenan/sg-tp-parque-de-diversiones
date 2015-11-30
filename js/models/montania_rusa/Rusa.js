@@ -20,16 +20,34 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
 
   this.fFormaRielD = function(t){
       var ang = t*2*Math.PI;
-      var x = 1 + Math.cos(ang)/4;
-      var y = 0.5 + Math.sin(ang)/4;
+      var x = Math.cos(ang)/4;
+      var y = Math.sin(ang)/4;
       return [x, y, 0];
   }
 
   this.fFormaRielI = function(t){
       var ang = t*2*Math.PI;
-      var x = - 1 + Math.cos(ang)/4;
-      var y = 0.5 + Math.sin(ang)/4;
+      var x = Math.cos(ang)/4;
+      var y = Math.sin(ang)/4;
       return [x, y, 0];
+  }
+
+  // toma una curva y la desplaza según un deltaXY intrínseco.
+  var recorridoDesplazado = function(curva, deltaXY){
+    return function(t){
+      var gen = curva.generate(t);
+      var tnb = curva.TNB(t);
+
+      // Vectores normal y binormal.
+      var N = tnb[1];
+      var B = tnb[2];
+
+      return [
+        gen[0] + B[0]*deltaXY[0] + N[0]*deltaXY[1],
+        gen[1] + B[1]*deltaXY[0] + N[1]*deltaXY[1],
+        gen[2] + B[2]*deltaXY[0] + N[2]*deltaXY[1]
+      ]
+    }
   }
 
   var fBarrido = function(curve){
@@ -41,13 +59,7 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
   // devuelve en orden: [Tangente, normal, binormal].
   var TNB = function(curve){
       return function(t){
-        var normal = vec3.create(), binormal = vec3.create();
-        var tg = curve.generate_d1(t);
-        vec3.normalize(tg, tg);
-        vec3.cross(binormal, tg, [0,1,0]);
-        vec3.normalize(binormal, binormal);
-        vec3.cross(normal,binormal,tg);
-        return [tg, normal, binormal];
+        return curve.TNB(t);
     }
   }
 
@@ -57,9 +69,11 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
     this.TNB = TNB(this.curve);
     this.ejeCentral = new BarridoGeneral(this.fForma, this.fBarrido,
         this.TNB, this.cForma, this.cBarrido).init(program);
-    this.rielD = new BarridoGeneral(this.fFormaRielD, this.fBarrido, this.TNB,
+    var barridoD = recorridoDesplazado(this.curve, [1, 0.5]);
+    this.rielD = new BarridoGeneral(this.fFormaRielD, barridoD, this.TNB,
         this.cForma, this.cBarrido).init(program);
-    this.rielI = new BarridoGeneral(this.fFormaRielI, this.fBarrido, this.TNB,
+    var barridoI = recorridoDesplazado(this.curve, [-1, 0.5]);
+    this.rielI = new BarridoGeneral(this.fFormaRielI, barridoI, this.TNB,
         this.cForma, this.cBarrido).init(program);
 
     this.columnas = [];
