@@ -53,7 +53,7 @@ window.onload = function(){
     // Tiempo.
     var t = 0.0;
 
-    function drawScene() {
+    (function drawScene() {
       requestAnimationFrame(drawScene);
 
       t += 0.01;
@@ -69,9 +69,7 @@ window.onload = function(){
 
       // Dibujo del parque de diversiones.
       parque.draw(mv,t);
-    }
-
-    drawScene();
+    })();
 
   } catch(e) {
     console.log(e);

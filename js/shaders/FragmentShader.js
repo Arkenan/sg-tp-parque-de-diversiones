@@ -9,16 +9,16 @@ module.exports = function() {
       // Rotación de la vista, para cambiar la dirección de la luz.
       'uniform mat3 uVR;',
 
-      'uniform float uShininess;       //shininess',
-      'uniform vec3 uLightDirection;   //light direction',
+      'uniform float uShininess;       // shininess',
+      'uniform vec3 uLightDirection;   // light direction',
 
-      'uniform vec4 uLightAmbient;     //light ambient property',
-      'uniform vec4 uLightDiffuse;     //light diffuse property',
-      'uniform vec4 uLightSpecular;    //light specular property',
+      'uniform vec4 uLightAmbient;     // light ambient property',
+      'uniform vec4 uLightDiffuse;     // light diffuse property',
+      'uniform vec4 uLightSpecular;    // light specular property',
 
-      'uniform vec4 uMaterialAmbient;  //object ambient property',
-      'uniform vec4 uMaterialDiffuse;  //object diffuse property',
-      'uniform vec4 uMaterialSpecular; //object specular property',
+      'uniform vec4 uMaterialAmbient;  // object ambient property',
+      'uniform vec4 uMaterialDiffuse;  // object diffuse property',
+      'uniform vec4 uMaterialSpecular; // object specular property',
 
       'varying highp vec4 vColor;',
 
@@ -30,16 +30,16 @@ module.exports = function() {
         'vec3 L = normalize(uVR * uLightDirection);',
         'vec3 N = normalize(vNormal);',
 
-        '//Lamberts cosine law',
+        // Lamberts cosine law
         'float lambertTerm = dot(N,L);',
 
-        '//Ambient Term',
+        // Ambient Term
         'vec4 Ia = uLightAmbient * uMaterialAmbient;',
 
-        '//Diffuse Term',
+        // Diffuse Term
         'vec4 Id = vec4(0.0,0.0,0.0,1.0);',
 
-        '//Specular Term',
+        // Specular Term
         'vec4 Is = vec4(0.0,0.0,0.0,1.0);',
 
         'if(lambertTerm > 0.0){',
@@ -50,7 +50,7 @@ module.exports = function() {
           'Is = uLightSpecular * uMaterialSpecular * specular; //add specular term',
         '}',
 
-        '//Final color',
+        // Final color
         'vec4 finalColor = Ia + Id + Is;',
         'finalColor.a = 1.0;',
 
