@@ -54,12 +54,12 @@ module.exports = function () {
           global.gl.shaderSource(this.vshader,this.vshaderCode.join('\n'));
           global.gl.compileShader(this.vshader);
           if(!global.gl.getShaderParameter(this.vshader, global.gl.COMPILE_STATUS)){
-            throw "Error compiling VertexShader: " + global.gl.getShaderInfoLog(this.vshader);
+            throw "Error compiling VertexShader: \n" + global.gl.getShaderInfoLog(this.vshader);
           }
           global.gl.shaderSource(this.fshader,this.fshaderCode.join('\n'));
           global.gl.compileShader(this.fshader);
           if(!global.gl.getShaderParameter(this.fshader, global.gl.COMPILE_STATUS)){
-            throw "Error compiling FragmentShader: " + global.gl.getShaderInfoLog(this.fshader);
+            throw "Error compiling FragmentShader: \n" + global.gl.getShaderInfoLog(this.fshader);
           }
 
           global.gl.attachShader(this.program,this.vshader);
@@ -67,16 +67,19 @@ module.exports = function () {
           global.gl.linkProgram(this.program);
 
           if(!global.gl.getProgramParameter(this.program, global.gl.LINK_STATUS)){
-            throw "Error linking: " + global.gl.getProgramInfoLog(this.program);
+            throw "Error linking: \n" + global.gl.getProgramInfoLog(this.program);
           }
 
           global.gl.useProgram(this.program);
+
           this.success = true;
+          this.needCompile = false;
 
     }catch(error){
       console.error("Program compilation failed --> " + error + ".");
       alert("Program compilation failed --> " + error + ".");
       this.success = false;
+      this.needCompile = false;
     }finally{ return this; }
   }
 
@@ -102,8 +105,8 @@ module.exports = function () {
   this.getProgram = function() {
     var theProgram = null;
     try{
-          if(needCompile) throw 'Needs to be compiled';
-          if(!success) throw 'Never compiled or compilation failed';
+          if(this.needCompile) throw 'Needs to be compiled';
+          if(!this.success) throw 'Compilation failed';
           theProgram = this.program;
 
     }catch(error){
