@@ -1,4 +1,4 @@
-var Revolucion = require("../../../main_shapes/Revolucion.js");
+var Revolucion = require("../../../main_shapes/RevolucionDiscreta.js");
 var Silla = require("./SillaSuspendida.js");
 
 module.exports = function(){
@@ -6,16 +6,8 @@ module.exports = function(){
     this.silla = null;
     this.vertices = [0,0,0,0,2.3,0,5.3,2,0,5.3,1,0,0.7,0,0,0,0,0];
 
-    var fPerfil = function(vertices){
-        return function(t){
-            // Redondeo por posibles pequeños errores numéricos.
-            return [vertices[Math.round(15*t)],vertices[Math.round(15*t+1)],0];
-        }
-    }
-    this.fPerfil = fPerfil(this.vertices);
-
     this.init = function(program){
-        this.supR = new Revolucion(this.fPerfil,6,30).init(program);
+        this.supR = new Revolucion(this.vertices, 30).init(program);
         this.silla = new Silla().init(program);
 
         return this;

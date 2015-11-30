@@ -15,7 +15,7 @@ module.exports = function(puntosMRusa){
         this.plano = new Plano(2,2).init(program);
         this.rusa = new Rusa(puntosMRusa,20,300).init(program);
         this.pileta = new Pileta().init(program);
-        this.domo = new Domo().init(program);
+        //this.domo = new Domo().init(program);
         return this;
     }
 
