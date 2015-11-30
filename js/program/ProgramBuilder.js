@@ -47,7 +47,6 @@ module.exports = function () {
   //------------------------------------------------------------------
   this.compile = function(){
     try{
-
           for (var i = 0; i < this.vModules.length; i++) {
             for(var j = this.vModules[i].variables.length - 1; j >= 0; j--){
               this.vshaderCode.splice(0,0,this.vModules[i].variables[j]);
@@ -112,12 +111,14 @@ module.exports = function () {
   //-- * Imprime por consola el codigo de los Shaders
   //------------------------------------------------------
   this.debug = function() {
+    console.log('---------------------');
     console.log('VertexShader Code');
     console.log('---------------------');
-    console.log(this.vshaderCode);
+    console.log(this.vshaderCode.join('\n'));
+    console.log('---------------------');
     console.log('FragmentShader Code');
     console.log('---------------------');
-    console.log(this.fshaderCode);
+    console.log(this.fshaderCode.join('\n'));
     return this;
   }
 
@@ -130,7 +131,6 @@ module.exports = function () {
     try{
           if(this.needCompile) throw 'Needs to be compiled';
           if(!this.success) throw 'Compilation failed';
-
           theProgram = this.program;
 
     }catch(error){
