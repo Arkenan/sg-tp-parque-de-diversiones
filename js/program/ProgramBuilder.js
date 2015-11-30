@@ -1,5 +1,5 @@
-module.exports = function () {
-
+module.exports = function(options) {
+  this.options = options | null;
   //---------------------------------------------
   //-- * Inicializa los Shaders y el Programa
   //----------------------------------------------
@@ -17,9 +17,9 @@ module.exports = function () {
   }
 
   //---------------------------------------------
-  //-- * Espera un modulo GLSL pare VertexShader
+  //-- * Espera un modulo GLSL para VertexShader
   //-- * Lo agrega a la lista de vModules
-  //-- * Al agregar el modulo pide recompilar
+  //-- * Al agregar el vModule pide recompilar
   //----------------------------------------------
   this.addVModule = function(_module){
     this.vModules.push(_module);
@@ -30,11 +30,56 @@ module.exports = function () {
   //---------------------------------------------
   //-- * Espera un modulo GLSL pare FragmentShader
   //-- * Lo agrega a la lista de fModules
-  //-- * Al agregar el modulo pide recompilar
+  //-- * Al agregar el fModule pide recompilar
   //----------------------------------------------
   this.addFModule = function(_module){
     this.fModules.push(_module);
     this.needCompile = true;
+    return this;
+  }
+
+  //-------------------------------------------------
+  //-- * Espera el nombre de un vModule
+  //-- * Busca en vModules, un vModule con ese nombre
+  //-- * Remueve dicho vModule
+  //-- * Al remover el vModule pide recompilar
+  //--------------------------------------------------
+  this.removeVModule = function(module_name){
+    for (var i = 0; i < this.vModules.length; i++) {
+      if(this.vModules[i].name == module_name){
+        this.vModules.splice(i,1);
+      }
+    }
+    this.needCompile = true;
+    return this;
+  }
+
+  //-------------------------------------------------
+  //-- * Espera el nombre de un fModule
+  //-- * Busca en fModules, un fModule con ese nombre
+  //-- * Remueve dicho fModule
+  //-- * Al remover el fModule pide recompilar
+  //--------------------------------------------------
+  this.removeFModule = function(module_name){
+    for (var i = 0; i < this.fModules.length; i++) {
+      if(this.fModules[i].name == module_name){
+        this.fModules.splice(i,1);
+      }
+    }
+    this.needCompile = true;
+    return this;
+  }
+
+  //---------------------------------------------
+  //-- * Lista los modulos de cada Shader
+  //----------------------------------------------
+  this.listModules = function () {
+    for (var i = 0; i < this.vModules.length; i++) {
+      console.log('VertexShader vModules --> ' + this.vModules[i].name);
+    }
+    for (var j = 0; j < this.fModules.length; j++) {
+      console.log('FragmentShader fModules --> ' + this.fModules[j].name);
+    }
     return this;
   }
 

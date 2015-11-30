@@ -28,7 +28,9 @@ window.onload = function(){
 
     // Creación del programa con los shaders.
     var builder = new ProgramBuilder().init();
-    builder.addVModule(vModule).addFModule(fModule).compile().debug();
+    builder.addVModule(vModule)
+    builder.addFModule(fModule)
+    builder.compile().listModules().debug();
     var program = builder.getProgram();
 
     // Obtengo puntos para la montaña rusa y creo el parque.

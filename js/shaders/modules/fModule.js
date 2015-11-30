@@ -1,4 +1,7 @@
 module.exports = {
+  name: 'fModule',
+  loaded: false,
+  dependencies: [],
   variables: [
     '#ifdef GL_ES',
     'precision highp float;',

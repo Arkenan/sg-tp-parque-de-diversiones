@@ -1,4 +1,7 @@
 module.exports = {
+  name: 'vModule',
+  loaded: false,
+  dependencies: [],
   variables: [
     'attribute vec3 aVertexPosition;',
     'attribute vec3 aVertexNormal;',
