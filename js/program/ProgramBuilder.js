@@ -9,6 +9,7 @@ module.exports = function () {
     this.vshaderCode = ['void main(void) {','}'];
     this.fshader = global.gl.createShader(global.gl.FRAGMENT_SHADER);
     this.fshaderCode = ['void main(void) {','}'];
+    this.modules = [];
     this.success = false;
     this.needCompile = true;
     return this;
@@ -25,6 +26,7 @@ module.exports = function () {
     for(var i = 0; i < _module.logic.length; i++){
       this.vshaderCode.splice(this.vshaderCode.length - 1,0,_module.logic[i]);
     }
+    this.modules.push(_module);
     this.needCompile = true;
     return this;
   }
@@ -33,13 +35,14 @@ module.exports = function () {
   //-- * Espera un modulo GLSL pare FragmentShader
   //-- * Al agregar el modulo pide recompilar
   //----------------------------------------------
-  this.addFModule = function(module){
+  this.addFModule = function(_module){
     for(var i = _module.variables.length - 1; i >= 0; i--){
     	this.fshaderCode.splice(0,0,_module.variables[i]);
     }
     for(var i = 0; i < _module.logic.length; i++){
       this.fshaderCode.splice(this.fshaderCode.length - 1,0,_module.logic[i]);
     }
+    this.modules.push(_module);
     this.needCompile = true;
     return this;
   }
@@ -107,6 +110,11 @@ module.exports = function () {
     try{
           if(this.needCompile) throw 'Needs to be compiled';
           if(!this.success) throw 'Compilation failed';
+
+          for(var i = 0; i < this.modules.length; i++){
+            this.modules[i].execute(this.program);
+          }
+
           theProgram = this.program;
 
     }catch(error){

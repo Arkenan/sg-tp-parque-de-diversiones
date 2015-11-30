@@ -1,9 +1,9 @@
 // Index.js. Archivo principal a ser ejecutado.
 
 //------------------------------------------------------------------------------------------------------------------------------
-var VertexShader = require('./shaders/VertexShader.js');
-var FragmentShader = require('./shaders/FragmentShader.js');
-var Program = require('./program/Program.js');
+var vModule = require('./shaders/modules/vModule.js');
+var fModule = require('./shaders/modules/fModule.js');
+var ProgramBuilder = require('./program/ProgramBuilder.js');
 //------------------------------------------------------------------------------------------------------------------------------
 var Camara = require("./camaras/Camara.js");
 var Parque = require("./Parque.js");
@@ -27,9 +27,9 @@ window.onload = function(){
     global.gl.viewport(0, 0, scene.width, scene.height);
 
     // Creación del programa con los shaders.
-    var vertex = new VertexShader().init();
-    var fragment = new FragmentShader().init();
-    var program  = new Program(vertex,fragment).init();
+    var builder = new ProgramBuilder().init();
+    builder.addVModule(vModule).addFModule(fModule).compile().debug();
+    var program = builder.getProgram();
 
     // Obtengo puntos para la montaña rusa y creo el parque.
     var puntosMRusa = obtenerPuntos();
