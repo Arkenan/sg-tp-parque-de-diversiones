@@ -74,8 +74,8 @@ module.exports = function () {
           this.success = true;
 
     }catch(error){
-      console.error("Program compilation failed --> " + err + ".");
-      alert("Program compilation failed --> " + err + ".");
+      console.error("Program compilation failed --> " + error + ".");
+      alert("Program compilation failed --> " + error + ".");
       this.success = false;
     }finally{ return this; }
   }
@@ -107,8 +107,8 @@ module.exports = function () {
           theProgram = this.program;
 
     }catch(error){
-      console.error("Couldn't get program --> " + err + ".");
-      alert("Couldn't get program --> " + err + ".");
+      console.error("Couldn't get program --> " + error + ".");
+      alert("Couldn't get program --> " + error + ".");
     }finally{return theProgram}
   }
 }
