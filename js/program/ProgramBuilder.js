@@ -9,7 +9,8 @@ module.exports = function () {
     this.vshaderCode = ['void main(void) {','}'];
     this.fshader = global.gl.createShader(global.gl.FRAGMENT_SHADER);
     this.fshaderCode = ['void main(void) {','}'];
-    this.modules = [];
+    this.vModules = [];
+    this.fModules = [];
     this.success = false;
     this.needCompile = true;
     return this;
@@ -17,43 +18,54 @@ module.exports = function () {
 
   //---------------------------------------------
   //-- * Espera un modulo GLSL pare VertexShader
+  //-- * Lo agrega a la lista de vModules
   //-- * Al agregar el modulo pide recompilar
   //----------------------------------------------
   this.addVModule = function(_module){
-    for(var i = _module.variables.length - 1; i >= 0; i--){
-    	this.vshaderCode.splice(0,0,_module.variables[i]);
-    }
-    for(var i = 0; i < _module.logic.length; i++){
-      this.vshaderCode.splice(this.vshaderCode.length - 1,0,_module.logic[i]);
-    }
-    this.modules.push(_module);
+    this.vModules.push(_module);
     this.needCompile = true;
     return this;
   }
 
   //---------------------------------------------
   //-- * Espera un modulo GLSL pare FragmentShader
+  //-- * Lo agrega a la lista de fModules
   //-- * Al agregar el modulo pide recompilar
   //----------------------------------------------
   this.addFModule = function(_module){
-    for(var i = _module.variables.length - 1; i >= 0; i--){
-    	this.fshaderCode.splice(0,0,_module.variables[i]);
-    }
-    for(var i = 0; i < _module.logic.length; i++){
-      this.fshaderCode.splice(this.fshaderCode.length - 1,0,_module.logic[i]);
-    }
-    this.modules.push(_module);
+    this.fModules.push(_module);
     this.needCompile = true;
     return this;
   }
 
-  //------------------------------------------------------
+  //------------------------------------------------------------------
+  //-- * Agrega el codigo GLSL de cada modulo a los Shaders
   //-- * Compila los Shaders
-  //-- * Luego los linkea al programa
+  //-- * Linkea al programa
+  //-- * Ejecuta la configuaracion de cada modulo sobre el programa
   //-- * Si algo falla da una alerta y avisa por consola
-  //------------------------------------------------------
+  //------------------------------------------------------------------
   this.compile = function(){
     try{
+
+          for (var i = 0; i < this.vModules.length; i++) {
+            for(var j = this.vModules[i].variables.length - 1; j >= 0; j--){
+              this.vshaderCode.splice(0,0,this.vModules[i].variables[j]);
+            }
+            for(var k = 0; k < this.vModules[i].logic.length; k++){
+              this.vshaderCode.splice(this.vshaderCode.length - 1,0,this.vModules[i].logic[k]);
+            }
+          }
+
+          for (var i = 0; i < this.fModules.length; i++) {
+            for(var j = this.fModules[i].variables.length - 1; j >= 0; j--){
+              this.fshaderCode.splice(0,0,this.fModules[i].variables[j]);
+            }
+            for(var k = 0; k < this.fModules[i].logic.length; k++){
+              this.fshaderCode.splice(this.fshaderCode.length - 1,0,this.fModules[i].logic[k]);
+            }
+          }
+
           global.gl.shaderSource(this.vshader,this.vshaderCode.join('\n'));
           global.gl.compileShader(this.vshader);
           if(!global.gl.getShaderParameter(this.vshader, global.gl.COMPILE_STATUS)){
@@ -74,6 +86,14 @@ module.exports = function () {
           }
 
           global.gl.useProgram(this.program);
+
+          for(var i = 0; i < this.vModules.length; i++){
+            this.vModules[i].execute(this.program);
+          }
+
+          for(var j = 0; j < this.fModules.length; j++){
+            this.fModules[j].execute(this.program);
+          }
 
           this.success = true;
           this.needCompile = false;
@@ -110,10 +130,6 @@ module.exports = function () {
     try{
           if(this.needCompile) throw 'Needs to be compiled';
           if(!this.success) throw 'Compilation failed';
-
-          for(var i = 0; i < this.modules.length; i++){
-            this.modules[i].execute(this.program);
-          }
 
           theProgram = this.program;
 
