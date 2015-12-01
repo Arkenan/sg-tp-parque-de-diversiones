@@ -7,7 +7,7 @@ var ProgramBuilder = require('./program/ProgramBuilder.js');
 //------------------------------------------------------------------------------------------------------------------------------
 var Camara = require("./camaras/Camara.js");
 var Parque = require("./Parque.js");
-var obtenerPuntos = require("./curves/puntos.js");
+var Puntos = require("./curves/puntos.js");
 var Cilindro = require("./main_shapes/Cilindro.js");
 var Domo = require('./models/domo/Domo.js');
 //------------------------------------------------------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ window.onload = function(){
     var program = builder.getProgram();
 
     // Obtengo puntos para la montaña rusa y creo el parque.
-    var puntosMRusa = obtenerPuntos();
+    var puntosMRusa = new Puntos().puntosRusaPreparados;
     var parque = new Parque().init(puntosMRusa, program);
 
     // Matriz de vista.
