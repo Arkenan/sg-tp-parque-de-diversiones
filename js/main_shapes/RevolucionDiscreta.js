@@ -28,18 +28,21 @@ module.exports = function(puntosPerfil, cRevol){
               this.vertices = this.vertices.concat(rotado);
           }
       }
+    }
       //console.log(this.normales);
-
+    this.obtenerNormales = function(){
       // Primer for, para los ángulos.
       for (var i = 0; i < this.cRevol; i++){
         angulo = this.alfa * i;
+        // Tangente de la dirección de revolución.
+        var tg = [-Math.sin(angulo), 0, -Math.cos(angulo)];
+        // Offset del índice de vértice para cada ángulo.
+        var off = 3*i*this.cPerfil;
         // Segundo for: recorro vértices del perfil de a pares.
         for (var j = 0; j < this.cPerfil; j+=2){
-          // Tangente de la dirección de revolución.
-          var tg = [-Math.sin(angulo), 0, -Math.cos(angulo)];
           // Unión entre los vértices contiguos en el perfil.
-          var v1 = [this.pPerfil[3*j], this.pPerfil[3*j+1], this.pPerfil[3*j+2]];
-          var v2 = [this.pPerfil[3*(j+1)], this.pPerfil[3*(j+1)+1], this.pPerfil[3*(j+1)+2]];
+          var v1 = [this.vertices[3*j + off], this.vertices[3*j+1 + off], this.vertices[3*j+2 + off]];
+          var v2 = [this.vertices[3*(j+1) + off], this.vertices[3*(j+1)+1 + off], this.vertices[3*(j+1)+2 + off]];
           var d = [v2[0] - v1[0], v2[1] - v1[1], v2[2] - v1[2]];
           // Cálculo de la normal como producto vectorial de los otros.
           // Observación: deben ser pasados en antihorario.
@@ -55,11 +58,11 @@ module.exports = function(puntosPerfil, cRevol){
           this.normales.push(normal[2]);
         }
       }
-
     }
 
     this.init = function(program){
         this.obtenerVertices();
+        this.obtenerNormales();
         this.grid = new Grid(this.vertices,this.normales, this.cRevol, this.cPerfil).init(program);
         return this;
     }
