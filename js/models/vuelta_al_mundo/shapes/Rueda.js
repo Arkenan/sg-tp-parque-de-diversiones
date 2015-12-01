@@ -49,7 +49,6 @@ module.exports = function(){
             mat4.translate(mCab,mCab,[0,-5,0]);
             //compenso.
             mat4.rotate(mCab,mCab,-angulo,[0,0,1]);
-            mat4.scale(mCab,mCab,[1.5,2,1.5]);
             this.cabina.draw(mCab);
         }
 
