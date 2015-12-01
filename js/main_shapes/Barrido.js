@@ -4,9 +4,6 @@ var Grid = require('./Grid.js');
 ** toman un parámetro entre 0 y 1 y devuelven un punto en el espacio.
 ** También toma la cantidad de divisiones de forma y de barrido. */
 
-/* TODO: Al incorporar normales, esto se convierte en un barrido para formas
-** continuas y queda pendiente hacer un barrido discreto. */
-
 module.exports = function(fForma, fBarrido, cForma,  cBarrido){
   // Puntos de evaluación para la forma.
   this.pForma = [];
