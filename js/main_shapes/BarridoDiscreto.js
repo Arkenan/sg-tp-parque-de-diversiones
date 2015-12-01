@@ -3,7 +3,7 @@ var Grid = require('./Grid.js');
 /* Recibe los puntos de la forma en xy y una función de barrido, que toma un
 ** parámetro entre 0 y 1. También toma la cantidad de divisiones de barrido. */
 
-module.exports = function(puntosForma, fBarrido, cBarrido){
+module.exports = function(puntosForma, fBarrido, cBarrido, centro){
   // Vértices de la forma.
   this.pForma = puntosForma;
   this.cForma = puntosForma.length/3;
@@ -13,6 +13,9 @@ module.exports = function(puntosForma, fBarrido, cBarrido){
   this.vertices = [];
   this.normales = [];
   this.cBarrido = cBarrido;
+
+  // Esto es algo opcional para los objetos que no estén centrados.
+  this.centro = centro;
 
   this.fijarPuntosEval = function(){
     for (var i = 0; i < cBarrido; i++){
@@ -68,8 +71,18 @@ module.exports = function(puntosForma, fBarrido, cBarrido){
   this.agregarTapas = function(){
     // Hago promedio entre los últimos y los primeros de las caras.
     var cantVertices = this.vertices.length / 3;
-    var puntoInicial = this.promedio(this.vertices.slice(0,(this.cForma-1)*3));
-    var puntoFinal = this.promedio(this.vertices.slice(cantVertices*3 - (this.cForma-1)*3 ,cantVertices*3));
+    var puntoInicial, puntoFinal;
+    if (this.centro){
+      puntoInicial = this.centro;
+      puntoFinal = [
+        this.centro[0] + fBarrido(1)[0],
+        this.centro[1] + fBarrido(1)[1],
+        this.centro[2] + fBarrido(1)[2],
+      ]
+    } else {
+      puntoInicial = this.promedio(this.vertices.slice(0,(this.cForma-1)*3));
+      puntoFinal = this.promedio(this.vertices.slice(cantVertices*3 - (this.cForma-1)*3 ,cantVertices*3));
+    }
 
     // Repetimos una vez los bordes para no caer en redondeos. 2 filas más.
     this.vertices = this.vertices.slice(0,3*this.cForma).concat(this.vertices);
