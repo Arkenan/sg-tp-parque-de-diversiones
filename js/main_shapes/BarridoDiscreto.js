@@ -82,9 +82,14 @@ module.exports = function(puntosForma, fBarrido, cBarrido){
         this.vertices = this.vertices.concat(puntoFinal);
     }
 
+    // Calculo las normales de fin y de inicio.
+    var nFin = vec3.create(), nInicio = vec3.create();
+    vec3.subtract(nFin, fBarrido(1), fBarrido(1-this.pasoBarrido));
+    vec3.subtract(nInicio, fBarrido(0), fBarrido(this.pasoBarrido));
+
     for (var i = 0; i < 2*this.cForma; i++){
-        this.normales = [0,0,-1].concat(this.normales);
-        this.normales = this.normales.concat([0,0,1]);
+      this.normales = [nInicio[0],nInicio[1],nInicio[2]].concat(this.normales);
+      this.normales = this.normales.concat([nFin[0],nFin[1],nFin[2]]);
     }
 
   }
