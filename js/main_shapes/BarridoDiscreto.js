@@ -121,18 +121,32 @@ module.exports = function(puntosForma, fBarrido, cBarrido, centro){
       return acu;
   }
 
-  this.init = function(program){
+  // Provisorio. No es la idea que sea así, si no que los de arriba pasen las uv.
+  // Esto es para tener las cosas funcionando pronto.
+  this.obtenerUVs = function(){
+    this.uvs = [];
+    for (var i = 0; i < this.cBarrido+4; i++){
+      for (var j = 0; j < this.cForma; j += 2){
+        // Repito uvs para los vértices repetidos. Por eso divido por 2.
+        var u = j/2/this.cForma;
+        var v = i/(this.cBarrido+4);
+        this.uvs = this.uvs.concat([u,v,u,v]);
+      }
+    }
+  }
+
+  this.init = function(material){
     // Importante: cForma, cBarrido > 1.
     this.pasoBarrido = 1/(this.cBarrido - 1);
     this.fijarPuntosEval();
     this.obtenerVertices();
     this.obtenerNormales();
     this.agregarTapas();
+    this.obtenerUVs();
     // Sumo 2 filas a la grilla, una por cada tapa.
-    this.grid = new Grid(this.vertices, this.normales, this.cBarrido + 4, this.cForma).init(program);
+    this.grid = new Grid(this.vertices, this.normales, this.cBarrido + 4, this.cForma).init(material, this.uvs);
     return this;
   }
-
   this.draw = function(mv){
     this.grid.draw(mv);
   }

@@ -5,7 +5,6 @@ module.exports = {
   variables: [
     'attribute vec3 aVertexPosition;',
     'attribute vec3 aVertexNormal;',
-    'attribute vec3 aVertexColor;',
 
     'uniform mat4 uMVMatrix;',
     'uniform mat4 uPMatrix;',
@@ -14,7 +13,6 @@ module.exports = {
     'varying vec3 vNormal;',
     'varying vec3 vEyeVec;',
 
-    'varying highp vec4 vColor;'
   ],
   logic:[
     //Transformed vertex position
@@ -26,7 +24,6 @@ module.exports = {
     //Vector Eye
     'vEyeVec = -vec3(vertex.xyz);',
     'gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);',
-    'vColor = vec4(aVertexColor,1.0);'
   ],
   execute: function(program){}
 }
