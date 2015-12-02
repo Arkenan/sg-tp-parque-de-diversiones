@@ -26,8 +26,8 @@ window.onload = function(){
     global.gl.clear(global.gl.COLOR_BUFFER_BIT | global.gl.DEPTH_BUFFER_BIT);
     global.gl.viewport(0, 0, scene.width, scene.height);
     // Material.
-    //var material = new MaterialPhong({mapaDifuso:"js/textures/wood.jpg"});
-    var material = new MaterialPhong({colorDifuso:[0.5,0.5,1.0,1.0]});
+    var material = new MaterialPhong({mapaDifuso:"js/textures/wood.jpg"});
+    //var material = new MaterialPhong({colorDifuso:[1.0,1.0,0.5,1.0]});
 
     // Obtengo puntos para la montaña rusa y creo el parque.
     var puntosMRusa = new Puntos().puntosRusaPreparados;
@@ -80,6 +80,7 @@ window.onload = function(){
 
       // Dibujo del parque de diversiones.
       //parque.draw(mv,t);
+      mat4.scale(mv,mv,[10,10,10]);
       cubo.draw(mv);
     })();
 

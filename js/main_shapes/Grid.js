@@ -41,6 +41,13 @@ module.exports = function (vertices, normales, rows, cols) {
     global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_normal_buffer);
     global.gl.bufferData(global.gl.ARRAY_BUFFER, new Float32Array(this.normal_buffer), global.gl.STATIC_DRAW);
 
+    if (this.uvs){
+      // Coordenadas uv.
+      this.webgl_uv_buffer = global.gl.createBuffer();
+      global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_uv_buffer);
+      global.gl.bufferData(global.gl.ARRAY_BUFFER, new Float32Array(this.uvs), global.gl.STATIC_DRAW);
+    }
+
     // Repetimos los pasos 1. 2. y 3. para la información de los índices
     // Notar que esta vez se usa ELEMENT_ARRAY_BUFFER en lugar de ARRAY_BUFFER.
     // Notar tambi�n que se usa un array de enteros en lugar de floats.
@@ -50,7 +57,9 @@ module.exports = function (vertices, normales, rows, cols) {
 
   }
 
-  this.init = function(material){
+  this.init = function(material, uvs){
+    this.uvs = uvs;
+    this.material = material;
     this.program = material.program;
     this.createIndexBuffer();
     this.setupBuffers();
@@ -72,6 +81,18 @@ module.exports = function (vertices, normales, rows, cols) {
     global.gl.enableVertexAttribArray(vertexNormalAttribute);
     global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_normal_buffer);
     global.gl.vertexAttribPointer(vertexNormalAttribute, 3, global.gl.FLOAT, false, 0, 0);
+
+    if (this.uvs){
+      // Cargamos coordenadas uvs en el shader.
+      var textureCoordAttribute = global.gl.getAttribLocation(this.program, "aTextureCoord");
+      global.gl.enableVertexAttribArray(textureCoordAttribute);
+      global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_uv_buffer);
+      global.gl.vertexAttribPointer(textureCoordAttribute, 2, global.gl.FLOAT, false, 0, 0);
+      // Cargamos textura
+      global.gl.activeTexture(global.gl.TEXTURE0);
+      global.gl.bindTexture(global.gl.TEXTURE_2D, this.material.texturaDifusa);
+      global.gl.uniform1i(this.program.uSampler, 0);
+    }
 
     // Se usa la matriz de modelado mv.
     var u_model_view_matrix = global.gl.getUniformLocation(this.program, "uMVMatrix");

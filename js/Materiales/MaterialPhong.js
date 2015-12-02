@@ -4,7 +4,8 @@ var fModule = require('../shaders/modules/fModule.js');
 var ProgramBuilder = require('../program/ProgramBuilder.js');
 var mBasePhong = require('../shaders/modules/basePhong.js');
 var mColorDifuso = require('../shaders/modules/colorDifuso.js');
-
+var fTexDifusa = require('../shaders/modules/fTexDifusa.js');
+var vTex = require('../shaders/modules/vTex.js')
 module.exports = function(opciones){
   // Constructor del programa de shaders.
   var builder = new ProgramBuilder().init();
@@ -16,8 +17,10 @@ module.exports = function(opciones){
     // Carga la textura.
     this.loader = new Loader();
     this.texturaDifusa = this.loader.load(this.mapaDifuso);
-    // Cargar módulo con textura difusa.
-
+    // Cargar módulos con textura difusa.
+    builder.addVModule(vTex);
+    builder.addVModule(vModule);
+    builder.addFModule(fTexDifusa);
   } else {
     if (this.colorDifuso) {
       // Carga módulo de color constante.
@@ -36,8 +39,14 @@ module.exports = function(opciones){
   global.programas.push(this.program);
 
   // Acciones extra que requieran de datos locales. Por ahí se puede pasar esto al execute.
-  if (this.colorDifuso){
-    global.gl.uniform4fv(this.program.uMaterialDiffuse, this.colorDifuso);
+  if (this.mapaDifuso){
+    /*// Registro 0 de textura. Hay que ver si esto funca para varios shaders... 
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, this.texturaDifusa);
+    gl.uniform1i(this.program.uSampler, 0);*/
+  } else {
+    if (this.colorDifuso){
+      global.gl.uniform4fv(this.program.uMaterialDiffuse, this.colorDifuso);
+    }
   }
-
 }
