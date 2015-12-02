@@ -1,20 +1,24 @@
-module.exports = function (gl) {
-  this.gl = gl;
+module.exports = function () {
 
-  this.load = function(texture_path) {
-    cubeTexture = this.gl.createTexture();
-    cubeImage = new Image();
-    cubeImage.onload = function() { handleTextureLoaded(cubeImage, cubeTexture,this.gl); }
-    cubeImage.src = texture_path;
-    return this;
+  this.load = function(path) {
+    var texture = global.gl.createTexture();
+    var image = new Image();
+    image.onload = this.handleTexture(image, texture);
+    image.src = path;
+    image.setAttribute('crossorigin', 'anonymous');
+    return texture;
   }
 
-  function handleTextureLoaded(image,texture,gl) {
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
-    gl.generateMipmap(gl.TEXTURE_2D);
-    gl.bindTexture(gl.TEXTURE_2D, null);
+  this.handleTexture = function(image, texture){
+    return function(){
+      global.gl.bindTexture(global.gl.TEXTURE_2D, texture);
+      global.gl.texImage2D(global.gl.TEXTURE_2D, 0, global.gl.RGBA, global.gl.RGBA, global.gl.UNSIGNED_BYTE, image);
+      global.gl.texParameteri(global.gl.TEXTURE_2D, global.gl.TEXTURE_MAG_FILTER, global.gl.LINEAR);
+      global.gl.texParameteri(global.gl.TEXTURE_2D, global.gl.TEXTURE_MIN_FILTER, global.gl.LINEAR_MIPMAP_NEAREST);
+      global.gl.generateMipmap(global.gl.TEXTURE_2D);
+      global.gl.bindTexture(global.gl.TEXTURE_2D, null);
+    }
   }
+
+  return this;
 }

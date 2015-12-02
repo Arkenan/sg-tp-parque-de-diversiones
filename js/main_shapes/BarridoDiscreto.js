@@ -121,7 +121,7 @@ module.exports = function(puntosForma, fBarrido, cBarrido, centro){
       return acu;
   }
 
-  this.init = function(program){
+  this.init = function(material){
     // Importante: cForma, cBarrido > 1.
     this.pasoBarrido = 1/(this.cBarrido - 1);
     this.fijarPuntosEval();
@@ -129,7 +129,7 @@ module.exports = function(puntosForma, fBarrido, cBarrido, centro){
     this.obtenerNormales();
     this.agregarTapas();
     // Sumo 2 filas a la grilla, una por cada tapa.
-    this.grid = new Grid(this.vertices, this.normales, this.cBarrido + 4, this.cForma).init(program);
+    this.grid = new Grid(this.vertices, this.normales, this.cBarrido + 4, this.cForma).init(material);
     return this;
   }
 

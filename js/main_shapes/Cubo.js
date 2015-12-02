@@ -7,8 +7,8 @@ module.exports = function(){
     return [0, 0, t];
   }
 
-  this.init = function(program){
-    this.supB = new BarridoD(this.vertices, this.fBarrido, 2).init(program);
+  this.init = function(material){
+    this.supB = new BarridoD(this.vertices, this.fBarrido, 2).init(material);
     return this;
   }
 

@@ -50,8 +50,8 @@ module.exports = function (vertices, normales, rows, cols) {
 
   }
 
-  this.init = function(program){
-    this.program = program;
+  this.init = function(material){
+    this.program = material.program;
     this.createIndexBuffer();
     this.setupBuffers();
 
