@@ -1,14 +1,14 @@
 module.exports = function(options) {
-  this.options = options | null;
+  this.options = typeof options !== 'undefined' ? options : {auto: false};
   //---------------------------------------------
   //-- * Inicializa los Shaders y el Programa
   //----------------------------------------------
   this.init = function(){
     this.program = global.gl.createProgram();
     this.vshader = global.gl.createShader(global.gl.VERTEX_SHADER);
-    this.vshaderCode = ['void main(void) {','}'];
     this.fshader = global.gl.createShader(global.gl.FRAGMENT_SHADER);
-    this.fshaderCode = ['void main(void) {','}'];
+    this.vshaderCode = []
+    this.fshaderCode = []
     this.vModules = [];
     this.fModules = [];
     this.success = false;
@@ -24,6 +24,7 @@ module.exports = function(options) {
   this.addVModule = function(_module){
     this.vModules.push(_module);
     this.needCompile = true;
+    if(this.options.auto){ this.compile()}
     return this;
   }
 
@@ -35,6 +36,7 @@ module.exports = function(options) {
   this.addFModule = function(_module){
     this.fModules.push(_module);
     this.needCompile = true;
+    if(this.options.auto){ this.compile()}
     return this;
   }
 
@@ -51,6 +53,7 @@ module.exports = function(options) {
       }
     }
     this.needCompile = true;
+    if(this.options.auto){ this.compile()}
     return this;
   }
 
@@ -67,6 +70,7 @@ module.exports = function(options) {
       }
     }
     this.needCompile = true;
+    if(this.options.auto){ this.compile()}
     return this;
   }
 
@@ -91,6 +95,8 @@ module.exports = function(options) {
   //-- * Si algo falla da una alerta y avisa por consola
   //------------------------------------------------------------------
   this.compile = function(){
+    this.vshaderCode = ['void main(void) {','}'];
+    this.fshaderCode = ['void main(void) {','}'];
     try{
           for (var i = 0; i < this.vModules.length; i++) {
             for(var j = this.vModules[i].variables.length - 1; j >= 0; j--){
