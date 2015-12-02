@@ -57,7 +57,6 @@ module.exports = {
   execute: function(program){
 
     program.uMaterialAmbient   = global.gl.getUniformLocation(program, "uMaterialAmbient");
-    //program.uMaterialDiffuse   = global.gl.getUniformLocation(program, "uMaterialDiffuse");
     program.uMaterialSpecular  = global.gl.getUniformLocation(program, "uMaterialSpecular");
     program.uShininess         = global.gl.getUniformLocation(program, "uShininess");
     program.uLightAmbient      = global.gl.getUniformLocation(program, "uLightAmbient");
@@ -70,7 +69,6 @@ module.exports = {
     global.gl.uniform4fv(program.uLightDiffuse,  [1.0,1.0,1.0,1.0]);
     global.gl.uniform4fv(program.uLightSpecular,  [1.0,1.0,1.0,1.0]);
     global.gl.uniform4fv(program.uMaterialAmbient, [1.0,1.0,1.0,1.0]);
-    //global.gl.uniform4fv(program.uMaterialDiffuse, [0.5,0.8,0.1,1.0]);
     global.gl.uniform4fv(program.uMaterialSpecular, [1.0,1.0,1.0,1.0]);
     global.gl.uniform1f(program.uShininess, 230.0);
   }
