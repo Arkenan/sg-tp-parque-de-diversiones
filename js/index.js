@@ -61,7 +61,7 @@ window.onload = function(){
     var cam = new Camara(rec,TNB).init();
     // Tiempo.
     var t = 0.0;
-    var cubo = new Cubo(2,2).init(material);
+    var cubo = new Domo().init(material);
 
     (function drawScene() {
       requestAnimationFrame(drawScene);
