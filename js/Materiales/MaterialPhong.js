@@ -2,32 +2,42 @@ var Loader = require('../textures/TextureLoader.js');
 var vModule = require('../shaders/modules/vModule.js');
 var fModule = require('../shaders/modules/fModule.js');
 var ProgramBuilder = require('../program/ProgramBuilder.js');
+var mBasePhong = require('../shaders/modules/basePhong.js');
+var mColorDifuso = require('../shaders/modules/colorDifuso.js');
 
 module.exports = function(opciones){
+  // Constructor del programa de shaders.
+  var builder = new ProgramBuilder().init();
+
   // Por el momento solo cambia la componente difusa.
-  this.loader = new Loader();
   this.mapaDifuso = opciones.mapaDifuso;
   this.colorDifuso = opciones.colorDifuso;
   if (this.mapaDifuso){
-    // Cargar módulo con textura difusa.
     // Carga la textura.
+    this.loader = new Loader();
     this.texturaDifusa = this.loader.load(this.mapaDifuso);
+    // Cargar módulo con textura difusa.
 
   } else {
     if (this.colorDifuso) {
-      // Cargar color con textura difusa.
+      // Carga módulo de color constante.
+      builder.addVModule(vModule);
+      builder.addFModule(mColorDifuso);
+      // Carga el color en el programa.
     } else{
       console.error("Error, no hay ni color ni textura difusos.");
     }
   }
 
-  // Creación del programa con los shaders. Por ahora está hardcodeado.
-  var builder = new ProgramBuilder().init();
-  builder.addVModule(vModule)
-  builder.addFModule(fModule)
+  builder.addFModule(mBasePhong);
   builder.compile().listModules().debug();
   this.program = builder.getProgram();
-
   // Agrego este programa a la lista global de programas para cosas compartidas.
   global.programas.push(this.program);
+
+  // Acciones extra que requieran de datos locales. Por ahí se puede pasar esto al execute.
+  if (this.colorDifuso){
+    global.gl.uniform4fv(this.program.uMaterialDiffuse, this.colorDifuso);
+  }
+
 }
