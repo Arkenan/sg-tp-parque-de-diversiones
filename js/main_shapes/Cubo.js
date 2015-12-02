@@ -1,24 +1,14 @@
-var Barrido = require("./Barrido");
+var BarridoD = require("./BarridoDiscreto.js");
 
 module.exports = function(){
-  this.supB = null;
-  // Base. Esto podría extenderse a un objeto "barrido discreto".
   this.vertices = [-0.5,-0.5,0,0.5,-0.5,0,0.5,0.5,0,-0.5,0.5,0,-0.5,-0.5,0];
-
-  var fForma = function(vertices){
-      return function(t){
-          return [vertices[12*t],vertices[12*t+1],0];
-      }
-  }
-
-  this.fForma = fForma(this.vertices);
 
   this.fBarrido = function(t){
     return [0, 0, t];
   }
 
   this.init = function(program){
-    this.supB = new Barrido(this.fForma, this.fBarrido, 5, 2).init(program);
+    this.supB = new BarridoD(this.vertices, this.fBarrido, 2).init(program);
     return this;
   }
 

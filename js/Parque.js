@@ -39,8 +39,8 @@ module.exports = function(puntosMRusa){
         this.rusa.draw(mrusa,t);
 
         // Pileta.
-        mat4.translate(mPileta,mv,[-28,0,0]);
-        mat4.rotate(mPileta,mPileta,Math.PI/2,[0,1,0]);
+        mat4.translate(mPileta,mv,[-28,0,5]);
+        mat4.rotate(mPileta,mPileta,-Math.PI/4,[0,1,0]);
         mat4.scale(mPileta,mPileta,[5,0.03,3]);
         this.pileta.draw(mPileta);
 

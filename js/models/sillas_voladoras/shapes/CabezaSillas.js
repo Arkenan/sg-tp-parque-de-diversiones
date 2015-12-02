@@ -2,8 +2,6 @@ var Revolucion = require("../../../main_shapes/RevolucionDiscreta.js");
 var Silla = require("./SillaSuspendida.js");
 
 module.exports = function(){
-    this.supR = null;
-    this.silla = null;
     this.vertices = [0,0,0,0,2.3,0,5.3,2,0,5.3,1,0,0.7,0,0,0,0,0];
 
     this.init = function(program){

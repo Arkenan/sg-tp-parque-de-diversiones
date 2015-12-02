@@ -1,24 +1,18 @@
 var Barrido = require("../../main_shapes/Barrido");
 var CubicBezierConcatenator  = require("../../curves/CubicBezierConcatenator.js");
+var Puntos = require('../../curves/puntos.js');
 
 module.exports = function(){
   this.supB = null;
 
   var fForma = function(){
 
-    var control = [
+    var control = new Puntos().puntosPiletaPreparados;
 
-        [[2,0,2],[3,0,1],[2,0,2],[-3,0,3]],
-        [[-3,0,3],[-5,0,-1],[-1,0,5],[-3,0,-4]],
-        [[-3,0,-4],[2,0,1],[1,0,-5],[-2,0,5]],
-        [[-2,0,5],[2,0,1],[-3,0,5],[-1,0,-3]],
-        [[-1,0,-3],[-4,0,-4],[-3,0,-1],[2,0,2]]
-    ];
-
-      return function(t){
-          var forma = new CubicBezierConcatenator().init(control);
-          return forma.generate(t);
-      }
+    return function(t){
+        var forma = new CubicBezierConcatenator().init(control);
+        return forma.generate(t);
+    }
   }
   this.fForma = fForma();
 
@@ -35,6 +29,8 @@ module.exports = function(){
     m = mat4.create();
     // Centrado al origen.
     mat4.translate(m,mv,[0,0,-0.5]);
+    mat4.scale(m,m,[1,20,1]);
+
     this.supB.draw(m);
   }
 }

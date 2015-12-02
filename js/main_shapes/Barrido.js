@@ -4,9 +4,6 @@ var Grid = require('./Grid.js');
 ** toman un parámetro entre 0 y 1 y devuelven un punto en el espacio.
 ** También toma la cantidad de divisiones de forma y de barrido. */
 
-/* TODO: Al incorporar normales, esto se convierte en un barrido para formas
-** continuas y queda pendiente hacer un barrido discreto. */
-
 module.exports = function(fForma, fBarrido, cForma,  cBarrido){
   // Puntos de evaluación para la forma.
   this.pForma = [];
@@ -17,6 +14,9 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
   this.normales = [];
   this.cForma = cForma;
   this.cBarrido = cBarrido;
+
+  // La guardo para el cálculo de normales en las tapas.
+  //this.fBarrido = fBarrido;
 
   this.fijarPuntosEval = function(){
     for (var i = 0; i < cForma; i ++){
@@ -61,9 +61,14 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
         this.vertices = this.vertices.concat(puntoFinal);
     }
 
+    // Calculo las normales de fin y de inicio.
+    var nFin = vec3.create(), nInicio = vec3.create();
+    vec3.subtract(nFin, fBarrido(1), fBarrido(1-this.pasoBarrido));
+    vec3.subtract(nInicio, fBarrido(0), fBarrido(this.pasoBarrido));
+
     for (var i = 0; i < 2*cForma; i++){
-        this.normales = [0,0,-1].concat(this.normales);
-        this.normales = this.normales.concat([0,0,1]);
+        this.normales = [nInicio[0],nInicio[1],nInicio[2]].concat(this.normales);
+        this.normales = this.normales.concat([nFin[0],nFin[1],nFin[2]]);
     }
 
   }
