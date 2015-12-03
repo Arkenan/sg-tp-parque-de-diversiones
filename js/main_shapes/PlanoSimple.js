@@ -32,6 +32,14 @@ module.exports = function(_rows,_cols){
     return this;
   }
 
+  this.repetir = function(n){
+    for (var i in this.uvs){
+      this.uvs[i] = this.uvs[i]*n;
+    }
+    this.grid.uvs = this.uvs;
+    this.grid.setupBuffers();
+  }
+
   this.draw = function(mv){
     this.grid.draw(mv);
   }

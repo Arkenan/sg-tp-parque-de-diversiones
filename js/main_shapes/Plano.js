@@ -15,6 +15,11 @@ module.exports = function(rows, cols){
     return this;
   }
 
+  this.repetir = function(n){
+      this.adelante.repetir(n);
+      this.atras.repetir(n);
+  }
+
   this.draw = function(mv){
     this.adelante.draw(mv);
 

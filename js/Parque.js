@@ -12,8 +12,10 @@ module.exports = function(puntosMRusa){
     this.init = function(puntosMRusa){
         this.vuelta = new Vuelta().init();
         this.sillas = new Sillas().init();
-        var material = new MaterialPhong({colorDifuso:[0.5,1.0,0.2,1.0]});
+        //var material = new MaterialPhong({colorDifuso:[0.5,1.0,0.2,1.0]});
+        var material = new MaterialPhong({mapaDifuso:"js/textures/grass.jpg"});
         this.plano = new Plano(2,2).init(material);
+        this.plano.repetir(100);
         this.rusa = new Rusa(puntosMRusa,20,300).init();
         this.pileta = new Pileta().init();
         var materialDomo = new MaterialPhong({mapaDifuso:"js/textures/wood.jpg"});
