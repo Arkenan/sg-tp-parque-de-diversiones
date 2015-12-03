@@ -26,7 +26,7 @@ module.exports = function(fPerfil,cPerfil, cRevol){
                     v[1], v[0]*Math.cos(angulo) - v[2]*Math.sin(angulo)];
                 this.vertices = this.vertices.concat(rotado);
 
-                var normal = rotado;
+                var normal = [-1*rotado[0],-1*rotado[1],-1*rotado[2]];
                 this.normales = this.normales.concat(normal);
             }
         }
