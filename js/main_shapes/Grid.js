@@ -38,11 +38,13 @@ module.exports = function (vertices, normales, rows, cols) {
     // 3. Cargamos datos de las posiciones en el buffer.
     global.gl.bufferData(global.gl.ARRAY_BUFFER, new Float32Array(this.position_buffer), global.gl.STATIC_DRAW);
 
-    this.webgl_normal_buffer = global.gl.createBuffer();
-    global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_normal_buffer);
-    global.gl.bufferData(global.gl.ARRAY_BUFFER, new Float32Array(this.normal_buffer), global.gl.STATIC_DRAW);
+    if (!this.material.mapaNormales){
+      this.webgl_normal_buffer = global.gl.createBuffer();
+      global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_normal_buffer);
+      global.gl.bufferData(global.gl.ARRAY_BUFFER, new Float32Array(this.normal_buffer), global.gl.STATIC_DRAW);
+    }
 
-    if (this.material.mapaDifuso){
+    if (this.material.mapaDifuso || this.material.mapaNormales){
       // Coordenadas uv.
       this.webgl_uv_buffer = global.gl.createBuffer();
       global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_uv_buffer);
@@ -78,22 +80,32 @@ module.exports = function (vertices, normales, rows, cols) {
     global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_position_buffer);
     global.gl.vertexAttribPointer(vertexPositionAttribute, 3, global.gl.FLOAT, false, 0, 0);
 
-    // Cargamos las normales en el shader.
-    var vertexNormalAttribute = global.gl.getAttribLocation(this.program, "aVertexNormal");
-    global.gl.enableVertexAttribArray(vertexNormalAttribute);
-    global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_normal_buffer);
-    global.gl.vertexAttribPointer(vertexNormalAttribute, 3, global.gl.FLOAT, false, 0, 0);
-
-    if (this.material.mapaDifuso){
+    if (this.material.mapaDifuso || this.material.mapaNormales){
       // Cargamos coordenadas uvs en el shader.
       var textureCoordAttribute = global.gl.getAttribLocation(this.program, "aTextureCoord");
       global.gl.enableVertexAttribArray(textureCoordAttribute);
       global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_uv_buffer);
       global.gl.vertexAttribPointer(textureCoordAttribute, 2, global.gl.FLOAT, false, 0, 0);
+    }
+
+    if (this.material.mapaDifuso){
       // Cargamos textura
       global.gl.activeTexture(global.gl.TEXTURE0);
       global.gl.bindTexture(global.gl.TEXTURE_2D, this.material.texturaDifusa);
       global.gl.uniform1i(this.program.uSampler, 0);
+    }
+
+    if (this.material.mapaNormales){
+      // Cargamos textura de normales
+      global.gl.activeTexture(global.gl.TEXTURE1);
+      global.gl.bindTexture(global.gl.TEXTURE_2D, this.material.texturaNormales);
+      global.gl.uniform1i(this.program.uNormalSampler, 1);
+    } else {
+      // Cargamos las normales en el shader.
+      var vertexNormalAttribute = global.gl.getAttribLocation(this.program, "aVertexNormal");
+      global.gl.enableVertexAttribArray(vertexNormalAttribute);
+      global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_normal_buffer);
+      global.gl.vertexAttribPointer(vertexNormalAttribute, 3, global.gl.FLOAT, false, 0, 0);
     }
 
     // Se usa la matriz de modelado mv.

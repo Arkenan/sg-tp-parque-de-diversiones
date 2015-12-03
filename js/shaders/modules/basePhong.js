@@ -21,12 +21,10 @@ module.exports = {
     ** textura o si es un color constante. */
     'uniform vec4 uMaterialSpecular; ', // Color especular del material.
 
-    'varying vec3 vNormal;',            // Normal para el punto.
     'varying vec3 vEyeVec;'             // Dirección de vista.
   ],
   logic:[
     'vec3 L = normalize(uVR * uLightDirection);',
-    'vec3 N = normalize(vNormal);',
 
     // Lamberts cosine law
     'float lambertTerm = dot(N,L);',
