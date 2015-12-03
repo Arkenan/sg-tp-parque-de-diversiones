@@ -2,8 +2,8 @@ var Plano = require("../../../main_shapes/Plano.js");
 
 module.exports = function(){
 
-    this.init = function(program){
-        this.plano = new Plano(2,2).init(program);
+    this.init = function(material){
+        this.plano = new Plano(2,2).init(material);
         return this;
     }
 

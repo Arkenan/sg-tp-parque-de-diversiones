@@ -3,10 +3,10 @@ var Cubo = require("../../../main_shapes/Cubo.js");
 // Por ahora solo es un simple cubo. Si hay tiempo, se le darán detalles aquí.
 module.exports = function(){
 
-  this.init = function(program){
-    this.base = new Cubo().init(program);
-    this.col = new Cubo().init(program);
-    this.techo = new Cubo().init(program);
+  this.init = function(material){
+    this.base = new Cubo().init(material);
+    this.col = new Cubo().init(material);
+    this.techo = new Cubo().init(material);
     return this;
   }
 

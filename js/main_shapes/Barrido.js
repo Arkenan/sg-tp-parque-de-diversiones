@@ -87,7 +87,20 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
       return acu;
   }
 
-  this.init = function(program){
+  // Provisorio. No es la idea que sea así, si no que los de arriba pasen las uv.
+  // Esto es para tener las cosas funcionando pronto.
+  this.obtenerUVs = function(){
+    this.uvs = [];
+    for (var i = 0; i < this.cBarrido+4; i++){
+      for (var j = 0; j < this.cForma; j++){
+        var u = j/this.cForma;
+        var v = i/(this.cBarrido+4);
+        this.uvs = this.uvs.concat([u,v]);
+      }
+    }
+  }
+
+  this.init = function(material){
     // Importante: cForma, cBarrido > 1.
     this.pasoForma = 1/(this.cForma - 1);
     this.pasoBarrido = 1/(this.cBarrido - 1);
@@ -95,7 +108,7 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
     this.obtenerVertices();
     this.agregarTapas();
     // Sumo 2 filas a la grilla, una por cada tapa.
-    this.grid = new Grid(this.vertices, this.normales, this.cBarrido + 4, this.cForma).init(program);
+    this.grid = new Grid(this.vertices, this.normales, this.cBarrido + 4, this.cForma).init(material, this.uvs);
     return this;
   }
 

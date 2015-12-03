@@ -1,15 +1,15 @@
 // Triángulos que forman la Vuelta al mundo.
 
 var Cilindro = require("../../../main_shapes/Cilindro.js");
+var MaterialPhong = require('../../../Materiales/MaterialPhong.js');
 
 module.exports = function(){
-    this.cil = null;
     this.theta = 2*Math.PI/15;
     this.largo_op = 10*Math.sin(this.theta/2);
     this.d_op = 5*Math.cos(this.theta/2),0;
 
-    this.init = function(program){
-        this.cil = new Cilindro(5,2).init(program);
+    this.init = function(material){
+        this.cil = new Cilindro(5,2).init(material);
         return this;
     }
 

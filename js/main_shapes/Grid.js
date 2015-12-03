@@ -29,6 +29,7 @@ module.exports = function (vertices, normales, rows, cols) {
   // Esta función crea e incializa los buffers dentro del pipeline para luego
   // utlizarlos a la hora de renderizar.
   this.setupBuffers = function(){
+    //global.gl.useProgram(this.program);
     // 1. Creamos un buffer para las posiciones dentro del pipeline.
     this.webgl_position_buffer = global.gl.createBuffer();
     // 2. Le decimos a WebGL que las siguientes operaciones que vamos a ser se aplican sobre el buffer que
@@ -41,7 +42,7 @@ module.exports = function (vertices, normales, rows, cols) {
     global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_normal_buffer);
     global.gl.bufferData(global.gl.ARRAY_BUFFER, new Float32Array(this.normal_buffer), global.gl.STATIC_DRAW);
 
-    if (this.uvs){
+    if (this.material.mapaDifuso){
       // Coordenadas uv.
       this.webgl_uv_buffer = global.gl.createBuffer();
       global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_uv_buffer);
@@ -71,6 +72,7 @@ module.exports = function (vertices, normales, rows, cols) {
   // para dibujar el VertexGrid.
   this.draw = function(mv){
     // Cargamos los vértices en el shader.
+    global.gl.useProgram(this.program);
     var vertexPositionAttribute = global.gl.getAttribLocation(this.program, "aVertexPosition");
     global.gl.enableVertexAttribArray(vertexPositionAttribute);
     global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_position_buffer);
@@ -82,7 +84,7 @@ module.exports = function (vertices, normales, rows, cols) {
     global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_normal_buffer);
     global.gl.vertexAttribPointer(vertexNormalAttribute, 3, global.gl.FLOAT, false, 0, 0);
 
-    if (this.uvs){
+    if (this.material.mapaDifuso){
       // Cargamos coordenadas uvs en el shader.
       var textureCoordAttribute = global.gl.getAttribLocation(this.program, "aTextureCoord");
       global.gl.enableVertexAttribArray(textureCoordAttribute);

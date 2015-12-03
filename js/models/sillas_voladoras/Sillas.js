@@ -1,12 +1,14 @@
 // Sillas Voladoras. Dibuja a la cabeza giratoria y a la base.
 var Base = require("./shapes/BaseSillas.js");
 var Cabeza = require("./shapes/CabezaSillas.js");
+var MaterialPhong = require('../../Materiales/MaterialPhong.js');
 
 module.exports = function(){
 
-    this.init = function(program){
-        this.base = new Base().init(program);
-        this.cabeza = new Cabeza().init(program);
+    this.init = function(){
+        var mat = new MaterialPhong({colorDifuso:[0.6,0.6,0.3,1.0]});
+        this.base = new Base().init(mat);
+        this.cabeza = new Cabeza().init();
         return this;
     }
 

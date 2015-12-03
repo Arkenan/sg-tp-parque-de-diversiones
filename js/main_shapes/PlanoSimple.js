@@ -8,9 +8,11 @@ module.exports = function(_rows,_cols){
   this.rows = _rows;
   this.cols = _cols;
 
-  this.init = function(program){
+  this.init = function(material){
     this.vertices = [];
     this.normales = [];
+    this.uvs = [];
+
     for (var y = 0.0; y < this.rows; y++){
       for (var x = 0.0; x < this.cols; x++){
         this.vertices.push(x);
@@ -20,10 +22,13 @@ module.exports = function(_rows,_cols){
         this.normales.push(0);
         this.normales.push(0);
         this.normales.push(1);
+
+        this.uvs.push(x/this.cols);
+        this.uvs.push(y/this.rows);
       }
     }
 
-    this.grid = new Grid(this.vertices, this.normales, this.rows, this.cols).init(program);
+    this.grid = new Grid(this.vertices, this.normales, this.rows, this.cols).init(material, this.uvs);
     return this;
   }
 

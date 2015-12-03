@@ -1,6 +1,7 @@
 var Barrido = require("../../main_shapes/Barrido");
 var CubicBezierConcatenator  = require("../../curves/CubicBezierConcatenator.js");
 var Puntos = require('../../curves/puntos.js');
+var MaterialPhong = require('../../Materiales/MaterialPhong.js');
 
 module.exports = function(){
   this.supB = null;
@@ -20,8 +21,9 @@ module.exports = function(){
     return [0, t, 0];
   }
 
-  this.init = function(program){
-    this.supB = new Barrido(this.fForma, this.fBarrido, 200, 40).init(program);
+  this.init = function(){
+    var material = new MaterialPhong({colorDifuso:[0.5,0.5,1.0,1.0]});
+    this.supB = new Barrido(this.fForma, this.fBarrido, 200, 40).init(material);
     return this;
   }
 

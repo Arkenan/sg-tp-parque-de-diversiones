@@ -6,16 +6,17 @@ var Plano = require("./main_shapes/Plano.js");
 var Rusa = require("./models/montania_rusa/Rusa.js");
 var Pileta = require("./models/pileta/Pileta.js");
 var Domo = require("./models/domo/Domo.js");
-
+var MaterialPhong = require('./Materiales/MaterialPhong.js');
 module.exports = function(puntosMRusa){
 
-    this.init = function(puntosMRusa,program){
-        this.vuelta = new Vuelta().init(program);
-        this.sillas = new Sillas().init(program);
-        this.plano = new Plano(2,2).init(program);
-        this.rusa = new Rusa(puntosMRusa,20,300).init(program);
-        this.pileta = new Pileta().init(program);
-        //this.domo = new Domo().init(program);
+    this.init = function(puntosMRusa){
+        this.vuelta = new Vuelta().init();
+        this.sillas = new Sillas().init();
+        var material = new MaterialPhong({colorDifuso:[0.5,1.0,0.2,1.0]});
+        this.plano = new Plano(2,2).init(material);
+        this.rusa = new Rusa(puntosMRusa,20,300).init();
+        this.pileta = new Pileta().init();
+        //this.domo = new Domo().init();
         return this;
     }
 

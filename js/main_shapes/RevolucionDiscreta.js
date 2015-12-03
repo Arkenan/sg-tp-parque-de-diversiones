@@ -60,10 +60,23 @@ module.exports = function(puntosPerfil, cRevol){
       }
     }
 
-    this.init = function(program){
+    //mock. Cuando le ponga texturas lo implemento.
+    this.obtenerUVs = function(){
+      this.uvs = [];
+      for (var i = 0; i < this.cRevol; i++){
+        for (var j = 0; j < this.cPerfil; j++){
+          u = 0.5;
+          v = 0.5;
+          this.uvs = this.uvs.concat([u,v]);
+        }
+      }
+    }
+
+    this.init = function(material){
         this.obtenerVertices();
         this.obtenerNormales();
-        this.grid = new Grid(this.vertices,this.normales, this.cRevol, this.cPerfil).init(program);
+        this.obtenerUVs();
+        this.grid = new Grid(this.vertices,this.normales, this.cRevol, this.cPerfil).init(material, this.uvs);
         return this;
     }
 

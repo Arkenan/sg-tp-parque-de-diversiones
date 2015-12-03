@@ -96,13 +96,12 @@ module.exports = function(fMov, fTNB){
         }
     }
 
-    //TODO
     var actualizarMR = function(cam){
         return function(t){
 
             // Ubicacion del observador en coordenadas del carrito.
-            var normal = cam.TNB((t*0.05)%1)[1];
-            var pos = cam.fMov((t*0.05)%1);
+            var normal = cam.TNB((t*0.1)%1)[1];
+            var pos = cam.fMov((t*0.1)%1);
             vec3.scaleAndAdd(cam.pos, pos, normal,2.2);
 
             // Traslacion de la montaña rusa en el parque.

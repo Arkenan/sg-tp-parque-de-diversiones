@@ -1,4 +1,5 @@
-var Grid = require("./Grid.js");
+var Grid = require('./Grid.js');
+var MaterialPhong = require('../Materiales/MaterialPhong.js')
 
 module.exports = function(fForma, fBarrido, fTNB, cForma, cBarrido){
     // Todas las funciones van entre 0 y 1.
@@ -89,13 +90,24 @@ module.exports = function(fForma, fBarrido, fTNB, cForma, cBarrido){
         return acu;
     }
 
-    this.init = function (program){
+    this.obtenerUVs = function(){
+      this.uvs = [];
+      for (var i = 0; i < this.cBarrido + 2; i++){
+        for (var j = 0; j < this.cForma; j++){
+          var u = 0.5;
+          var v = 0.5;
+          this.uvs = this.uvs.concat([u,v]);
+        }
+      }
+    }
+
+    this.init = function (material){
         // TODO filas y columnas.
         this.fijarPuntosEval();
         this.obtenerVertices();
         this.agregarTapas();
 
-        this.grid = new Grid(this.vertices, this.normales, this.cBarrido + 2, this.cForma).init(program);
+        this.grid = new Grid(this.vertices, this.normales, this.cBarrido + 2, this.cForma).init(material, this.uvs);
         return this;
     }
 

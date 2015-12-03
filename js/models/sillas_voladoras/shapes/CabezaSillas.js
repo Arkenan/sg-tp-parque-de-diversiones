@@ -1,12 +1,15 @@
-var Revolucion = require("../../../main_shapes/RevolucionDiscreta.js");
+var RevolucionD = require("../../../main_shapes/RevolucionDiscreta.js");
 var Silla = require("./SillaSuspendida.js");
+var MaterialPhong = require('../../../Materiales/MaterialPhong.js');
 
 module.exports = function(){
     this.vertices = [0,0,0,0,2.3,0,5.3,2,0,5.3,1,0,0.7,0,0,0,0,0];
 
-    this.init = function(program){
-        this.supR = new Revolucion(this.vertices, 30).init(program);
-        this.silla = new Silla().init(program);
+    this.init = function(){
+        var matCabeza = new MaterialPhong({colorDifuso: [1.0,0.0,0.0,1.0]});
+        this.supR = new RevolucionD(this.vertices, 30).init(matCabeza);
+        var matSilla = new MaterialPhong({colorDifuso: [1.0,1.0,0.0,1.0]});
+        this.silla = new Silla().init(matSilla);
 
         return this;
     }

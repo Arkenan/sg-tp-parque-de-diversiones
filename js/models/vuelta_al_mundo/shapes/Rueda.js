@@ -2,18 +2,20 @@
 var Triangulo = require("./Triangulo.js");
 var Cilindro = require("../../../main_shapes/Cilindro.js");
 var Cabina = require("./Cabina.js");
-
+var MaterialPhong = require('../../../Materiales/MaterialPhong.js');
 module.exports = function(){
     this.theta = 2*Math.PI/15;
 
-    this.init = function(program){
-        this.tri = new Triangulo().init(program);
+    this.init = function(){
+        var matMetal = new MaterialPhong({colorDifuso:[0.8, 0.8, 0.8, 1.0]});
+        this.tri = new Triangulo().init(matMetal);
         // Paralelogramos para las uniones.
-        this.palo = new Cilindro(5,2).init(program);
+        this.palo = new Cilindro(5,2).init(matMetal);
         // Eje
-        this.eje = new Cilindro(30,2).init(program);
+        this.eje = new Cilindro(30,2).init(matMetal);
         // Cabinas.
-        this.cabina = new Cabina().init(program);
+        var matCabina = new MaterialPhong({colorDifuso:[0.0, 0.0, 0.6, 1.0]});
+        this.cabina = new Cabina().init(matCabina);
         return this;
     }
 

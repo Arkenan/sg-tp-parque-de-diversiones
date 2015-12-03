@@ -8,10 +8,10 @@ module.exports = function(rows, cols){
   this.rows = rows;
   this.cols = cols;
 
-  this.init = function(program){
+  this.init = function(material){
     // Crea dos planos simples.
-    this.adelante = new PlanoS(rows,cols).init(program);
-    this.atras = new PlanoS(rows,cols).init(program);
+    this.adelante = new PlanoS(rows,cols).init(material);
+    this.atras = new PlanoS(rows,cols).init(material);
     return this;
   }
 

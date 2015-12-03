@@ -6,9 +6,9 @@ module.exports = function(){
     this.rueda = null;
     this.base = null;
 
-    this.init = function(program){
-        this.rueda = new Rueda().init(program);
-        this.base = new Base().init(program);
+    this.init = function(){
+        this.rueda = new Rueda().init();
+        this.base = new Base().init();
         return this;
     }
 

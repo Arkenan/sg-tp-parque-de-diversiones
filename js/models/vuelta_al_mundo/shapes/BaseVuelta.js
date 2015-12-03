@@ -1,5 +1,6 @@
 // Placas de base de la Vuelta al Mundo.
 var BarridoD = require("../../../main_shapes/BarridoDiscreto.js");
+var MaterialPhong = require('../../../Materiales/MaterialPhong.js');
 
 module.exports = function(){
   // Uso datos de los triángulos de la Rueda.
@@ -12,8 +13,9 @@ module.exports = function(){
     return [0, 0, t];
   }
 
-  this.init = function(program){
-    this.supB = new BarridoD(this.vertices, this.fBarrido, 2).init(program);
+  this.init = function(){
+    var material = new MaterialPhong({colorDifuso:[0.6, 0.6, 0.4, 1.0]});
+    this.supB = new BarridoD(this.vertices, this.fBarrido, 2).init(material);
     return this;
   }
 

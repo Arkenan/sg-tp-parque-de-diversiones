@@ -1,4 +1,5 @@
 var BarridoD = require("../../../main_shapes/BarridoDiscreto.js");
+var MaterialPhong = require("../../../Materiales/MaterialPhong.js");
 
 module.exports = function(){
   this.vertices = [0,-1/6,0,1,0.5,0,0,1/7,0,-1,0.5,0,0,-1/6,0];
@@ -7,8 +8,9 @@ module.exports = function(){
     return [0, 0, t];
   }
 
-  this.init = function(program){
-    this.supB = new BarridoD(this.vertices, this.fBarrido, 2, [0,0,0]).init(program);
+  this.init = function(){
+    var material = new MaterialPhong({colorDifuso: [0.0, 0.4, 1.0, 1.0]});
+    this.supB = new BarridoD(this.vertices, this.fBarrido, 2, [0,0,0]).init(material);
     return this;
   }
 

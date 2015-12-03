@@ -1,13 +1,15 @@
 var Cubo = require("../../../main_shapes/Cubo.js");
 var SillaCarrito = require("../shapes/SillaCarrito.js");
 var Plano = require("../../../main_shapes/Plano.js");
+var MaterialPhong = require("../../../Materiales/MaterialPhong.js");
 
 module.exports = function(){
 
-  this.init = function(program){
-    this.cubo = new Cubo().init(program);
-    this.silla = new SillaCarrito().init(program);
-    this.plano = new Plano(2,2).init(program);
+  this.init = function(){
+    var material = new MaterialPhong({colorDifuso: [1.0, 0.0, 0.0, 1.0]});
+    this.cubo = new Cubo().init(material);
+    this.silla = new SillaCarrito().init(material);
+    this.plano = new Plano(2,2).init(material);
     return this;
   }
 

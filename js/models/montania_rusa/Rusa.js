@@ -5,6 +5,7 @@ var ColumnaRusa  = require("./shapes/ColumnaRusa.js");
 var Carrito = require("./shapes/Carrito.js");
 var CubicBezierConcatenator  = require("../../curves/CubicBezierConcatenator.js");
 var Durmiente = require("./shapes/Durmiente.js");
+var MaterialPhong = require("../../Materiales/MaterialPhong.js");
 
 module.exports = function(puntosMRusa, cForma, cBarrido){
   this.cForma = cForma;
@@ -63,27 +64,29 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
     }
   }
 
-  this.init = function(program){
+  this.init = function(){
     this.curve = new CubicBezierConcatenator().init(this.control);
     this.fBarrido = fBarrido(this.curve);
     this.TNB = TNB(this.curve);
+    var materialRieles = new MaterialPhong({colorDifuso: [0.5, 0.5, 0.5, 1.0]});
     this.ejeCentral = new BarridoGeneral(this.fForma, this.fBarrido,
-        this.TNB, this.cForma, this.cBarrido).init(program);
+        this.TNB, this.cForma, this.cBarrido).init(materialRieles);
     var barridoD = recorridoDesplazado(this.curve, [1, 0.5]);
     this.rielD = new BarridoGeneral(this.fFormaRielD, barridoD, this.TNB,
-        this.cForma, this.cBarrido).init(program);
+        this.cForma, this.cBarrido).init(materialRieles);
     var barridoI = recorridoDesplazado(this.curve, [-1, 0.5]);
     this.rielI = new BarridoGeneral(this.fFormaRielI, barridoI, this.TNB,
-        this.cForma, this.cBarrido).init(program);
+        this.cForma, this.cBarrido).init(materialRieles);
 
     this.columnas = [];
     var interpolated = this.curve.getInterpolated();
+    var materialColumnas = new  MaterialPhong({colorDifuso:[0.2, 0.2, 0.2, 1.0]});
     for (var i = 0; i < interpolated.length; i++) {
-      this.columnas.push(new ColumnaRusa(interpolated[i],interpolated[i][1]).init(program));
+      this.columnas.push(new ColumnaRusa(interpolated[i],interpolated[i][1]).init(materialColumnas));
     }
 
-    this.carrito = new Carrito().init(program);
-    this.durmiente = new Durmiente().init(program);
+    this.carrito = new Carrito().init();
+    this.durmiente = new Durmiente().init();
     return this;
   }
 
@@ -99,8 +102,8 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
 
     // z coincidirá con la tangente. -x con la binormal, y con la normal.
     var mCarrito = mat4.create();
-    var pos = this.curve.generate((t*0.05)%1);
-    var tnb = this.TNB((t*0.05)%1);
+    var pos = this.curve.generate((t*0.1)%1);
+    var tnb = this.TNB((t*0.1)%1);
 
     // Matriz de cambio de base (en column major notation):
     M = [

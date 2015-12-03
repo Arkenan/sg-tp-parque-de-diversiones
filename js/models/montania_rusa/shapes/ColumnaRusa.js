@@ -5,9 +5,9 @@ module.exports = function(ubicacion,altura){
   this.altura = altura;
 
   this.vertices = [0,0,0,0,6.2,0,0.7,6.2,0,0.7,3.7,0,0.8,3.5,0,0.8,2.5,0,1,2,0,1,0,0,0,0,0];
-  
-  this.init = function(program){
-    this.base = new Revolucion(this.vertices, 30).init(program);
+
+  this.init = function(program, material){
+    this.base = new Revolucion(this.vertices, 30).init(program, material);
     return this;
   }
 
