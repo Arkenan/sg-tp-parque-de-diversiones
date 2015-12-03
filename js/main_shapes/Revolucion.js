@@ -33,11 +33,25 @@ module.exports = function(fPerfil,cPerfil, cRevol){
         //console.log(this.normales);
     }
 
-    this.init = function(program){
+    // Provisorio. No es la idea que sea así, si no que los de arriba pasen las uv.
+    // Esto es para tener las cosas funcionando pronto.
+    this.obtenerUVs = function(){
+      this.uvs = [];
+      for (var i = 0; i < this.cPerfil+4; i++){
+        for (var j = 0; j < this.cRevol; j += 2){
+          var u = j/this.cRevol;
+          var v = i/(this.cPerfil+4);
+          this.uvs = this.uvs.concat([u,v,u,v]);
+        }
+      }
+    }
+
+    this.init = function(material){
         this.recPerfil = 1/(cPerfil-1);
         this.fijarPuntosEval();
         this.obtenerVertices();
-        this.grid = new Grid(this.vertices,this.normales, cRevol, cPerfil).init(program);
+        this.obtenerUVs();
+        this.grid = new Grid(this.vertices,this.normales, cRevol, cPerfil).init(material,this.uvs);
         return this;
     }
 

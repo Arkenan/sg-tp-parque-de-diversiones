@@ -29,7 +29,7 @@ window.onload = function(){
     var mv = mat4.create(), vRot = mat3.create();
     // Matriz de proyección perspectiva.
     var pMatrix = mat4.create();
-    mat4.perspective(pMatrix, 45, scene.width/scene.height, 0.1, 100.0);
+    mat4.perspective(pMatrix, 45, scene.width/scene.height, 0.1, 300.0);
 
     // Pasamos al shader Matriz de perspectiva para todos los programas.
     for (var i in global.programas) {

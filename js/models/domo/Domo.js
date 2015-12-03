@@ -8,8 +8,8 @@ module.exports = function(){
     }
     this.fPerfil = fPerfil;
 
-    this.init = function(program){
-        this.supR = new Revolucion(this.fPerfil,100,100).init(program);
+    this.init = function(material){
+        this.supR = new Revolucion(this.fPerfil,100,100).init(material);
         return this;
     }
 
