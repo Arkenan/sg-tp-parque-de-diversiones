@@ -1,6 +1,7 @@
 module.exports = function () {
 
   this.load = function(path) {
+    global.texturas++;
     var texture = global.gl.createTexture();
     var image = new Image();
     image.onload = this.handleTexture(image, texture);
@@ -19,6 +20,7 @@ module.exports = function () {
       global.gl.texParameteri(global.gl.TEXTURE_2D, global.gl.TEXTURE_WRAP_T, global.gl.REPEAT);
       global.gl.generateMipmap(global.gl.TEXTURE_2D);
       global.gl.bindTexture(global.gl.TEXTURE_2D, null);
+      global.cargadas++;
     }
   }
 

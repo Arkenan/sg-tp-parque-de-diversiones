@@ -11,6 +11,9 @@ window.onload = function(){
   scene.height = window.innerHeight;
   document.body.appendChild(scene);
   global.programas = [];
+  // Contador de texturas a pedidas y cargadas.
+  global.texturas = 0;
+  global.cargadas = 0;
 
   try{
     // Setup del contexto gl.
@@ -63,7 +66,9 @@ window.onload = function(){
       }
 
       // Dibujo del parque de diversiones.
-      parque.draw(mv,t);
+      if (global.texturas == global.cargadas){
+        parque.draw(mv,t);
+      }
     })();
 
   } catch(e) {

@@ -48,7 +48,8 @@ module.exports = function(opciones){
 
   // Se carga la base del modelo de Phong, común para todos los casos.
   builder.addFModule(mBasePhong);
-  builder.compile().listModules().debug();
+  //builder.compile().listModules().debug();
+  builder.compile();
   this.program = builder.getProgram();
   // Agrego este programa a la lista global de programas para cosas compartidas.
   global.programas.push(this.program);

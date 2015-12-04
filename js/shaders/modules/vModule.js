@@ -15,15 +15,17 @@ module.exports = {
 
   ],
   logic:[
-    //Transformed vertex position
+    // Posición transformada por Modelview.
     'vec4 vertex = uMVMatrix * vec4(aVertexPosition, 1.0);',
 
-    //Transformed normal position
+    // Vector Eye.
+    'vEyeVec = -vec3(vertex.xyz);',
+
+    // Normal transformada.
     'vNormal = vec3(uNMatrix * vec4(aVertexNormal, 1.0));',
 
-    //Vector Eye
-    'vEyeVec = -vec3(vertex.xyz);',
-    'gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);',
+    // Posición Final.
+    'gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);'
   ],
   execute: function(program){}
 }

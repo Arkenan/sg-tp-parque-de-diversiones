@@ -7,6 +7,8 @@ var Rusa = require("./models/montania_rusa/Rusa.js");
 var Pileta = require("./models/pileta/Pileta.js");
 var Domo = require("./models/domo/Domo.js");
 var MaterialPhong = require('./Materiales/MaterialPhong.js');
+var MaterialSkyBox = require('./Materiales/MaterialSkybox.js');
+
 module.exports = function(puntosMRusa){
 
     this.init = function(puntosMRusa){
@@ -19,7 +21,7 @@ module.exports = function(puntosMRusa){
         this.plano.repetir(100);
         this.rusa = new Rusa(puntosMRusa,20,300).init();
         this.pileta = new Pileta().init();
-        var materialDomo = new MaterialPhong({mapaDifuso:"js/textures/wood.jpg"});
+        var materialDomo = new MaterialSkyBox("js/textures/SB/");
         this.domo = new Domo().init(materialDomo);
         return this;
     }
@@ -50,12 +52,12 @@ module.exports = function(puntosMRusa){
         this.pileta.draw(mPileta);
 
         // Domo
-        mat4.scale(mDomo,mv,[80,80,80]);
+        mat4.scale(mDomo,mv,[300,300,300]);
         this.domo.draw(mDomo);
 
         // Piso.
-        mat4.translate(mp,mv,[-100,0,-100]);
-        mat4.scale(mp,mp,[300,1,300]);
+        mat4.translate(mp,mv,[-200,0,-200]);
+        mat4.scale(mp,mp,[400,1,400]);
         mat4.rotate(mp,mp,Math.PI/2,[1,0,0]);
         this.plano.draw(mp);
     }

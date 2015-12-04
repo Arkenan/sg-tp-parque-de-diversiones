@@ -38,7 +38,8 @@ module.exports = function (vertices, normales, rows, cols) {
     // 3. Cargamos datos de las posiciones en el buffer.
     global.gl.bufferData(global.gl.ARRAY_BUFFER, new Float32Array(this.position_buffer), global.gl.STATIC_DRAW);
 
-    if (!this.material.mapaNormales){
+    if (!this.material.mapaNormales && !this.material.skyTex){
+      // Carga de normales cuando no hay mapa para eso.
       this.webgl_normal_buffer = global.gl.createBuffer();
       global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_normal_buffer);
       global.gl.bufferData(global.gl.ARRAY_BUFFER, new Float32Array(this.normal_buffer), global.gl.STATIC_DRAW);
@@ -96,16 +97,23 @@ module.exports = function (vertices, normales, rows, cols) {
     }
 
     if (this.material.mapaNormales){
-      // Cargamos textura de normales
+      // Cargamos textura de normales.
       global.gl.activeTexture(global.gl.TEXTURE1);
       global.gl.bindTexture(global.gl.TEXTURE_2D, this.material.texturaNormales);
       global.gl.uniform1i(this.program.uNormalSampler, 1);
     } else {
-      // Cargamos las normales en el shader.
-      var vertexNormalAttribute = global.gl.getAttribLocation(this.program, "aVertexNormal");
-      global.gl.enableVertexAttribArray(vertexNormalAttribute);
-      global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_normal_buffer);
-      global.gl.vertexAttribPointer(vertexNormalAttribute, 3, global.gl.FLOAT, false, 0, 0);
+      if (this.material.skyTex){
+        // Cargamos textura del skybox.
+        global.gl.activeTexture(global.gl.TEXTURE2);
+        global.gl.bindTexture(global.gl.TEXTURE_CUBE_MAP, this.material.skyTex);
+        global.gl.uniform1i(this.program.skybox, 2);
+      } else {
+        // Cargamos las normales en el shader.
+        var vertexNormalAttribute = global.gl.getAttribLocation(this.program, "aVertexNormal");
+        global.gl.enableVertexAttribArray(vertexNormalAttribute);
+        global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_normal_buffer);
+        global.gl.vertexAttribPointer(vertexNormalAttribute, 3, global.gl.FLOAT, false, 0, 0);
+      }
     }
 
     // Se usa la matriz de modelado mv.
