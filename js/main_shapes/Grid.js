@@ -75,7 +75,7 @@ module.exports = function (vertices, normales, rows, cols) {
   // para dibujar el VertexGrid.
   this.draw = function(mv){
     global.gl.useProgram(this.program);
-    
+
     // Se asignan unidades.
     if (this.material.mapaDifuso){
       global.gl.uniform1i(this.program.uSampler, 0);
@@ -83,7 +83,7 @@ module.exports = function (vertices, normales, rows, cols) {
     if (this.material.mapaNormales){
       global.gl.uniform1i(this.program.uNormalSampler, 1);
     }
-    if (this.material.esSkybox){
+    if (this.material.esSkyBox){
       global.gl.uniform1i(this.program.skybox, 2);
     }
     if (this.material.mapaRefleccion){
@@ -115,7 +115,7 @@ module.exports = function (vertices, normales, rows, cols) {
       global.gl.activeTexture(global.gl.TEXTURE1);
       global.gl.bindTexture(global.gl.TEXTURE_2D, this.material.texturaNormales);
     } else {
-      if (this.material.esSkybox){
+      if (this.material.esSkyBox){
         // Cargamos textura del skybox.
         global.gl.activeTexture(global.gl.TEXTURE2);
         global.gl.bindTexture(global.gl.TEXTURE_CUBE_MAP, this.material.skyTex);
