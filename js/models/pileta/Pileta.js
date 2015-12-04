@@ -23,16 +23,23 @@ module.exports = function(){
 
   this.init = function(){
     var material = new MaterialPhong({
-      //colorDifuso:[0.5, 0.5, 1.0, 1.0],
       mapaRefleccion:"js/textures/SB/",
       mapaDifuso:"js/textures/water.jpg",
+      mapaNormales:"js/textures/waterNM.png",
+      ks:2.0,
+      shininess: 50,
       agua:true
       });
+    this.material = material;
     this.supB = new Barrido(this.fForma, this.fBarrido, 200, 40).init(material);
     return this;
   }
 
-  this.draw = function(mv){
+  this.draw = function(mv, t){
+    // Le paso el tiempo a los shaders.
+    global.gl.useProgram(this.material.program);
+    global.gl.uniform1f(this.material.program.t, t);
+
     m = mat4.create();
     // Centrado al origen.
     mat4.translate(m,mv,[0,0,-0.5]);

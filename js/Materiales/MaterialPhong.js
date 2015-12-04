@@ -43,10 +43,6 @@ module.exports = function(opciones){
       builder.addVModule(vTex);
       builder.addVModule(vModule);
       builder.addFModule(fTexDifusa);
-      /*if (this.agua){
-        builder.addVModule(vAgua);
-        builder.addFModule(fAgua);
-      }*/
     } else {
       if (this.colorDifuso) {
         // Carga módulo de color constante.
@@ -61,10 +57,14 @@ module.exports = function(opciones){
 
   // Pasada la parte difusa, entra la parte de las normales.
   if (this.mapaNormales){
-    // Cargo la textura.
-    this.texturaNormales = this.loader.load(this.mapaNormales);
-    // Cargo módulo de normales difusas.
-    builder.addFModule(fNormalMap);
+      this.texturaNormales = this.loader.load(this.mapaNormales);
+    if (this.agua){
+      // Añado el módulo de normales del agua.
+      builder.addFModule(fAgua);
+    } else {
+      // Cargo módulo de normales difusas.
+      builder.addFModule(fNormalMap);
+    }
   } else {
     builder.addFModule(fNormal);
   }

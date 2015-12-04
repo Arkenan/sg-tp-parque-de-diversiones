@@ -7,6 +7,8 @@ var Domo = require('./models/domo/Domo.js');
 //------------------------------------------------------------------------------------------------------------------------------
 
 var inicio = function(){
+  var cartel = document.getElementById("loading");
+
   var scene = document.createElement('canvas');
   scene.width = window.innerWidth;
   scene.height = window.innerHeight;
@@ -14,6 +16,7 @@ var inicio = function(){
   global.programas = [];
 
   try{
+    cartel.innerHTML = "Cargando Modelos..."
     // Setup del contexto gl.
     global.gl = scene.getContext('webgl') || scene.getContext('experimental-webgl');
     global.gl.clearColor(0.2, 0.6, 1.0, 1.0);
@@ -44,6 +47,8 @@ var inicio = function(){
 
     // Tiempo.
     var t = 0.0;
+
+    cartel.style.display = "none";
 
     (function drawScene() {
       // Loopea el dibujado de la escena.
@@ -77,16 +82,17 @@ var inicio = function(){
 }
 
 window.onload = function(){
-  // Carga de imagenes.
+  // Carga de imagenes para que estén listas a la hora de armar las texturas.
   var urls = [
-    "js/textures/wood.jpg",   "js/textures/grass.jpg",
-    "js/textures/water.jpg",  "js/textures/plastic.jpg",
-    "js/textures/cabeza.jpg", "js/textures/grassNM.jpg",
+    "js/textures/wood.jpg",   "js/textures/plastic.jpg",
+    "js/textures/grass.jpg",  "js/textures/grassNM.jpg",
+    "js/textures/water.jpg",  "js/textures/waterNM.png",
+    "js/textures/cabeza.jpg",
     "js/textures/SB/posx.jpg",    "js/textures/SB/negx.jpg",
     "js/textures/SB/posy.jpg",    "js/textures/SB/negy.jpg",
     "js/textures/SB/posz.jpg",    "js/textures/SB/negz.jpg",
     ];
-  // Diccionario con las imagenes según sus paths.
+  // Diccionario global con las imagenes según sus paths.
   global.imgs = {};
   global.cargadas = 0;
   for (var i in urls){
@@ -94,9 +100,6 @@ window.onload = function(){
     global.imgs[urls[i]].onload = function(){
       global.cargadas++;
       if (global.cargadas == urls.length){
-        console.log(global.cargadas);
-        console.log(global.imgs);
-        console.log("Las imágenes fueron todas cargadas.");
         inicio();
       }
     }
