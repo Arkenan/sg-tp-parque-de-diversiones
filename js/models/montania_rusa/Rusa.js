@@ -81,7 +81,8 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
 
     this.columnas = [];
     var interpolated = this.curve.getInterpolated();
-    var materialColumnas = new  MaterialPhong({colorDifuso:[0.2, 0.2, 0.2, 1.0]});
+    var materialColumnas = new  MaterialPhong({colorDifuso:[0.2, 0.2, 0.2, 1.0],
+      shininess:50});
     for (var i = 0; i < interpolated.length; i++) {
       this.columnas.push(new ColumnaRusa(interpolated[i],interpolated[i][1]).init(materialColumnas));
     }

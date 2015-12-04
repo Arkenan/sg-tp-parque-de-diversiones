@@ -29,7 +29,7 @@ module.exports = function (vertices, normales, rows, cols) {
   // Esta función crea e incializa los buffers dentro del pipeline para luego
   // utlizarlos a la hora de renderizar.
   this.setupBuffers = function(){
-    //global.gl.useProgram(this.program);
+    global.gl.useProgram(this.program);
     // 1. Creamos un buffer para las posiciones dentro del pipeline.
     this.webgl_position_buffer = global.gl.createBuffer();
     // 2. Le decimos a WebGL que las siguientes operaciones que vamos a ser se aplican sobre el buffer que
@@ -38,7 +38,7 @@ module.exports = function (vertices, normales, rows, cols) {
     // 3. Cargamos datos de las posiciones en el buffer.
     global.gl.bufferData(global.gl.ARRAY_BUFFER, new Float32Array(this.position_buffer), global.gl.STATIC_DRAW);
 
-    if (!this.material.mapaNormales && !this.material.skyTex){
+    if (!this.material.mapaNormales && !this.material.esSkyBox){
       // Carga de normales cuando no hay mapa para eso.
       this.webgl_normal_buffer = global.gl.createBuffer();
       global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_normal_buffer);
@@ -74,8 +74,23 @@ module.exports = function (vertices, normales, rows, cols) {
   // Esta función es la que se encarga de configurar todo lo necesario
   // para dibujar el VertexGrid.
   this.draw = function(mv){
-    // Cargamos los vértices en el shader.
     global.gl.useProgram(this.program);
+    
+    // Se asignan unidades.
+    if (this.material.mapaDifuso){
+      global.gl.uniform1i(this.program.uSampler, 0);
+    }
+    if (this.material.mapaNormales){
+      global.gl.uniform1i(this.program.uNormalSampler, 1);
+    }
+    if (this.material.esSkybox){
+      global.gl.uniform1i(this.program.skybox, 2);
+    }
+    if (this.material.mapaRefleccion){
+      global.gl.uniform1i(this.program.uRefSampler, 3);
+    }
+
+    // Cargamos los vértices en el shader.
     var vertexPositionAttribute = global.gl.getAttribLocation(this.program, "aVertexPosition");
     global.gl.enableVertexAttribArray(vertexPositionAttribute);
     global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_position_buffer);
@@ -90,23 +105,20 @@ module.exports = function (vertices, normales, rows, cols) {
     }
 
     if (this.material.mapaDifuso){
-      // Cargamos textura
+      // Cargamos textura.
       global.gl.activeTexture(global.gl.TEXTURE0);
       global.gl.bindTexture(global.gl.TEXTURE_2D, this.material.texturaDifusa);
-      global.gl.uniform1i(this.program.uSampler, 0);
     }
 
     if (this.material.mapaNormales){
       // Cargamos textura de normales.
       global.gl.activeTexture(global.gl.TEXTURE1);
       global.gl.bindTexture(global.gl.TEXTURE_2D, this.material.texturaNormales);
-      global.gl.uniform1i(this.program.uNormalSampler, 1);
     } else {
-      if (this.material.skyTex){
+      if (this.material.esSkybox){
         // Cargamos textura del skybox.
         global.gl.activeTexture(global.gl.TEXTURE2);
         global.gl.bindTexture(global.gl.TEXTURE_CUBE_MAP, this.material.skyTex);
-        global.gl.uniform1i(this.program.skybox, 2);
       } else {
         // Cargamos las normales en el shader.
         var vertexNormalAttribute = global.gl.getAttribLocation(this.program, "aVertexNormal");
@@ -119,7 +131,6 @@ module.exports = function (vertices, normales, rows, cols) {
     if (this.material.mapaRefleccion){
       global.gl.activeTexture(global.gl.TEXTURE3);
       global.gl.bindTexture(global.gl.TEXTURE_CUBE_MAP, this.material.texturaRefleccion);
-      global.gl.uniform1i(this.program.skybox, 3);
     }
 
     // Se usa la matriz de modelado mv.
@@ -130,7 +141,7 @@ module.exports = function (vertices, normales, rows, cols) {
     var mn = mat4.create();
     mat4.invert(mn, mv);
     mat4.transpose(mn,mn);
-    var u_normal_matrix = global.gl.getUniformLocation(this.program, "uNMatrix")
+    var u_normal_matrix = global.gl.getUniformLocation(this.program, "uNMatrix");
     global.gl.uniformMatrix4fv(u_normal_matrix, false, mn);
 
     global.gl.bindBuffer(global.gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);

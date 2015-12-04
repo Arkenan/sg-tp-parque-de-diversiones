@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'fTexDifusa',
+  name: 'fNormal',
   loaded: false,
   dependencies: [],
   variables: [

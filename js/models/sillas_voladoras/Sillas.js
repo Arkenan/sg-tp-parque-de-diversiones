@@ -6,7 +6,8 @@ var MaterialPhong = require('../../Materiales/MaterialPhong.js');
 module.exports = function(){
 
     this.init = function(){
-        var mat = new MaterialPhong({colorDifuso:[0.6,0.6,0.3,1.0]});
+        var mat = new MaterialPhong({colorDifuso:[0.6,0.6,0.3,1.0],
+        mapaDifuso: "js/textures/plastic.jpg"});
         this.base = new Base().init(mat);
         this.cabeza = new Cabeza().init();
         return this;

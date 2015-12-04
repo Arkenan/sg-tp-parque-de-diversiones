@@ -20,7 +20,7 @@ module.exports = {
     /* No se le pasa de una componente difusa. Esto depende de si es una
     ** textura o si es un color constante. */
     'uniform vec4 uMaterialSpecular; ', // Color especular del material.
-
+    'uniform float uKs;',                // Coeficiente de brillo especular.
     'varying vec3 vEyeVec;'             // Dirección de vista.
   ],
   logic:[
@@ -42,7 +42,7 @@ module.exports = {
       'Id = uLightDiffuse * colorDifuso * lambertTerm; //add diffuse term',
       'vec3 E = normalize(vEyeVec);',
       'vec3 R = reflect(-L, N);',
-      'float specular = pow( max(dot(R, E), 0.0), uShininess);',
+      'float specular = uKs * pow( max(dot(R, E), 0.0), uShininess);',
       'Is = uLightSpecular * uMaterialSpecular * specular; //add specular term',
     '}',
 
@@ -61,6 +61,7 @@ module.exports = {
     program.uLightDiffuse      = global.gl.getUniformLocation(program, "uLightDiffuse");
     program.uLightSpecular     = global.gl.getUniformLocation(program, "uLightSpecular");
     program.uLightDirection    = global.gl.getUniformLocation(program, "uLightDirection");
+    program.uKs                = global.gl.getUniformLocation(program, "uKs");
 
     global.gl.uniform3f(program.uLightDirection, 0.0, 1.0, 2.0);
     global.gl.uniform4fv(program.uLightAmbient, [0.01,0.01,0.01,1.0]);
@@ -68,6 +69,6 @@ module.exports = {
     global.gl.uniform4fv(program.uLightSpecular,  [1.0,1.0,1.0,1.0]);
     global.gl.uniform4fv(program.uMaterialAmbient, [1.0,1.0,1.0,1.0]);
     global.gl.uniform4fv(program.uMaterialSpecular, [1.0,1.0,1.0,1.0]);
-    global.gl.uniform1f(program.uShininess, 230.0);
+
   }
 }

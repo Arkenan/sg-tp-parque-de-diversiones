@@ -18,6 +18,8 @@ module.exports = function(puntosPerfil, cRevol){
       }
       this.cPerfil = this.pPerfil.length/3;
 
+      var cu,cv;
+      this.uvs = [];
       for (var i = 0; i < this.cRevol; i++){
           angulo = this.alfa * i;
           for (var j = 0; j < this.cPerfil; j++){
@@ -26,6 +28,12 @@ module.exports = function(puntosPerfil, cRevol){
               var rotado = [v[2]*Math.sin(angulo) + v[0]*Math.cos(angulo),
                   v[1], v[2]*Math.cos(angulo) - v[0]*Math.sin(angulo)];
               this.vertices = this.vertices.concat(rotado);
+
+              // Teniendo a mano el x (R), el y (altura) y el angulo, aprovecho para las uvs.
+              cu = angulo;
+              cv = v[1] + v[0];
+              this.uvs.push(cu);
+              this.uvs.push(cv);
           }
       }
     }
@@ -59,23 +67,31 @@ module.exports = function(puntosPerfil, cRevol){
         }
       }
     }
-
+/*
     //mock. Cuando le ponga texturas lo implemento.
     this.obtenerUVs = function(){
       this.uvs = [];
+      var vertice, indice, r;
       for (var i = 0; i < this.cRevol; i++){
         for (var j = 0; j < this.cPerfil; j++){
+          indice = 3*(i * cPerfil + j);
+          vertice = [
+            this.vertices[indice],
+            this.vertices[indice + 1],
+            this.vertices[indice + 2]
+          ];
+
           u = 0.5;
           v = 0.5;
           this.uvs = this.uvs.concat([u,v]);
         }
       }
     }
-
+*/
     this.init = function(material){
         this.obtenerVertices();
         this.obtenerNormales();
-        this.obtenerUVs();
+        //this.obtenerUVs();
         this.grid = new Grid(this.vertices,this.normales, this.cRevol, this.cPerfil).init(material, this.uvs);
         return this;
     }

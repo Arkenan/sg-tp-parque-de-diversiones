@@ -5,6 +5,7 @@ var fSkyBox = require('../shaders/modules/fSkyBox.js');
 
 
 module.exports = function(path){
+  this.esSkyBox = true;
   this.skyTex = CubeLoader(path);
   var builder = new ProgramBuilder().init();
   builder.addVModule(vSkyBox);

@@ -91,12 +91,17 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
   // Esto es para tener las cosas funcionando pronto.
   this.obtenerUVs = function(){
     this.uvs = [];
-    for (var i = 0; i < this.cBarrido+4; i++){
-      for (var j = 0; j < this.cForma; j++){
-        var u = j/this.cForma;
-        var v = i/(this.cBarrido+4);
-        this.uvs = this.uvs.concat([u,v]);
-      }
+    for (var i = 0; i < this.vertices.length/3; i++){
+      var vertice = [
+        this.vertices[3*i],
+        this.vertices[3*i + 1],
+        this.vertices[3*i + 2]
+      ];
+
+      var u = vertice[2];
+      var v = vertice[0];
+      this.uvs.push(u);
+      this.uvs.push(v);
     }
   }
 
@@ -107,6 +112,7 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
     this.fijarPuntosEval();
     this.obtenerVertices();
     this.agregarTapas();
+    this.obtenerUVs();
     // Sumo 2 filas a la grilla, una por cada tapa.
     this.grid = new Grid(this.vertices, this.normales, this.cBarrido + 4, this.cForma).init(material, this.uvs);
     return this;

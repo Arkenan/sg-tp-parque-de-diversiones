@@ -6,9 +6,10 @@ module.exports = function(){
     this.vertices = [0,0,0,0,2.3,0,5.3,2,0,5.3,1,0,0.7,0,0,0,0,0];
 
     this.init = function(){
-        var matCabeza = new MaterialPhong({colorDifuso: [1.0,0.0,0.0,1.0]});
+        var matCabeza = new MaterialPhong({colorDifuso: [1.0, 0.5, 0.5, 1.0],
+          mapaDifuso: "js/textures/cabeza.jpg"});
         this.supR = new RevolucionD(this.vertices, 30).init(matCabeza);
-        var matSilla = new MaterialPhong({colorDifuso: [1.0,1.0,0.0,1.0]});
+        var matSilla = new MaterialPhong({colorDifuso: [1.0, 1.0, 0.0, 1.0]});
         this.silla = new Silla().init(matSilla);
 
         return this;

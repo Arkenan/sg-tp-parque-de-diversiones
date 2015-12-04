@@ -5,15 +5,13 @@ var Parque = require("./Parque.js");
 var Puntos = require("./curves/puntos.js");
 var Domo = require('./models/domo/Domo.js');
 //------------------------------------------------------------------------------------------------------------------------------
-window.onload = function(){
+
+var inicio = function(){
   var scene = document.createElement('canvas');
   scene.width = window.innerWidth;
   scene.height = window.innerHeight;
   document.body.appendChild(scene);
   global.programas = [];
-  // Contador de texturas a pedidas y cargadas.
-  global.texturas = 0;
-  global.cargadas = 0;
 
   try{
     // Setup del contexto gl.
@@ -70,12 +68,38 @@ window.onload = function(){
       }
 
       // Dibujo del parque de diversiones.
-      if (global.texturas == global.cargadas){
         parque.draw(mv,t);
-      }
     })();
 
   } catch(e) {
     console.error(e);
+  }
+}
+
+window.onload = function(){
+  // Carga de imagenes.
+  var urls = [
+    "js/textures/wood.jpg",   "js/textures/grass.jpg",
+    "js/textures/water.jpg",  "js/textures/plastic.jpg",
+    "js/textures/cabeza.jpg", "js/textures/grassNM.jpg",
+    "js/textures/SB/posx.jpg",    "js/textures/SB/negx.jpg",
+    "js/textures/SB/posy.jpg",    "js/textures/SB/negy.jpg",
+    "js/textures/SB/posz.jpg",    "js/textures/SB/negz.jpg",
+    ];
+  // Diccionario con las imagenes según sus paths.
+  global.imgs = {};
+  global.cargadas = 0;
+  for (var i in urls){
+    global.imgs[urls[i]] = new Image();
+    global.imgs[urls[i]].onload = function(){
+      global.cargadas++;
+      if (global.cargadas == urls.length){
+        console.log(global.cargadas);
+        console.log(global.imgs);
+        console.log("Las imágenes fueron todas cargadas.");
+        inicio();
+      }
+    }
+    global.imgs[urls[i]].src = urls[i];
   }
 }

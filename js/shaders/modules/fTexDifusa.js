@@ -7,7 +7,7 @@ module.exports = {
     'uniform sampler2D uSampler;'
   ],
   logic:[
-    'vec4 colorDifuso = texture2D(uSampler, vTextureCoord);'
+    'vec4 colorDifuso = texture2D(uSampler, vTextureCoord);',
   ],
   execute: function(program){
     program.uSampler = global.gl.getUniformLocation(program, "uSampler");

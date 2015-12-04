@@ -16,7 +16,7 @@ module.exports = function(puntosMRusa){
         this.sillas = new Sillas().init();
         //var material = new MaterialPhong({colorDifuso:[0.5,1.0,0.2,1.0]});
         var material = new MaterialPhong({mapaDifuso:"js/textures/grass.jpg",
-          mapaNormales:"js/textures/grassNM.jpg"});
+          mapaNormales:"js/textures/grassNM.jpg", shininess:5, ks:0.3});
         this.plano = new Plano(2,2).init(material);
         this.plano.repetir(100);
         this.rusa = new Rusa(puntosMRusa,20,300).init();

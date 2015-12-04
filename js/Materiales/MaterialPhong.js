@@ -8,6 +8,9 @@ var vTex = require('../shaders/modules/vTex.js');
 var fNormal = require('../shaders/modules/fNormal.js');
 var fReflect = require('../shaders/modules/fReflect.js');
 var fNormalMap = require('../shaders/modules/fNormalMap.js');
+var fColorExtra = require('../shaders/modules/fColorExtra.js');
+var vAgua = require('../shaders/modules/vAgua.js');
+var fAgua = require('../shaders/modules/fAgua.js');
 var CubeLoader = require('../textures/CubeLoader.js');
 
 module.exports = function(opciones){
@@ -19,23 +22,40 @@ module.exports = function(opciones){
   this.colorDifuso = opciones.colorDifuso;
   this.mapaNormales = opciones.mapaNormales;
   this.mapaRefleccion = opciones.mapaRefleccion;
+  this.shininess = opciones.shininess || 230.0;
+  this.ks = opciones.ks || 1.0;
+  this.agua = opciones.agua;
   this.loader = new Loader();
 
-  if (this.mapaDifuso){
-    // Carga la textura.
+  if (this.mapaDifuso && this.colorDifuso){
+    // Cargo la textura.
     this.texturaDifusa = this.loader.load(this.mapaDifuso);
-    // Cargar módulos con textura difusa.
+    // Cargo módulos.
     builder.addVModule(vTex);
     builder.addVModule(vModule);
     builder.addFModule(fTexDifusa);
+    builder.addFModule(fColorExtra);
   } else {
-    if (this.colorDifuso) {
-      // Carga módulo de color constante.
+    if (this.mapaDifuso){
+      // Carga la textura.
+      this.texturaDifusa = this.loader.load(this.mapaDifuso);
+      // Cargar módulos con textura difusa.
+      builder.addVModule(vTex);
       builder.addVModule(vModule);
-      builder.addFModule(mColorDifuso);
-      // Carga el color en el programa.
-    } else{
-      console.error("Error, no hay ni color ni textura difusos.");
+      builder.addFModule(fTexDifusa);
+      /*if (this.agua){
+        builder.addVModule(vAgua);
+        builder.addFModule(fAgua);
+      }*/
+    } else {
+      if (this.colorDifuso) {
+        // Carga módulo de color constante.
+        builder.addVModule(vModule);
+        builder.addFModule(mColorDifuso);
+        // Carga el color en el programa.
+      } else{
+        console.error("Error, no hay ni color ni textura difusos.");
+      }
     }
   }
 
@@ -49,6 +69,7 @@ module.exports = function(opciones){
     builder.addFModule(fNormal);
   }
 
+  // Terminado normales, se pasa a la reflección.
   if (this.mapaRefleccion){
     // Cargo skybox como textura de reflección.
     this.texturaRefleccion = CubeLoader(this.mapaRefleccion);
@@ -59,6 +80,9 @@ module.exports = function(opciones){
   builder.addFModule(mBasePhong);
   //builder.compile().listModules().debug();
   builder.compile();
+  if (this.agua) {
+    builder.listModules().debug();
+  }
   this.program = builder.getProgram();
   // Agrego este programa a la lista global de programas para cosas compartidas.
   global.programas.push(this.program);
@@ -67,4 +91,7 @@ module.exports = function(opciones){
   if (this.colorDifuso){
     global.gl.uniform4fv(this.program.uMaterialDiffuse, this.colorDifuso);
   }
+  // Para cualquier caso, configuro shininess.
+  global.gl.uniform1f(this.program.uShininess, this.shininess);
+  global.gl.uniform1f(this.program.uKs, this.ks);
 }
