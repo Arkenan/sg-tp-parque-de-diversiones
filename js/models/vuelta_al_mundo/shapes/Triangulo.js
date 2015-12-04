@@ -9,7 +9,7 @@ module.exports = function(){
     this.d_op = 5*Math.cos(this.theta/2),0;
 
     this.init = function(material){
-        this.cil = new Cilindro(5,2).init(material);
+        this.cil = new Cilindro(30,2).init(material);
         return this;
     }
 

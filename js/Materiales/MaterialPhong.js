@@ -6,7 +6,9 @@ var mColorDifuso = require('../shaders/modules/colorDifuso.js');
 var fTexDifusa = require('../shaders/modules/fTexDifusa.js');
 var vTex = require('../shaders/modules/vTex.js');
 var fNormal = require('../shaders/modules/fNormal.js');
+var fReflect = require('../shaders/modules/fReflect.js');
 var fNormalMap = require('../shaders/modules/fNormalMap.js');
+var CubeLoader = require('../textures/CubeLoader.js');
 
 module.exports = function(opciones){
   // Constructor del programa de shaders.
@@ -16,6 +18,7 @@ module.exports = function(opciones){
   this.mapaDifuso = opciones.mapaDifuso;
   this.colorDifuso = opciones.colorDifuso;
   this.mapaNormales = opciones.mapaNormales;
+  this.mapaRefleccion = opciones.mapaRefleccion;
   this.loader = new Loader();
 
   if (this.mapaDifuso){
@@ -44,6 +47,12 @@ module.exports = function(opciones){
     builder.addFModule(fNormalMap);
   } else {
     builder.addFModule(fNormal);
+  }
+
+  if (this.mapaRefleccion){
+    // Cargo skybox como textura de reflección.
+    this.texturaRefleccion = CubeLoader(this.mapaRefleccion);
+    builder.addFModule(fReflect);
   }
 
   // Se carga la base del modelo de Phong, común para todos los casos.

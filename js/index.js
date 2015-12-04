@@ -29,7 +29,7 @@ window.onload = function(){
     var parque = new Parque().init(puntosMRusa);
 
     // Matriz de vista y su versión de solo rotación.
-    var mv = mat4.create(), vRot = mat3.create();
+    var mv = mat4.create(), vRot = mat3.create(), vRotInv = mat3.create();
     // Matriz de proyección perspectiva.
     var pMatrix = mat4.create();
     mat4.perspective(pMatrix, 45, scene.width/scene.height, 0.1, 300.0);
@@ -57,12 +57,16 @@ window.onload = function(){
       // Vista y su versión solo rotación.
       cam.viewM(mv, t);
       mat3.fromMat4(vRot, mv);
+      mat3.invert(vRotInv, vRot);
 
       // Pasamos a todos los shaders la rotación de la vista para ubicar la luz.
       for (var i in global.programas) {
         gl.useProgram(programas[i]);
         var u_view_matrix = global.gl.getUniformLocation(programas[i], "uVR");
         global.gl.uniformMatrix3fv(u_view_matrix, false, vRot);
+
+        var u_view_inv = global.gl.getUniformLocation(programas[i], "uVRInv");
+        global.gl.uniformMatrix3fv(u_view_inv, false, vRotInv);
       }
 
       // Dibujo del parque de diversiones.

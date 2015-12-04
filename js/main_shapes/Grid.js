@@ -116,6 +116,12 @@ module.exports = function (vertices, normales, rows, cols) {
       }
     }
 
+    if (this.material.mapaRefleccion){
+      global.gl.activeTexture(global.gl.TEXTURE3);
+      global.gl.bindTexture(global.gl.TEXTURE_CUBE_MAP, this.material.texturaRefleccion);
+      global.gl.uniform1i(this.program.skybox, 3);
+    }
+
     // Se usa la matriz de modelado mv.
     var u_model_view_matrix = global.gl.getUniformLocation(this.program, "uMVMatrix");
     global.gl.uniformMatrix4fv(u_model_view_matrix, false, mv);

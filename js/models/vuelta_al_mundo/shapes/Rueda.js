@@ -7,10 +7,11 @@ module.exports = function(){
     this.theta = 2*Math.PI/15;
 
     this.init = function(){
-        var matMetal = new MaterialPhong({colorDifuso:[0.8, 0.8, 0.8, 1.0]});
+        var matMetal = new MaterialPhong({colorDifuso:[0.8, 0.8, 0.8, 1.0],
+        mapaRefleccion:"js/textures/SB/"});
         this.tri = new Triangulo().init(matMetal);
         // Paralelogramos para las uniones.
-        this.palo = new Cilindro(5,2).init(matMetal);
+        this.palo = new Cilindro(30,2).init(matMetal);
         // Eje
         this.eje = new Cilindro(30,2).init(matMetal);
         // Cabinas.

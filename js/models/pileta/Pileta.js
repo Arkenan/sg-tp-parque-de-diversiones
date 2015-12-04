@@ -22,7 +22,8 @@ module.exports = function(){
   }
 
   this.init = function(){
-    var material = new MaterialPhong({colorDifuso:[0.5,0.5,1.0,1.0]});
+    var material = new MaterialPhong({colorDifuso:[0.5,0.5,1.0,1.0],
+    mapaRefleccion:"js/textures/SB/"});
     this.supB = new Barrido(this.fForma, this.fBarrido, 200, 40).init(material);
     return this;
   }
