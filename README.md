@@ -1,8 +1,6 @@
 # sg-tp-parque-de-diversiones
-<h2>
-Primer trabajo práctico de Sistemas Gráficos, 66.71,
+Trabajo práctico de Sistemas Gráficos, 66.71,
 segundo cuatrimestre del 2015. Render de una escena con un parque de diversiones.
-<h2>
 
 <h3>Requisitos en Desarrollo</h3>
 <ul>
@@ -15,3 +13,14 @@ segundo cuatrimestre del 2015. Render de una escena con un parque de diversiones
 <ul>
  <li>Browser que soporte WebGL</li>
 </ul>
+
+<h3>Instalación</h3>
+Compilar con 
+```bash
+npm run build
+```
+y abrir "index.html" en firefox o ejecutar 
+```bash
+npm run start
+```
+para levantar un servidor local y abrirlo en <http://localhost:8080>.
