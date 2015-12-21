@@ -7,12 +7,17 @@ module.exports = function(fMov, fTNB){
     // Función de movimiento para la tercera cámara.
     this.fMov = fMov;
     this.TNB = fTNB
+
     // Coordenadas polares de la posición o la dirección.
     this.setearPolares = function(vec){
         this.p = vec3.length(vec);
         this.beta = Math.acos(vec[1]/this.p);
         this.alfa = Math.atan2(vec[0],vec[2]);
     }
+
+    // Limites de Beta.
+    this.minB = 0.0001;
+    this.maxB = Math.PI/2 - 0.05;
 
     this.mHandler = new MouseHandler(this);
     this.kHandler = new KeyboardHandler().init(this);
@@ -47,14 +52,25 @@ module.exports = function(fMov, fTNB){
     var actualizarDomo = function(cam){
         return function(t){
             if (cam.mHandler.mouseDown){
-                cam.alfa += cam.mHandler.deltaX() * cam.velocidadRot;
-                cam.beta += cam.mHandler.deltaY() * cam.velocidadRot;
+              // Rotación horizontal. Podría mejorarlo con módulo.
+              cam.alfa += cam.mHandler.deltaX() * cam.velocidadRot;
+              // Rotación vertical. Hay que impedir que se exceda el ángulo.
+              var intentoBeta = cam.beta + cam.mHandler.deltaY() * cam.velocidadRot;
+              if (intentoBeta <= cam.minB) {
                 // Impido acceder a beta = 0 para no necesitar cambiar el up.
-                if (cam.beta <= 0) cam.beta = 0.0001;
-        		if (cam.beta >= Math.PI/2) cam.beta = Math.PI/2 - 0.0001;
-                vec3.set(cam.pos, cam.p * Math.sin(cam.alfa) * Math.sin(cam.beta), cam.p * Math.cos(cam.beta) ,cam.p * Math.cos(cam.alfa) * Math.sin(cam.beta));
-                // Se mira siempre al origen de coordenadas.
-                vec3.negate(cam.dir,cam.pos);
+                cam.beta = cam.minB;
+              } else {
+      		      if (intentoBeta >= cam.maxB) {
+                  // Impide que el domo vea debajo del suelo.
+                  cam.beta = cam.maxB;
+                } else {
+                  // Condiciones normales.
+                  cam.beta = intentoBeta;
+                }
+              }
+              vec3.set(cam.pos, cam.p * Math.sin(cam.alfa) * Math.sin(cam.beta), cam.p * Math.cos(cam.beta) ,cam.p * Math.cos(cam.alfa) * Math.sin(cam.beta));
+              // Se mira siempre al origen de coordenadas.
+              vec3.negate(cam.dir,cam.pos);
             }
         }
     }
