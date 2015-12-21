@@ -11,21 +11,17 @@ module.exports = {
     'uniform mat4 uNMatrix;',
 
     'varying vec3 vNormal;',
-    'varying vec3 vEyeVec;',
-
+    'varying vec4 vPos;',
   ],
   logic:[
-    // Posición transformada por Modelview.
-    'vec4 vertex = uMVMatrix * vec4(aVertexPosition, 1.0);',
-
-    // Vector Eye.
-    'vEyeVec = -vec3(vertex.xyz);',
+    // Posición transformada por ModelView, sin perspectiva.
+    'vPos = uMVMatrix * vec4(aVertexPosition, 1.0);',
 
     // Normal transformada.
     'vNormal = vec3(uNMatrix * vec4(aVertexNormal, 1.0));',
 
-    // Posición Final.
-    'gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);'
+    // Posición Final, aplico perspectiva.
+    'gl_Position = uPMatrix * vPos;'
   ],
   execute: function(program){}
 }

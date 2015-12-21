@@ -11,6 +11,7 @@ var fNormalMap = require('../shaders/modules/fNormalMap.js');
 var fColorExtra = require('../shaders/modules/fColorExtra.js');
 var vAgua = require('../shaders/modules/vAgua.js');
 var fAgua = require('../shaders/modules/fAgua.js');
+var fEye = require('../shaders/modules/fEye.js');
 var CubeLoader = require('../textures/CubeLoader.js');
 
 module.exports = function(opciones){
@@ -27,6 +28,9 @@ module.exports = function(opciones){
   this.agua = opciones.agua;
   this.loader = new Loader();
 
+  // Para todos los casos se carga el eyeVec.
+  builder.addFModule(fEye);
+  
   if (this.mapaDifuso && this.colorDifuso){
     // Cargo la textura.
     this.texturaDifusa = this.loader.load(this.mapaDifuso);

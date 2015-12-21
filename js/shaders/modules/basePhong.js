@@ -9,21 +9,23 @@ module.exports = {
     // Rotación de la vista, para cambiar la dirección de la luz.
     'uniform mat3 uVR;',
 
-    'uniform float uShininess;',        // Shininess: brillo del material.
-    'uniform vec3 uLightDirection;',    // Dirección de la luz.
+    'uniform float uShininess;',          // Shininess: brillo del material.
+    'uniform vec3 uLightDirection;',      // Dirección de la luz.
 
-    'uniform vec4 uLightAmbient; ',     // Color de luz ambiente.
-    'uniform vec4 uLightDiffuse; ',     // Color de la luz a la comp. difusa.
-    'uniform vec4 uLightSpecular; ',    // Color de los reflejos especulares.
+    'uniform vec4 uLightAmbient; ',       // Color de luz ambiente.
+    'uniform vec4 uLightDiffuse; ',       // Color de la luz a la comp. difusa.
+    'uniform vec4 uLightSpecular; ',      // Color de los reflejos especulares.
 
-    'uniform vec4 uMaterialAmbient;  ', // Color de ambiente del material.
+    'uniform vec4 uMaterialAmbient;  ',   // Color de ambiente del material.
+
     /* No se le pasa de una componente difusa. Esto depende de si es una
     ** textura o si es un color constante. */
-    'uniform vec4 uMaterialSpecular; ', // Color especular del material.
-    'uniform float uKs;',                // Coeficiente de brillo especular.
-    'varying vec3 vEyeVec;'             // Dirección de vista.
+    'uniform vec4 uMaterialSpecular; ',   // Color especular del material.
+    'uniform float uKs;',                 // Coeficiente de brillo especular.
+    'varying vec4 vPos;',                 // Posición del vértice desde la cámara.
   ],
   logic:[
+    // Dirección de la luz.
     'vec3 L = normalize(uVR * uLightDirection);',
 
     // Lamberts cosine law
@@ -40,7 +42,6 @@ module.exports = {
 
     'if(lambertTerm > 0.0){',
       'Id = uLightDiffuse * colorDifuso * lambertTerm; //add diffuse term',
-      'vec3 E = normalize(vEyeVec);',
       'vec3 R = reflect(-L, N);',
       'float specular = uKs * pow( max(dot(R, E), 0.0), uShininess);',
       'Is = uLightSpecular * uMaterialSpecular * specular; //add specular term',

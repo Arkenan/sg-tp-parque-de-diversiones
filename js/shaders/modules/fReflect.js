@@ -8,8 +8,7 @@ module.exports = {
     // Presupone que hay algo de normales cargado previamente.
   ],
   logic:[
-
-    'vec3 dirRef = uVRInv * reflect(-vEyeVec, N);',
+    'vec3 dirRef = uVRInv * reflect(-E, N);',
 
     'vec4 colorRef = textureCube(uRefSampler, dirRef);',
 

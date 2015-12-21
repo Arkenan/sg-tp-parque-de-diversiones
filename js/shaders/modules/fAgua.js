@@ -8,7 +8,6 @@ module.exports = {
     'uniform float t;',
   ],
   logic:[
-    //'vec2 uv = vTextureCoord;',
     'vec2 uv = vec2(vTextureCoord.s, vTextureCoord.t + t/10.0);',
     'vec2 uv2 = vec2(vTextureCoord.s + t/10.0, vTextureCoord.t);',
     'vec4 Normal1 = texture2D(uNormalSampler, uv);', // uso las mismas coordenadas que la difusa.
