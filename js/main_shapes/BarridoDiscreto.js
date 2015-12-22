@@ -24,6 +24,8 @@ module.exports = function(puntosForma, fBarrido, cBarrido, centro){
   }
 
   this.obtenerVertices = function(){
+    //TODO Primero comenzamos con los vértices de las tapas..
+
     // antes que nada repito los vértices del perfil (menos el primero y el último).
     for (var i = 3; i < this.pForma.length - 4; i+= 6){
       this.pForma.splice(i+3, 0, this.pForma[i], this.pForma[i+1], this.pForma[i+2]);
@@ -69,7 +71,6 @@ module.exports = function(puntosForma, fBarrido, cBarrido, centro){
   }
 
   this.agregarTapas = function(){
-    // Hago promedio entre los últimos y los primeros de las caras.
     var cantVertices = this.vertices.length / 3;
     var puntoInicial, puntoFinal;
     if (this.centro){
@@ -80,6 +81,7 @@ module.exports = function(puntosForma, fBarrido, cBarrido, centro){
         this.centro[2] + fBarrido(1)[2],
       ]
     } else {
+      // Hago promedio entre los últimos y los primeros de las caras.
       puntoInicial = this.promedio(this.vertices.slice(0,(this.cForma-1)*3));
       puntoFinal = this.promedio(this.vertices.slice(cantVertices*3 - (this.cForma-1)*3 ,cantVertices*3));
     }
@@ -144,7 +146,7 @@ module.exports = function(puntosForma, fBarrido, cBarrido, centro){
     this.agregarTapas();
     this.obtenerUVs();
     // Sumo 2 filas a la grilla, una por cada tapa.
-    this.grid = new Grid(this.vertices, this.normales, this.cBarrido + 4, this.cForma).init(material, this.uvs);
+    this.grid = new Grid(this.vertices, this.normales, this.uvs, this.cBarrido + 4, this.cForma).init(material);
     return this;
   }
   this.draw = function(mv){

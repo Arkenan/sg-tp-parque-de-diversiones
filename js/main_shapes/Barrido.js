@@ -114,7 +114,7 @@ module.exports = function(fForma, fBarrido, cForma,  cBarrido){
     this.agregarTapas();
     this.obtenerUVs();
     // Sumo 2 filas a la grilla, una por cada tapa.
-    this.grid = new Grid(this.vertices, this.normales, this.cBarrido + 4, this.cForma).init(material, this.uvs);
+    this.grid = new Grid(this.vertices, this.normales, this.uvs, this.cBarrido + 4, this.cForma).init(material);
     return this;
   }
 

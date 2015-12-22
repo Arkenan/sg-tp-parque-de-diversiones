@@ -13,9 +13,13 @@ module.exports = {
     'vec4 Normal1 = texture2D(uNormalSampler, uv);', // uso las mismas coordenadas que la difusa.
     'vec4 Normal2 = texture2D(uNormalSampler, uv2);',
 
+    // TODO: TNB. Actualmente está hardcodeado para y = arriba.
     'vec3 N1 = normalize(Normal1.rgb * 2.0 - 1.0);',
     'vec3 N2 = normalize(Normal2.rgb * 2.0 - 1.0);',
     'vec3 N = normalize(N1 + N2);',
+    'float a = N.y;',
+    'N.y = N.z;',
+    'N.z = -a;',
     'N = normalize((uNMatrix * vec4(N, 1.0)).xyz);', // Le aplico la transformación de normales.
   ],
   execute: function(program){

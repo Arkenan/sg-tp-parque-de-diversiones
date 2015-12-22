@@ -28,7 +28,7 @@ module.exports = function(_rows,_cols){
       }
     }
 
-    this.grid = new Grid(this.vertices, this.normales, this.rows, this.cols).init(material, this.uvs);
+    this.grid = new Grid(this.vertices, this.normales, this.uvs, this.rows, this.cols).init(material);
     return this;
   }
 

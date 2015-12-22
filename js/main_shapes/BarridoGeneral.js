@@ -107,7 +107,7 @@ module.exports = function(fForma, fBarrido, fTNB, cForma, cBarrido){
         this.obtenerVertices();
         this.agregarTapas();
 
-        this.grid = new Grid(this.vertices, this.normales, this.cBarrido + 2, this.cForma).init(material, this.uvs);
+        this.grid = new Grid(this.vertices, this.normales, this.uvs, this.cBarrido + 2, this.cForma).init(material);
         return this;
     }
 

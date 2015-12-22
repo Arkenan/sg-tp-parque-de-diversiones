@@ -1,29 +1,15 @@
 // Grilla de triángulos. Base de todos los dibujos.
 
-module.exports = function (vertices, normales, uvs, rows, cols) {
+module.exports = function (vertices, normales, uvs) {
+  this.vertices = vertices;
+  this.normales = normales;
   this.uvs = uvs;
-  this.cols = cols;
-  this.rows = rows;
-  this.index_buffer = null;
-  this.position_buffer = vertices;
-  this.color_buffer = null;
-  this.normal_buffer = normales;
 
   // Recorre las filas de izquierda a derecha y de derecha a izquierda según paridad.
   this.createIndexBuffer = function() {
-    this.index_buffer = [];
-    for (var row = 0; row < this.rows - 1; row++){
-      //recorrido según paridad de la fila.
-      var sg = (row % 2);
-
-      var inc = 1 - 2*sg;
-      var inicio = (this.cols - 1)*(sg);
-      var fin = this.cols*(1-sg) - sg;
-
-      for (var col = inicio; col != fin; col += inc){
-        this.index_buffer.push(this.cols*row + col);
-        this.index_buffer.push(this.cols*(row+1) + col);
-      }
+    this.indices = [];
+    for (i = 0; i < this.vertices.length/3; i++) {
+      this.indices.push(i);
     }
   }
 
@@ -37,13 +23,13 @@ module.exports = function (vertices, normales, uvs, rows, cols) {
     // hemos creado.
     global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_position_buffer);
     // 3. Cargamos datos de las posiciones en el buffer.
-    global.gl.bufferData(global.gl.ARRAY_BUFFER, new Float32Array(this.position_buffer), global.gl.STATIC_DRAW);
+    global.gl.bufferData(global.gl.ARRAY_BUFFER, new Float32Array(this.vertices), global.gl.STATIC_DRAW);
 
     if (!this.material.mapaNormales && !this.material.esSkyBox){
       // Carga de normales cuando no hay mapa para eso.
       this.webgl_normal_buffer = global.gl.createBuffer();
       global.gl.bindBuffer(global.gl.ARRAY_BUFFER, this.webgl_normal_buffer);
-      global.gl.bufferData(global.gl.ARRAY_BUFFER, new Float32Array(this.normal_buffer), global.gl.STATIC_DRAW);
+      global.gl.bufferData(global.gl.ARRAY_BUFFER, new Float32Array(this.normales), global.gl.STATIC_DRAW);
     }
 
     if (this.material.mapaDifuso || this.material.mapaNormales){
@@ -55,10 +41,10 @@ module.exports = function (vertices, normales, uvs, rows, cols) {
 
     // Repetimos los pasos 1. 2. y 3. para la información de los índices
     // Notar que esta vez se usa ELEMENT_ARRAY_BUFFER en lugar de ARRAY_BUFFER.
-    // Notar tambi�n que se usa un array de enteros en lugar de floats.
+    // Notar también que se usa un array de enteros en lugar de floats.
     this.webgl_index_buffer = global.gl.createBuffer();
     global.gl.bindBuffer(global.gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
-    global.gl.bufferData(global.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.index_buffer), global.gl.STATIC_DRAW);
+    global.gl.bufferData(global.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indices), global.gl.STATIC_DRAW);
 
   }
 
@@ -146,6 +132,6 @@ module.exports = function (vertices, normales, uvs, rows, cols) {
 
     global.gl.bindBuffer(global.gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
     // Dibujamos.
-    global.gl.drawElements(global.gl.TRIANGLE_STRIP, this.index_buffer.length ,global.gl.UNSIGNED_SHORT, 0);
+    global.gl.drawElements(global.gl.TRIANGLE_FAN, this.indices.length ,global.gl.UNSIGNED_SHORT, 0);
   }
 }

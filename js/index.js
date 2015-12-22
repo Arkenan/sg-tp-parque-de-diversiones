@@ -87,7 +87,7 @@ window.onload = function(){
     "js/textures/wood.jpg",   "js/textures/plastic.jpg",
     "js/textures/grass.jpg",  "js/textures/grassNM.jpg",
     "js/textures/water.jpg",  "js/textures/waterNM.png",
-    "js/textures/cabeza.jpg",
+    "js/textures/cabeza.jpg", "js/textures/WNM.jpg", "js/textures/B.png",
     "js/textures/SB/posx.jpg",    "js/textures/SB/negx.jpg",
     "js/textures/SB/posy.jpg",    "js/textures/SB/negy.jpg",
     "js/textures/SB/posz.jpg",    "js/textures/SB/negz.jpg",

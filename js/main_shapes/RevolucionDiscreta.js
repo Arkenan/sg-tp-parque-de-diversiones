@@ -92,7 +92,7 @@ module.exports = function(puntosPerfil, cRevol){
         this.obtenerVertices();
         this.obtenerNormales();
         //this.obtenerUVs();
-        this.grid = new Grid(this.vertices,this.normales, this.cRevol, this.cPerfil).init(material, this.uvs);
+        this.grid = new Grid(this.vertices, this.normales, this.uvs, this.cRevol, this.cPerfil).init(material);
         return this;
     }
 

@@ -51,7 +51,7 @@ module.exports = function(fPerfil,cPerfil, cRevol){
         this.fijarPuntosEval();
         this.obtenerVertices();
         this.obtenerUVs();
-        this.grid = new Grid(this.vertices,this.normales, cRevol, cPerfil).init(material,this.uvs);
+        this.grid = new Grid(this.vertices, this.normales, this.uvs, cRevol, cPerfil).init(material);
         return this;
     }
 
