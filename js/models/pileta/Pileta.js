@@ -26,8 +26,8 @@ module.exports = function(){
       mapaRefleccion:"js/textures/SB/",
       mapaDifuso:"js/textures/water.jpg",
       mapaNormales:"js/textures/waterNM.png",
-      ks:2.0,
-      shininess: 50,
+      ks:1.5,
+      shininess: 300,
       agua:true
       });
     this.material = material;
