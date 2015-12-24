@@ -31,3 +31,4 @@ Una vez andando el servidor, el Parque puede verse en <http://localhost:8000>, e
 ###Créditos
 ####Texturas
 * Skybox: Trabajo de Emil Persson, aka Humus: <http://www.humus.name>.
+* Mapa de Normales del Agua: Tutorial de DigitalRune sobre [Water Rendering](http://www.digitalrune.com/Blog/Post/1758/Water-Rendering).
