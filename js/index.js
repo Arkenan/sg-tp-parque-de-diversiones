@@ -10,8 +10,8 @@ var inicio = function(){
   var cartel = document.getElementById("loading");
 
   var scene = document.createElement('canvas');
-  scene.width = window.innerWidth;
-  scene.height = window.innerHeight;
+  scene.width = window.innerWidth - 20;
+  scene.height = window.innerHeight - 20;
   document.body.appendChild(scene);
   global.programas = [];
 
