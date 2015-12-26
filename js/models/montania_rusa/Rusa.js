@@ -69,7 +69,7 @@ module.exports = function(puntosMRusa, cForma, cBarrido){
     this.fBarrido = fBarrido(this.curve);
     this.TNB = TNB(this.curve);
     var materialRieles = new MaterialPhong({colorDifuso: [0.3, 0.3, 0.3, 1.0],
-    mapaRefleccion:"js/textures/SB/"});
+    mapaRefleccion:"texturas/SB/"});
     this.ejeCentral = new BarridoGeneral(this.fForma, this.fBarrido,
         this.TNB, this.cForma, this.cBarrido).init(materialRieles);
     var barridoD = recorridoDesplazado(this.curve, [1, 0.5]);

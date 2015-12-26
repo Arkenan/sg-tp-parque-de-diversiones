@@ -84,13 +84,13 @@ var inicio = function(){
 window.onload = function(){
   // Carga de imagenes para que estén listas a la hora de armar las texturas.
   var urls = [
-    "js/textures/wood.jpg",   "js/textures/plastic.jpg",
-    "js/textures/grass.jpg",  "js/textures/grassNM.jpg",
-    "js/textures/water.jpg",  "js/textures/waterNM.png",
-    "js/textures/cabeza.jpg",
-    "js/textures/SB/posx.jpg",    "js/textures/SB/negx.jpg",
-    "js/textures/SB/posy.jpg",    "js/textures/SB/negy.jpg",
-    "js/textures/SB/posz.jpg",    "js/textures/SB/negz.jpg",
+    "texturas/wood.jpg",   "texturas/plastic.jpg",
+    "texturas/grass.jpg",  "texturas/grassNM.jpg",
+    "texturas/water.jpg",  "texturas/waterNM.png",
+    "texturas/cabeza.jpg",
+    "texturas/SB/posx.jpg",    "texturas/SB/negx.jpg",
+    "texturas/SB/posy.jpg",    "texturas/SB/negy.jpg",
+    "texturas/SB/posz.jpg",    "texturas/SB/negz.jpg",
     ];
   // Diccionario global con las imagenes según sus paths.
   global.imgs = {};

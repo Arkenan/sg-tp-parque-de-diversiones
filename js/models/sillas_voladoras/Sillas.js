@@ -7,7 +7,7 @@ module.exports = function(){
 
     this.init = function(){
         var mat = new MaterialPhong({colorDifuso:[0.6,0.6,0.3,1.0],
-        mapaDifuso: "js/textures/plastic.jpg"});
+        mapaDifuso: "texturas/plastic.jpg"});
         this.base = new Base().init(mat);
         this.cabeza = new Cabeza().init();
         return this;

@@ -8,7 +8,7 @@ module.exports = function(){
 
     this.init = function(){
         var matMetal = new MaterialPhong({colorDifuso:[0.8, 0.8, 0.8, 1.0],
-        mapaRefleccion:"js/textures/SB/"});
+        mapaRefleccion:"texturas/SB/"});
         this.tri = new Triangulo().init(matMetal);
         // Paralelogramos para las uniones.
         this.palo = new Cilindro(30,2).init(matMetal);
