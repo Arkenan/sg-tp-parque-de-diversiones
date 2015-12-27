@@ -4,41 +4,36 @@ var Puntos = require('../../curves/puntos.js');
 var MaterialPhong = require('../../Materiales/MaterialPhong.js');
 
 module.exports = function(){
-  this.supB = null;
 
-  var fForma = function(){
+  var control = new Puntos().puntosPiletaPreparados;
+  var forma = new CubicBezierConcatenator().init(control);
 
-    var control = new Puntos().puntosPiletaPreparados;
-
-    return function(t){
-        var forma = new CubicBezierConcatenator().init(control);
-        return forma.generate(t);
-    }
+  this.fForma = function(t){
+      return forma.generate(t);
   }
-  this.fForma = fForma();
 
   this.fBarrido = function(t){
     return [0, t, 0];
   }
 
+  this.materialAgua = new MaterialPhong({
+    mapaRefleccion:"texturas/SB/",
+    mapaDifuso:"texturas/water.jpg",
+    mapaNormales:"texturas/waterNM.png",
+    ks:1.5,
+    shininess: 300,
+    agua:true
+    });
+
   this.init = function(){
-    var material = new MaterialPhong({
-      mapaRefleccion:"texturas/SB/",
-      mapaDifuso:"texturas/water.jpg",
-      mapaNormales:"texturas/waterNM.png",
-      ks:1.5,
-      shininess: 300,
-      agua:true
-      });
-    this.material = material;
-    this.supB = new Barrido(this.fForma, this.fBarrido, 200, 40).init(material);
+    this.supB = new Barrido(this.fForma, this.fBarrido, 200, 40).init(this.materialAgua);
     return this;
   }
 
   this.draw = function(mv, t){
     // Le paso el tiempo a los shaders.
-    global.gl.useProgram(this.material.program);
-    global.gl.uniform1f(this.material.program.t, t);
+    global.gl.useProgram(this.materialAgua.program);
+    global.gl.uniform1f(this.materialAgua.program.t, t);
 
     m = mat4.create();
     // Centrado al origen.
