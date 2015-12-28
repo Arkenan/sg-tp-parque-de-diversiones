@@ -1,125 +1,171 @@
 var Grid = require('./Grid.js');
+var Fan = require('./Fan.js');
+/* Esta función es una extrusión simple. Para barridos con movimientos más
+** complejos, utilizar BarridoGeneral. */
 
-/* Recibe dos funciones, una de forma y otra de barrido, ambas
-** toman un parámetro entre 0 y 1 y devuelven un punto en el espacio.
-** También toma la cantidad de divisiones de forma y de barrido. */
+/* Recibe una función de forma, que puede no tener la derivada como un atributo.
+** y su dominio es [0,1]. Se hace una extrusión de la forma en [0,1] con la
+** dirección pasada por parámetro.*/
 
-module.exports = function(fForma, fBarrido, cForma,  cBarrido){
-  // Puntos de evaluación para la forma.
-  this.pForma = [];
-  // Puntos de evaluación para el barrido.
-  this.pBarrido = [];
-  // Vertices que se pasarán a la grilla para ser dibujados.
-  this.vertices = [];
-  this.normales = [];
+module.exports = function(fForma, dirBarrido, cForma, cBarrido){
+  // Importante: cForma, cBarrido > 1.
+
   this.cForma = cForma;
   this.cBarrido = cBarrido;
+  this.pasoForma = 1/(cForma - 1);
+  this.pasoBarrido = 1/(cBarrido - 1);
+  this.dir = vec3.create();
+  vec3.normalize(this.dir, dirBarrido);
 
-  // La guardo para el cálculo de normales en las tapas.
-  //this.fBarrido = fBarrido;
+  // Se evaluan los vértices de la forma
+  this.vForma = [];
+  for (i = 0; i < cForma; i++){
+    this.vForma = this.vForma.concat(fForma(i*this.pasoForma));
+  }
 
-  this.fijarPuntosEval = function(){
-    for (var i = 0; i < cForma; i ++){
-      this.pForma.push(i*this.pasoForma);
-    }
-
-    for (var i = 0; i < cBarrido; i++){
-      this.pBarrido.push(i*this.pasoBarrido);
+  this.calcularNormalesForma = function(){
+    this.normalesForma = [];
+    // En el caso de que se provea una función tangente se calculan exactamente.
+    if (fForma.d){
+      var tan, n;
+      for (i = 0; i < cForma; i++){
+        // Esto presupone recorrido horario (!). TODO: Cambiarlo en la pileta.
+        n = vec3.create();
+        tan = fForma.d(i*this.pasoForma);
+        vec3.cross(n, this.dir, tan);
+        vec3.normalize(n, n);
+        this.normalesForma.push(n[0]);
+        this.normalesForma.push(n[1]);
+        this.normalesForma.push(n[2]);
+      }
+    } else {
+      // En otro caso, se aproximan con las de un círculo.
+      this.normalesForma = this.vForma.slice();
     }
   }
 
-  this.obtenerVertices = function(){
+  // Obtiene vértices, normales y uvs del lado (forma desplazada).
+  this.datosLado = function(){
+    this.verticesLado = [];
+    this.normalesLado = [];
+    this.uvsLado = [];
+    var v1, v2 = vec3.create(), v3 = vec3.create();
+
     for (var i = 0; i < this.cBarrido; i++){
+      // Para cada vuelta añadimos repetimos las normales.
+      this.normalesLado = this.normalesLado.concat(this.normalesForma);
       for (var j = 0; j < this.cForma; j++){
 
-        // Vertices
-        var v1 = fBarrido(this.pBarrido[i]);
-        var v2 = fForma(this.pForma[j]);
-        var v3 = [v1[0] + v2[0], v1[1] + v2[1], v1[2] + v2[2]]
-        this.vertices = this.vertices.concat(v3);
+        // Vertices.
+        v1 = [this.vForma[3*j], this.vForma[3*j+1], this.vForma[3*j+2]];
+        vec3.scale(v2, this.dir, i*this.pasoBarrido);
+        vec3.add(v3,v1,v2);
+        this.verticesLado.push(v3[0]);
+        this.verticesLado.push(v3[1]);
+        this.verticesLado.push(v3[2]);
 
-        // Normales. Son siempre los vértices de la forma.
-        this.normales = this.normales.concat(v2);
+        // UVS. TODO: agregar una normalización dependiente del tamaño.
+        // Por ahora le agrego como u la forma y como v el barrido.
+        this.uvsLado.push(j);
+        this.uvsLado.push(i);
       }
     }
   }
 
-  this.agregarTapas = function(){
-    // Hago promedio entre los últimos y los primeros de las caras.
-    var cantVertices = this.vertices.length / 3;
-    var puntoInicial = this.promedio(this.vertices.slice(0,(cForma-1)*3));
-    var puntoFinal = this.promedio(this.vertices.slice(cantVertices*3 - (cForma-1)*3 ,cantVertices*3));
-
-    // Repetimos una vez los bordes para no caer en redondeos. 2 filas más.
-    this.vertices = this.vertices.slice(0,3*cForma).concat(this.vertices);
-    var n = this.vertices.length;
-    this.vertices = this.vertices.concat(this.vertices.slice(n-3*cForma, n));
-
-    // Agrego cForma veces al inicial y al final (dos filas más de grilla).
-    for (var i = 0; i < cForma; i++){
-        this.vertices = puntoInicial.concat(this.vertices);
-        this.vertices = this.vertices.concat(puntoFinal);
+  // Esto por ahí puede ir afuera por si lo necesita algún otro.
+  var repetir = function(array, veces){
+    var res = [];
+    n = array.length;
+    for (i = 0; i < n * veces; i++){
+      res.push(array[i%n]);
     }
-
-    // Calculo las normales de fin y de inicio.
-    var nFin = vec3.create(), nInicio = vec3.create();
-    vec3.subtract(nFin, fBarrido(1), fBarrido(1-this.pasoBarrido));
-    vec3.subtract(nInicio, fBarrido(0), fBarrido(this.pasoBarrido));
-
-    for (var i = 0; i < 2*cForma; i++){
-        this.normales = [nInicio[0],nInicio[1],nInicio[2]].concat(this.normales);
-        this.normales = this.normales.concat([nFin[0],nFin[1],nFin[2]]);
-    }
-
+    return res;
   }
 
-  this.promedio = function(vertices){
-      var acu = [0,0,0];
-      var cantVertices = vertices.length / 3;
-      for (i = 0; i < cantVertices; i ++){
-          acu[0] += vertices[3*i];
-          acu[1] += vertices[3*i+1];
-          acu[2] += vertices[3*i+2];
-      }
-      acu[0] /= cantVertices;
-      acu[1] /= cantVertices;
-      acu[2] /= cantVertices;
-      return acu;
+  var promedio = function(vertices){
+    var acu = [0,0,0];
+    var cantVertices = vertices.length / 3;
+    for (i = 0; i < cantVertices; i ++){
+      acu[0] += vertices[3*i];
+      acu[1] += vertices[3*i+1];
+      acu[2] += vertices[3*i+2];
+    }
+    acu[0] /= cantVertices;
+    acu[1] /= cantVertices;
+    acu[2] /= cantVertices;
+    return acu;
   }
 
-  // Provisorio. No es la idea que sea así, si no que los de arriba pasen las uv.
-  // Esto es para tener las cosas funcionando pronto.
-  this.obtenerUVs = function(){
-    this.uvs = [];
-    for (var i = 0; i < this.vertices.length/3; i++){
+  // saca z y x como u y v para cada vértice (para las tapas).
+  var extraerUVs = function(vertices){
+    var res = [];
+    for (var i = 0; i < vertices.length/3; i++){
       var vertice = [
-        this.vertices[3*i],
-        this.vertices[3*i + 1],
-        this.vertices[3*i + 2]
+       vertices[3*i],
+       vertices[3*i + 1],
+       vertices[3*i + 2]
       ];
 
       var u = vertice[2];
       var v = vertice[0];
-      this.uvs.push(u);
-      this.uvs.push(v);
+      res.push(u);
+      res.push(v);
     }
+    return res;
+  }
+
+  this.agregarTapas = function(){
+    // Hago promedio entre los últimos y los primeros de las caras. TODO: agregar opción de centro.
+    this.verticesBase = this.vForma.slice();
+    var n = this.verticesLado.length;
+    this.verticesTapa = this.verticesLado.slice(n-3*cForma, n);
+
+    var puntoInicial = promedio(this.verticesBase);
+    var puntoFinal = promedio(this.verticesTapa);
+
+    this.verticesBase = puntoInicial.concat(this.verticesBase);
+    this.verticesTapa = puntoFinal.concat(this.verticesTapa);
+
+    // Calculo las normales de fin y de inicio.
+    var nFin = vec3.clone(this.dir), nInicio = vec3.create();
+    vec3.scale(nInicio, nFin, -1);
+
+    // Repito las normales para todos los puntos de cada tapa.
+    this.normalesTapa = repetir([nFin[0], nFin[1], nFin[2]], cForma + 1);
+    this.normalesBase = repetir([nInicio[0], nInicio[1], nInicio[2]], cForma + 1);
+
+    // UVs.
+    this.uvsBase = extraerUVs(this.verticesBase);
+    this.uvsTapa = extraerUVs(this.verticesTapa);
   }
 
   this.init = function(material){
-    // Importante: cForma, cBarrido > 1.
-    this.pasoForma = 1/(this.cForma - 1);
-    this.pasoBarrido = 1/(this.cBarrido - 1);
-    this.fijarPuntosEval();
-    this.obtenerVertices();
+    this.calcularNormalesForma();
+    this.datosLado();
     this.agregarTapas();
-    this.obtenerUVs();
-    // Sumo 2 filas a la grilla, una por cada tapa.
-    this.grid = new Grid(this.vertices, this.normales, this.uvs, this.cBarrido + 4, this.cForma).init(material);
+
+    // Material ahora es un array!.
+    var m1, m2, m3;
+    if (material.length == 1) {
+      m1 = m2 = m3 = material[0]
+    } else {
+      m1 = material[0];
+      m2 = material[1];
+      m3 = material[2];
+    }
+    this.lado = new Grid(this.verticesLado, this.normalesLado, this.uvsLado,
+      this.cBarrido, this.cForma).init(m1);
+    this.tapa = new Fan(this.verticesTapa, this.normalesTapa, this.uvsTapa).init(m2);
+    this.base = new Fan(this.verticesBase, this.normalesBase, this.uvsBase).init(m3);
+
+    // TODO: probar hacer dos fans iguales y trasladar uno.
     return this;
   }
 
   this.draw = function(mv){
-    this.grid.draw(mv);
+    this.lado.draw(mv);
+    this.tapa.draw(mv);
+    this.base.draw(mv);
   }
 
 }

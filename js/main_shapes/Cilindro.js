@@ -1,7 +1,6 @@
 var Barrido  = require("./Barrido.js");
 
 module.exports = function(cForma, cBarrido){
-  this.supB = null;
   this.cForma = cForma;
   this.cBarrido = cBarrido;
 
@@ -12,12 +11,8 @@ module.exports = function(cForma, cBarrido){
     return [x, y, 0];
   }
 
-  this.fBarrido = function(t){
-    return [0, 0, t];
-  }
-
-  this.init = function(program){
-    this.supB = new Barrido(this.fForma, this.fBarrido, this.cForma, this.cBarrido).init(program);
+  this.init = function(material){
+    this.supB = new Barrido(this.fForma, [0, 0, 1], this.cForma, this.cBarrido).init([material]);
     return this;
   }
 

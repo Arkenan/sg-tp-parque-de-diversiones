@@ -9,11 +9,11 @@ module.exports = function(){
   var forma = new CubicBezierConcatenator().init(control);
 
   this.fForma = function(t){
-      return forma.generate(t);
+    return forma.generate(t);
   }
 
-  this.fBarrido = function(t){
-    return [0, t, 0];
+  this.fForma.d = function(t){
+    return forma.generate_d1(t);
   }
 
   this.materialAgua = new MaterialPhong({
@@ -25,8 +25,15 @@ module.exports = function(){
     agua:true
     });
 
+  this.materialPared = new MaterialPhong({
+    colorDifuso:[0.2, 0.2, 0.7, 1.0],
+    mapaDifuso:"texturas/concrete.jpg"
+  });
+
+  this.materiales = [this.materialPared, this.materialAgua, this.materialPared];
+
   this.init = function(){
-    this.supB = new Barrido(this.fForma, this.fBarrido, 200, 40).init(this.materialAgua);
+    this.supB = new Barrido(this.fForma, [0, 1, 0], 200, 2).init(this.materiales);
     return this;
   }
 
